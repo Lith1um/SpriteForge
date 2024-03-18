@@ -1,0 +1,29 @@
+.transition-all {
+  transition-property: all;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.transition-color {
+  transition-property: color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+.transition-background {
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
