@@ -10,9 +10,9 @@ import { PixelComponent } from '../pixel/pixel.component';
     <div
       sfPaintCanvas
       class="canvas grid p-2 rounded-lg"
-      [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
+      [style.gridTemplateColumns]="'repeat('+ canvasService.canvasState.width() + ', 1fr)'">
 
-      @for (pixel of canvasService.state.canvas(); track pixel.index) {
+      @for (pixel of canvasService.canvasState.canvas(); track pixel.index) {
         <sf-pixel [pixel]="pixel"></sf-pixel>
       }
 

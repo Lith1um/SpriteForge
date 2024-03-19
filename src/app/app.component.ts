@@ -17,10 +17,13 @@ import { IconComponent } from './shared/components/icon/icon.component';
         <div class="flex flex-col">
           <div class="toolbar p-3 rounded-2xl">
             <sf-icon (click)="toggleMenu()">menu</sf-icon> SpriteForge!
+
+            <button (click)="undo()" [disabled]="canvasService.undoRedoState.undoBuffer().length === 0"><sf-icon>undo</sf-icon></button>
+            <button (click)="redo()" [disabled]="canvasService.undoRedoState.redoBuffer().length === 0"><sf-icon>redo</sf-icon></button>
           </div>
 
           <div class="center-xy absolute canvas-container">
-            @if (canvasService.state.started()) {
+            @if (canvasService.canvasState.started()) {
               <sf-canvas></sf-canvas>
             }
           </div>
@@ -62,7 +65,11 @@ export class AppComponent {
       : 0);
   }
 
-  toggleStarted(): void {
-    this.canvasService.state.updateStarted(false);
+  undo(): void {
+    this.canvasService.undo();
+  }
+
+  redo(): void {
+    this.canvasService.redo();
   }
 }

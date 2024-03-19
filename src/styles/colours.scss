@@ -7,13 +7,13 @@
   --sf-accent: #e16666;
 }
 
-// @media (prefers-color-scheme: dark) {
-//   :root {
-//     --sf-text: #f7fbfd;
-//     --sf-bg: #121212;
-//     --sf-bg-light: #1F1F1F;
-//     --sf-primary: #2670c5;
-//     --sf-secondary: #80195c;
-//     --sf-accent: #991e1e;
-//   }
-// }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sf-text: #f7fbfd;
+    --sf-bg: #121212;
+    --sf-bg-light: #1F1F1F;
+    --sf-primary: #2670c5;
+    --sf-secondary: #80195c;
+    --sf-accent: #991e1e;
+  }
+}

@@ -18,21 +18,21 @@ export class PaintPixelDirective {
 
   @HostListener('mousedown')
   onMousedown(): void {
-    this.canvasService.togglePainting(true);
+    this.canvasService.startPainting();
     this.canvasService.updatePixel(this.pixel().index);
     this.addMouseupListener();
   }
 
   @HostListener('mouseenter')
   onMouseenter(): void {
-    if (!this.canvasService.state.painting()) {
+    if (!this.canvasService.canvasState.painting()) {
       return;
     }
     this.canvasService.updatePixel(this.pixel().index)
   }
 
   private onMouseup(): void {
-    this.canvasService.togglePainting(false);
+    this.canvasService.stopPainting();
     this.removeMouseupListener();
   }
 

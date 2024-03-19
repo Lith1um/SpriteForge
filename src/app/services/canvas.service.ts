@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, effect } from '@angular/core';
 import { canvasState } from '../shared/state/canvas-state';
+import { undoRedoState } from '../shared/state/undo-redo-state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanvasService {
 
-  state = canvasState({
+  canvasState = canvasState({
     canvas: [],
     colour: '#FFFFFF',
     height: 0,
@@ -15,16 +16,48 @@ export class CanvasService {
     width: 0
   });
 
+  undoRedoState = undoRedoState({
+    undoBuffer: [],
+    redoBuffer: []
+  });
+
+  constructor() {
+    effect(() => console.log(this.undoRedoState()));
+  }
+
   initCanvas(width: number, height: number): void {
-    this.state.initCanvas(width, height);
+    this.canvasState.initCanvas(width, height);
   }
 
   updatePixel(pixelIndex: number): void {
-    this.state.updatePixel(pixelIndex);
+    this.canvasState.updatePixel(pixelIndex);
   }
 
-  togglePainting(painting: boolean): void {
-    this.state.updatePainting(painting);
+  startPainting(): void {
+    this.undoRedoState.commit(this.canvasState.canvas());
+    this.canvasState.updatePainting(true);
+  }
+
+  stopPainting(): void {
+    this.canvasState.updatePainting(false);
+  }
+
+  undo(): void {
+    const pixels = this.undoRedoState.undo(this.canvasState.canvas());
+
+    if (!pixels) {
+      return;
+    }
+    this.canvasState.updateCanvas(pixels);
+  }
+
+  redo(): void {
+    const pixels = this.undoRedoState.redo(this.canvasState.canvas());
+
+    if (!pixels) {
+      return;
+    }
+    this.canvasState.updateCanvas(pixels);
   }
 
 }

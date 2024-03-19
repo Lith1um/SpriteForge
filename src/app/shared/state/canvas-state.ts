@@ -37,7 +37,7 @@ export const canvasState = (initialState: CanvasState) => {
     updatePainting: (painting: boolean): void => state.update({...state(), painting}),
     updateStarted: (started: boolean): void => state.update({...state(), started}),
     updateWidth: (width: number): void => state.update({...state(), width}),
-  }
+  };
   
   return Object.assign(state, methods);
 }
