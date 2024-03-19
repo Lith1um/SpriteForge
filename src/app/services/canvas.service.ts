@@ -1,6 +1,6 @@
 import { Injectable, effect } from '@angular/core';
-import { canvasState } from '../shared/state/canvas-state';
-import { undoRedoState } from '../shared/state/undo-redo-state';
+import { canvasState } from '../state/canvas-state';
+import { undoRedoState } from '../state/undo-redo-state';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +20,6 @@ export class CanvasService {
     undoBuffer: [],
     redoBuffer: []
   });
-
-  constructor() {
-    effect(() => console.log(this.undoRedoState()));
-  }
 
   initCanvas(width: number, height: number): void {
     this.canvasState.initCanvas(width, height);

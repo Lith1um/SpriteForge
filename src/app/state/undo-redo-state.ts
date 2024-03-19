@@ -1,6 +1,6 @@
-import { Pixel } from "../../interfaces/pixel.interface";
-import { UndoRedoState } from "../models/undo-redo-state.interface";
-import { ObjectSignal } from "./object-signal-state";
+import { Pixel } from "../interfaces/pixel.interface";
+import { UndoRedoState } from "../shared/models/undo-redo-state.interface";
+import { ObjectSignal } from "../shared/state/object-signal-state";
 
 export const undoRedoState = (initialState: UndoRedoState) => {
 
@@ -16,7 +16,7 @@ export const undoRedoState = (initialState: UndoRedoState) => {
       ].slice(0, bufferSize);
 
       state.update({
-        ...state(),
+        redoBuffer: [],
         undoBuffer
       });
     },

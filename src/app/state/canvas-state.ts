@@ -1,6 +1,6 @@
-import { Pixel } from "../../interfaces/pixel.interface";
-import { CanvasState } from "../models/canvas-state.interface";
-import { ObjectSignal } from "./object-signal-state";
+import { Pixel } from "../interfaces/pixel.interface";
+import { CanvasState } from "../shared/models/canvas-state.interface";
+import { ObjectSignal } from "../shared/state/object-signal-state";
 
 export const canvasState = (initialState: CanvasState) => {
 

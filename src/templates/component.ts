@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'sf-',
   standalone: true,
   template: ``,
+  styles: [``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateComponent {
