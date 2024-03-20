@@ -9,7 +9,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
     <div class="toolbar p-3 rounded-2xl flex gap-2">
       Toolbar
       <label>
-        <input type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" (change)="onInput($event)"/>
+        <input type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (change)="onInput($event)"/>
         <sf-icon [style.color]="colour()">palette</sf-icon>
       </label>
     </div>

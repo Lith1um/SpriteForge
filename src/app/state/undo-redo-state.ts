@@ -15,31 +15,31 @@ export const undoRedoState = (initialState: UndoRedoState) => {
         ...state().undoBuffer
       ].slice(0, bufferSize);
 
-      state.update({
+      state.set({
         redoBuffer: [],
         undoBuffer
       });
     },
     undo: (currentPixels: Pixel[]): Pixel[] | undefined => {
       const [lastUndo, ...undoBuffer] = state.undoBuffer();
-      state.update({
+      state.update(currState => ({
         redoBuffer: [
           currentPixels,
-          ...state.redoBuffer()
+          ...currState.redoBuffer
         ].slice(0, bufferSize),
         undoBuffer
-      });
+      }));
       return lastUndo;
     },
     redo: (currentPixels: Pixel[]): Pixel[] | undefined => {
       const [lastRedo, ...redoBuffer] = state.redoBuffer();
-      state.update({
+      state.update(currState => ({
         undoBuffer: [
           currentPixels,
-          ...state.undoBuffer()
+          ...currState.undoBuffer
         ].slice(0, bufferSize),
         redoBuffer
-      });
+      }));
       return lastRedo;
     }
   };

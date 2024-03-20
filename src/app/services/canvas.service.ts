@@ -9,11 +9,12 @@ export class CanvasService {
 
   canvasState = canvasState({
     canvas: [],
-    colour: '#FFFFFF',
+    colour: '#FF0000',
     height: 0,
     painting: false,
     started: false,
-    width: 0
+    width: 0,
+    filename: undefined
   });
 
   undoRedoState = undoRedoState({
@@ -31,11 +32,11 @@ export class CanvasService {
 
   startPainting(): void {
     this.undoRedoState.commit(this.canvasState.canvas());
-    this.canvasState.updatePainting(true);
+    this.canvasState.painting.set(true);
   }
 
   stopPainting(): void {
-    this.canvasState.updatePainting(false);
+    this.canvasState.painting.set(false);
   }
 
   undo(): void {
@@ -44,7 +45,7 @@ export class CanvasService {
     if (!pixels) {
       return;
     }
-    this.canvasState.updateCanvas(pixels);
+    this.canvasState.canvas.set(pixels);
   }
 
   redo(): void {
@@ -53,7 +54,7 @@ export class CanvasService {
     if (!pixels) {
       return;
     }
-    this.canvasState.updateCanvas(pixels);
+    this.canvasState.canvas.set(pixels);
   }
 
 }

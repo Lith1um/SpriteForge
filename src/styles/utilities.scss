@@ -45,6 +45,10 @@ hr {
 	justify-content: center;
 }
 
+.justify-end {
+	justify-content: end;
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -55,6 +59,10 @@ hr {
 	clip: rect(0, 0, 0, 0);
 	white-space: nowrap;
 	border: 0;
+}
+
+.backdrop {
+	background-color: rgba(0, 0, 0, .3);
 }
 
 .shadow-sm {
@@ -186,7 +194,7 @@ hr {
 }
 
 .border-color {
-  border-color: var(--sf-bg-light);
+  border: 0 solid var(--sf-bg-light);
 }
 
 .border-1 {
@@ -212,7 +220,6 @@ hr {
 .border-r {
   border-right-width: 1px;
 }
-
 
 .m-0 {
 	margin: 0 !important;
@@ -601,31 +608,31 @@ hr {
   bottom: 0;
 }
 
-.z-index-1 {
+.z-1 {
   z-index: 1;
 }
 
-.z-index-2 {
+.z-2 {
   z-index: 2;
 }
 
-.z-index-3 {
+.z-3 {
   z-index: 3;
 }
 
-.z-index-4 {
+.z-4 {
   z-index: 4;
 }
 
-.z-index-5 {
+.z-5 {
   z-index: 5;
 }
 
-.z-index-10 {
+.z-10 {
   z-index: 10;
 }
 
-.z-index-99 {
+.z-99 {
   z-index: 99;
 }
 

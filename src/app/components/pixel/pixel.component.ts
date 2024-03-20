@@ -7,28 +7,23 @@ import { PaintPixelDirective } from '../../directives/paint-pixel.directive';
   standalone: true,
   imports: [PaintPixelDirective],
   template: `
-    <div sfPaintPixel class="pixel" [pixel]="pixel()" [style.background]="pixel().colour"></div>
+    <div sfPaintPixel class="pixel" [pixel]="pixel()" [style.background]="pixel().colour" [style.--hover-colour]="colour()"></div>
   `,
   styles: [`
     .pixel {
       user-select: none;
       pointer-events: auto;
       aspect-ratio: 1/ 1;
-      background: repeating-linear-gradient(
-        -45deg,
-        var(--sf-bg),
-        var(--sf-bg-light) 10%,
-        var(--sf-bg) 10%,
-        var(--sf-bg-light) 10%,
-        var(--sf-bg) 10%,
-        var(--sf-bg-light) 10%,
-        var(--sf-bg) 10%,
-        var(--sf-bg-light) 20%
-      );
+    }
+
+    .pixel:hover {
+      background: var(--hover-colour) !important;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PixelComponent {
   pixel = input.required<Pixel>();
+
+  colour = input.required<string>();
 }

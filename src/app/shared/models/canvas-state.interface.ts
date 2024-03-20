@@ -8,5 +8,6 @@ export interface CanvasState {
   painting: boolean;
   started: boolean;
   width: number;
+  filename: string | undefined;
 
 }
