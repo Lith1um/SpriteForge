@@ -1,10 +1,10 @@
 import { Pixel } from "../interfaces/pixel.interface";
 import { CanvasState } from "../shared/models/canvas-state.interface";
-import { ObjectSignal } from "../shared/state/object-signal-state";
+import { objectSignal } from "../shared/state/object-signal-state";
 
 export const canvasState = (initialState: CanvasState) => {
 
-  const state = ObjectSignal<CanvasState>(initialState);
+  const state = objectSignal<CanvasState>(initialState);
 
   const methods = {
     initCanvas: (width: number, height: number): void => state.update({

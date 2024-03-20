@@ -1,12 +1,12 @@
 import { Pixel } from "../interfaces/pixel.interface";
 import { UndoRedoState } from "../shared/models/undo-redo-state.interface";
-import { ObjectSignal } from "../shared/state/object-signal-state";
+import { objectSignal } from "../shared/state/object-signal-state";
 
 export const undoRedoState = (initialState: UndoRedoState) => {
 
   const bufferSize = 50;
 
-  const state = ObjectSignal<UndoRedoState>(initialState);
+  const state = objectSignal<UndoRedoState>(initialState);
 
   const methods = {
     commit: (currentState: Pixel[]): void => {

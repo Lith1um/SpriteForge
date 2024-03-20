@@ -31,7 +31,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
             </div>
           </div>
 
-          <sf-toolbar [colour]="canvasService.canvasState.colour()" (updateColour)="updateColour($event)"></sf-toolbar>
+          <sf-toolbar class="mx-auto flex" [colour]="canvasService.canvasState.colour()" (updateColour)="updateColour($event)"></sf-toolbar>
         </div>
       </div>
     </div>
