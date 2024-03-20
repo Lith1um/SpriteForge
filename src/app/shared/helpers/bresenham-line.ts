@@ -8,8 +8,6 @@ export const bresenhamLine = (x0: number, x1: number, y0: number, y1: number): {
   let err = dx - dy;
 
   while (true) {
-    // start filling the line
-    // TODO: potentially find a way to collect all pixels to be drawn and send as one request
     points.push({x: x0, y: y0});
 
     if (x0 === x1 && y0 === y1) break;
