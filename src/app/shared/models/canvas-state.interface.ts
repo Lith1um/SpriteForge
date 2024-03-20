@@ -9,5 +9,6 @@ export interface CanvasState {
   started: boolean;
   width: number;
   filename: string | undefined;
+  lastDrawnPixelIndex: number | undefined;
 
 }

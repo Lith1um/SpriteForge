@@ -27,6 +27,20 @@ export const canvasState = (initialState: CanvasState) => {
       });
   
       state.canvas.set(newCanvas);
+    },
+
+    updatePixels: (pixelIndexes: number[]): void => {
+      const newCanvas = state.canvas().map(pixel => {
+        if (pixelIndexes.includes(pixel.index)) {
+          return {
+            index: pixel.index,
+            colour: state().colour
+          };
+        }
+        return pixel;
+      });
+  
+      state.canvas.set(newCanvas);
     }
   };
   

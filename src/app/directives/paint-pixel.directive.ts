@@ -18,7 +18,7 @@ export class PaintPixelDirective {
 
   @HostListener('mousedown')
   onMousedown(): void {
-    this.canvasService.startPainting();
+    this.canvasService.startPainting(this.pixel().index);
     this.canvasService.updatePixel(this.pixel().index);
     this.addMouseupListener();
   }
