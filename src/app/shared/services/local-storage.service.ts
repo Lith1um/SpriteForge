@@ -7,21 +7,29 @@ import { filter, fromEvent, map } from 'rxjs';
 })
 export class LocalStorageService {
 
-  listen(key: string): Signal<string | null | undefined> {
-    return toSignal<string | null>(fromEvent<StorageEvent>(window, 'storage')
+  listen<T>(key: string): Signal<T | null | undefined> {
+    return toSignal<T | null>(fromEvent<StorageEvent>(window, 'storage')
       .pipe(
         filter((event) => event?.key === key),
-        map((event: StorageEvent) => event.newValue)
+        map((event: StorageEvent) => event.newValue
+          ? JSON.parse(event.newValue)
+          : event.newValue
+        )
       ));
+  }
+
+  getItem<T>(key: string): T | null {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
   }
 
   setItem(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getItem(key: string): any {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+  updateItem<T>(key: string, callback: (currValue: T | null) => T): void {
+    const currValue = this.getItem<T>(key);
+    this.setItem(key, callback(currValue));
   }
 
   removeItem(key: string): void {

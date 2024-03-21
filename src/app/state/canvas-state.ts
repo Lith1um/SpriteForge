@@ -5,13 +5,15 @@ export const canvasState = (initialState: CanvasState) => {
 
   const state = objectSignal<CanvasState>(initialState);
 
+  const bufferSize = 50;
+
   const methods = {
     initCanvas: (width: number, height: number): void => state.update(currState => ({
       ...currState,
       width,
       height,
       canvas: new Array(width * height).fill(undefined)
-        .map((pixel, index) => ({ index, colour: undefined })),
+        .map((pixel, index) => ({ index, colour: null })),
       started: true
     })),
 
@@ -41,6 +43,45 @@ export const canvasState = (initialState: CanvasState) => {
       });
   
       state.canvas.set(newCanvas);
+    },
+
+    commit: (): void => {
+      const undoBuffer = [
+        state.canvas(),
+        ...state.undoBuffer()
+      ].slice(0, bufferSize);
+
+      state.update(currState => ({
+        ...currState,
+        redoBuffer: [],
+        undoBuffer
+      }));
+    },
+
+    undo: (): void => {
+      const [lastUndo, ...undoBuffer] = state.undoBuffer();
+      state.update(currState => ({
+        ...currState,
+        canvas: lastUndo,
+        redoBuffer: [
+          currState.canvas,
+          ...currState.redoBuffer
+        ].slice(0, bufferSize),
+        undoBuffer
+      }));
+    },
+
+    redo: (): void => {
+      const [lastRedo, ...redoBuffer] = state.redoBuffer();
+      state.update(currState => ({
+        ...currState,
+        canvas: lastRedo,
+        undoBuffer: [
+          currState.canvas,
+          ...currState.undoBuffer
+        ].slice(0, bufferSize),
+        redoBuffer
+      }));
     }
   };
   

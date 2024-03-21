@@ -25,7 +25,7 @@ export class PaintPixelDirective {
 
   @HostListener('mouseenter')
   onMouseenter(): void {
-    if (!this.canvasService.canvasState.painting()) {
+    if (!this.canvasService.state.painting()) {
       return;
     }
     this.canvasService.updatePixel(this.pixel().index)

@@ -1,4 +1,6 @@
-export const bresenhamLine = (x0: number, x1: number, y0: number, y1: number): { x: number; y: number }[] => {
+import { Point2D } from "../models/point.interface";
+
+export const bresenhamLine = (x0: number, x1: number, y0: number, y1: number): Point2D[] => {
   const points = [];
 
   const dx = Math.abs(x1 - x0);

@@ -10,5 +10,7 @@ export interface CanvasState {
   width: number;
   filename: string | undefined;
   lastDrawnPixelIndex: number | undefined;
+  undoBuffer: Pixel[][];
+  redoBuffer: Pixel[][];
 
 }

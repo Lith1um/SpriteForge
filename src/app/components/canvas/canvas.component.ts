@@ -10,10 +10,10 @@ import { PixelComponent } from '../pixel/pixel.component';
     <div class="canvas-container p-2 rounded-lg">
       <div
         class="canvas grid"
-        [style.gridTemplateColumns]="'repeat('+ canvasService.canvasState.width() + ', 1fr)'">
+        [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
   
-        @for (pixel of canvasService.canvasState.canvas(); track pixel.index) {
-          <sf-pixel [pixel]="pixel" [colour]="canvasService.canvasState.colour()"></sf-pixel>
+        @for (pixel of canvasService.state.canvas(); track pixel.index) {
+          <sf-pixel [pixel]="pixel" [colour]="canvasService.state.colour()"></sf-pixel>
         }
   
       </div>

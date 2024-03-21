@@ -21,8 +21,16 @@ import { ModalButtonDirective, ModalComponent } from './shared/components/modal/
           <div class="toolbar p-3 rounded-2xl flex gap-2">
             <button (click)="toggleMenu()"><sf-icon>menu</sf-icon></button> SpriteForge!
 
-            <button (click)="undo()" [disabled]="canvasService.undoRedoState.undoBuffer().length === 0"><sf-icon>undo</sf-icon></button>
-            <button (click)="redo()" [disabled]="canvasService.undoRedoState.redoBuffer().length === 0"><sf-icon>redo</sf-icon></button>
+            <button
+              (click)="canvasService.state.undo()"
+              [disabled]="canvasService.state.undoBuffer().length === 0">
+              <sf-icon>undo</sf-icon>
+            </button>
+            <button
+              (click)="canvasService.state.redo()"
+              [disabled]="canvasService.state.redoBuffer().length === 0">
+              <sf-icon>redo</sf-icon>
+            </button>
 
             <button (click)="openModelVisible.set(true)">
               <sf-icon>folder_open</sf-icon>
@@ -34,13 +42,17 @@ import { ModalButtonDirective, ModalComponent } from './shared/components/modal/
 
           <div class="flex-1 flex items-center justify-center">
             <div class="canvas-container">
-              @if (canvasService.canvasState.started()) {
+              @if (canvasService.state.started()) {
                 <sf-canvas></sf-canvas>
               }
             </div>
           </div>
 
-          <sf-toolbar class="mx-auto flex" [colour]="canvasService.canvasState.colour()" (updateColour)="updateColour($event)"></sf-toolbar>
+          <sf-toolbar
+            class="mx-auto flex"
+            [colour]="canvasService.state.colour()"
+            (updateColour)="canvasService.state.colour.set($event)">
+          </sf-toolbar>
         </div>
       </div>
     </div>
@@ -63,11 +75,11 @@ import { ModalButtonDirective, ModalComponent } from './shared/components/modal/
       <div>Preview of current art:</div>
       <sf-preview
         style="width: 200px"
-        [pixels]="canvasService.canvasState.canvas()"
-        [width]="canvasService.canvasState.width()"
-        [height]="canvasService.canvasState.height()">
+        [pixels]="canvasService.state.canvas()"
+        [width]="canvasService.state.width()"
+        [height]="canvasService.state.height()">
       </sf-preview>
-      <button sfModalButton>
+      <button sfModalButton (click)="saveModel()">
         Save
       </button>
       <button sfModalButton (click)="saveModelVisible.set(false)">
@@ -112,23 +124,15 @@ export class AppComponent {
       : 0);
   }
 
-  undo(): void {
-    this.canvasService.undo();
-  }
-
-  redo(): void {
-    this.canvasService.redo();
-  }
-
-  updateColour(colour: string): void {
-    this.canvasService.canvasState.colour.set(colour);
-  }
-
   triggerSave(): void {
-    if (!this.canvasService.canvasState.filename()) {
+    if (!this.canvasService.state.filename()) {
       this.saveModelVisible.set(true);
     } else {
       // trigger a save
     }
+  }
+
+  saveModel(): void {
+    this.canvasService.save('testModel');
   }
 }

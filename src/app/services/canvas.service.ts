@@ -1,14 +1,17 @@
-import { Injectable, effect } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { canvasState } from '../state/canvas-state';
-import { undoRedoState } from '../state/undo-redo-state';
 import { bresenhamLine } from '../shared/helpers/bresenham-line';
+import { pixelIndexToPoint2D, point2DToPixelIndex } from '../shared/helpers/pixels';
+import { SaveLoadService } from './save-load.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanvasService {
 
-  canvasState = canvasState({
+  saveLoadService = inject(SaveLoadService);
+
+  state = canvasState({
     canvas: [],
     colour: '#FF0000',
     height: 0,
@@ -16,68 +19,52 @@ export class CanvasService {
     started: false,
     width: 0,
     filename: undefined,
-    lastDrawnPixelIndex: undefined
-  });
-
-  undoRedoState = undoRedoState({
+    lastDrawnPixelIndex: undefined,
     undoBuffer: [],
-    redoBuffer: []
+    redoBuffer: [],
   });
 
   initCanvas(width: number, height: number): void {
-    this.canvasState.initCanvas(width, height);
-  }
+    this.state.initCanvas(width, height);
+  } 
 
   updatePixel(pixelIndex: number): void {
-    this.canvasState.updatePixel(pixelIndex);
-    // TODO: fill any gaps between last drawn pixel and this one
-    if (this.canvasState.lastDrawnPixelIndex() !== undefined) {
-      this.fillLine(this.canvasState.lastDrawnPixelIndex() as number, pixelIndex);
+    this.state.updatePixel(pixelIndex);
+    if (this.state.lastDrawnPixelIndex() !== undefined) {
+      this.fillLine(this.state.lastDrawnPixelIndex() as number, pixelIndex);
     }
-
-    this.canvasState.lastDrawnPixelIndex.set(pixelIndex);
+    this.state.lastDrawnPixelIndex.set(pixelIndex);
   }
 
   startPainting(pixelIndex: number): void {
-    this.undoRedoState.commit(this.canvasState.canvas());
-    // TODO: store the start pixel to fill lines
-    this.canvasState.lastDrawnPixelIndex.set(pixelIndex);
-    this.canvasState.painting.set(true);
+    this.state.commit();
+    this.state.lastDrawnPixelIndex.set(pixelIndex);
+    this.state.painting.set(true);
   }
 
   stopPainting(): void {
-    // TODO: reset the start pixel
-    this.canvasState.lastDrawnPixelIndex.set(undefined);
-    this.canvasState.painting.set(false);
+    this.state.lastDrawnPixelIndex.set(undefined);
+    this.state.painting.set(false);
   }
 
   undo(): void {
-    const pixels = this.undoRedoState.undo(this.canvasState.canvas());
-
-    if (!pixels) {
-      return;
-    }
-    this.canvasState.canvas.set(pixels);
+    this.state.undo();
   }
 
   redo(): void {
-    const pixels = this.undoRedoState.redo(this.canvasState.canvas());
-
-    if (!pixels) {
-      return;
-    }
-    this.canvasState.canvas.set(pixels);
+    this.state.redo();
   }
 
   fillLine(startIndex: number, endIndex: number): void {
-    let x0 = startIndex % this.canvasState.width();
-    let y0 = Math.floor(startIndex / this.canvasState.width());
+    const startPoint = pixelIndexToPoint2D(startIndex, this.state.width());
+    const endPoint = pixelIndexToPoint2D(endIndex, this.state.width());
 
-    let x1 = endIndex % this.canvasState.width();
-    let y1 = Math.floor(endIndex / this.canvasState.width());
+    const points = bresenhamLine(startPoint.x, endPoint.x, startPoint.y, endPoint.y);
 
-    const points = bresenhamLine(x0, x1, y0, y1);
+    this.state.updatePixels(points.map(point => point2DToPixelIndex(point, this.state.width())));
+  }
 
-    this.canvasState.updatePixels(points.map(point => point.y * this.canvasState.width() + point.x));
+  save(filename: string): void {
+    this.saveLoadService.save(filename, this.state.canvas());
   }
 }
