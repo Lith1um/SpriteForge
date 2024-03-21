@@ -13,7 +13,7 @@ export const toolService = (canvasState: CanvasStateSignal) => {
   const state = objectSignal<{
     startPixel: Point2D | undefined;
     lastDrawnPixel: Point2D | undefined;
-    startingCanvas: Pixel[] | undefined;
+    startingCanvas: Map<number, Pixel> | undefined;
   }>({
     startPixel: undefined,
     lastDrawnPixel: undefined,
@@ -26,12 +26,12 @@ export const toolService = (canvasState: CanvasStateSignal) => {
   }
 
   const fill = (startPoint: Point2D, clickedColour: string | null): number[] => {
-    return floodFill(startPoint.x, startPoint.y, canvasState(), clickedColour)
+    return floodFill(startPoint.x, startPoint.y, canvasState.width(), canvasState.height(), canvasState.canvas(), clickedColour)
       .map(point => point2DToPixelIndex(point, canvasState.width()));
   }
 
   return {
-    start: (pixel: Point2D, canvas: Pixel[]) => {
+    start: (pixel: Point2D, canvas: Map<number, Pixel>) => {
       state.set({
         startPixel: pixel,
         startingCanvas: canvas,
@@ -56,15 +56,15 @@ export const toolService = (canvasState: CanvasStateSignal) => {
             return;
           }
           const lineIndexes = drawLine(state.startPixel() as Point2D, pixel);
-          canvasState.updateCanvas(lineIndexes, state.startingCanvas() as Pixel[]);
+          canvasState.updateCanvas(lineIndexes, state.startingCanvas() as Map<number, Pixel>);
           break;
         case CanvasTool.Fill:
           if (!state.startPixel() || !state.startingCanvas()) {
             return;
           }
-          const currentPixel = canvasState.canvas()[point2DToPixelIndex(pixel, canvasState.width())];
+          const currentPixel = canvasState.canvas().get(point2DToPixelIndex(pixel, canvasState.width()));
 
-          const fillIndexes = fill(state.startPixel() as Point2D, currentPixel.colour);
+          const fillIndexes = fill(state.startPixel() as Point2D, currentPixel?.colour ?? null);
           canvasState.updatePixels(fillIndexes);
           break;
       }

@@ -1,23 +1,26 @@
 import { CanvasState } from "../../interfaces/canvas-state.interface";
+import { Pixel } from "../../interfaces/pixel.interface";
 import { Point2D } from "../models/point.interface";
 import { point2DToPixelIndex } from "./pixels";
 
 export const floodFill = (
   x: number,
   y: number,
-  canvasState: CanvasState,
+  width: number,
+  height: number,
+  canvas: Map<number, Pixel>,
   clickedColour: string | null
 ): Point2D[] => {
   const points: Point2D[] = [];
   const indexes: Set<number> = new Set();
 
   const isValidSquare = (xPos: number, yPos: number, index: number) => {
-    return xPos >= 0 && xPos < canvasState.width && yPos >= 0 && yPos < canvasState.height
-      && canvasState.canvas[index].colour === clickedColour;
+    return xPos >= 0 && xPos < width && yPos >= 0 && yPos < height
+      && canvas.get(index)?.colour === clickedColour;
   }
 
   const fill = (xPos: number, yPos: number) => {
-    const index = point2DToPixelIndex({x: xPos, y: yPos}, canvasState.width);
+    const index = point2DToPixelIndex({x: xPos, y: yPos}, width);
 
     if (indexes.has(index)) {
       return;

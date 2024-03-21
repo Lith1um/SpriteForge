@@ -1,19 +1,20 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
 import { PixelComponent } from '../pixel/pixel.component';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'sf-canvas',
   standalone: true,
-  imports: [PixelComponent],
+  imports: [PixelComponent, KeyValuePipe],
   template: `
     <div class="canvas-container p-2 rounded-lg">
       <div
         class="canvas grid"
         [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
   
-        @for (pixel of canvasService.state.canvas(); track pixel.index) {
-          <sf-pixel [pixel]="pixel" [colour]="canvasService.state.colour()"></sf-pixel>
+        @for (pixel of canvasService.state.canvas() | keyvalue; track pixel.key) {
+          <sf-pixel [pixel]="pixel.value" [colour]="canvasService.state.colour()"></sf-pixel>
         }
   
       </div>

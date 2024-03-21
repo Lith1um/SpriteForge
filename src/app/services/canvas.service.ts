@@ -14,7 +14,7 @@ export class CanvasService {
   saveLoadService = inject(SaveLoadService);
 
   state = canvasState({
-    canvas: [],
+    canvas: new Map(),
     colour: '#FF0000',
     height: 0,
     painting: false,

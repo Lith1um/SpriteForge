@@ -6,7 +6,7 @@ export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
   initCanvas: (width: number, height: number) => void;
   updatePixel: (pixelIndex: number) => void;
   updatePixels: (pixelIndexes: number[]) => void;
-  updateCanvas: (pixelIndexes: number[], canvas: Pixel[]) => void;
+  updateCanvas: (pixelIndexes: number[], canvas: Map<number, Pixel>) => void;
   commit: () => void;
   undo: () => void;
   redo: () => void;
@@ -24,52 +24,35 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
       ...currState,
       width,
       height,
-      canvas: new Array(width * height).fill(undefined)
-        .map((pixel, index) => ({ index, colour: null })),
+      canvas: new Map(new Array(width * height).fill(undefined)
+        .map((_, index) => ([index, { index, colour: null }]))),
       started: true
     })),
 
     updatePixel: (pixelIndex: number): void => {
-      const newCanvas = state.canvas().map(pixel => {
-        if (pixelIndex === pixel.index) {
-          return {
-            index: pixel.index,
-            colour: state().colour
-          };
-        }
-        return pixel;
-      });
-  
+      const newCanvas = new Map(state.canvas());
+      newCanvas.set(pixelIndex, {
+        index: pixelIndex,
+        colour: state.colour()
+      })
       state.canvas.set(newCanvas);
     },
 
-    // TODO: fix inefficiencies here by using a map for the canvas and looping the new pixels to set the values
     updatePixels: (pixelIndexes: number[]): void => {
-      const newCanvas = state.canvas().map(pixel => {
-        if (pixelIndexes.includes(pixel.index)) {
-          return {
-            index: pixel.index,
-            colour: state().colour
-          };
-        }
-        return pixel;
-      });
-  
+      const newCanvas = new Map(state.canvas());
+      pixelIndexes.forEach(pixelIndex => newCanvas.set(pixelIndex, {
+        index: pixelIndex,
+        colour: state.colour()
+      }));
       state.canvas.set(newCanvas);
     },
     
-    // TODO: fix inefficiencies here by using a map for the canvas and looping the new pixels to set the values
-    updateCanvas: (pixelIndexes: number[], canvas: Pixel[]): void => {
-      const newCanvas = canvas.map(pixel => {
-        if (pixelIndexes.includes(pixel.index)) {
-          return {
-            index: pixel.index,
-            colour: state().colour
-          };
-        }
-        return pixel;
-      });
-
+    updateCanvas: (pixelIndexes: number[], canvas: Map<number, Pixel>): void => {
+      const newCanvas = new Map(canvas);
+      pixelIndexes.forEach(pixelIndex => newCanvas.set(pixelIndex, {
+        index: pixelIndex,
+        colour: state.colour()
+      }));
       state.canvas.set(newCanvas);
     },
 

@@ -23,7 +23,7 @@ import { Pixel } from '../../../interfaces/pixel.interface';
 export class PreviewComponent {
   canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  pixels = input.required<Pixel[]>();
+  pixels = input.required<Map<number, Pixel>>();
   width = input.required<number>();
   height = input.required<number>();
 

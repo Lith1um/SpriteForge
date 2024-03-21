@@ -12,12 +12,16 @@ export class SaveLoadService {
 
   localStorageService = inject(LocalStorageService);
 
-  save(fileName: string, canvas: Pixel[]): void {
+  save(fileName: string, canvas: Map<number, Pixel>): void {
     this.localStorageService.updateItem<SavedModels>(this.savedModelsKey, (currSavedModels) => {
       const savedModels = { ...currSavedModels };
-      savedModels[fileName] = canvas;
+      savedModels[fileName] = Array.from(canvas.entries());
       return savedModels;
     });
+  }
+
+  load(fileName: string): Map<number, Pixel> | null {
+    return this.localStorageService.getItem<Map<number, Pixel>, [number, Pixel][]>(this.savedModelsKey, (key, value) => new Map(value));
   }
 
 }

@@ -8,15 +8,15 @@ export enum CanvasTool {
 
 export interface CanvasState {
 
-  canvas: Pixel[];
+  canvas: Map<number, Pixel>;
   colour: string;
   height: number;
   painting: boolean;
   started: boolean;
   width: number;
   filename: string | undefined;
-  undoBuffer: Pixel[][];
-  redoBuffer: Pixel[][];
+  undoBuffer: Map<number, Pixel>[];
+  redoBuffer: Map<number, Pixel>[];
   tool: CanvasTool
 
 }

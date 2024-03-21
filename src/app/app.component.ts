@@ -116,7 +116,7 @@ export class AppComponent {
   saveModelVisible = signal<boolean>(false);
 
   constructor() {
-    this.canvasService.initCanvas(32, 32);
+    this.canvasService.initCanvas(128, 128);
   }
 
   toggleMenu(): void {

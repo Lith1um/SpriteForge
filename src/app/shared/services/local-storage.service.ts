@@ -18,9 +18,9 @@ export class LocalStorageService {
       ));
   }
 
-  getItem<T>(key: string): T | null {
+  getItem<T, S = unknown>(key: string, reviver?: (key: string, value: S) => T): T | null {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    return item ? JSON.parse(item, reviver) : null;
   }
 
   setItem(key: string, value: any): void {
