@@ -1,4 +1,10 @@
-import { Pixel } from "../../interfaces/pixel.interface";
+import { Pixel } from "./pixel.interface";
+
+export enum CanvasTool {
+  Draw = 'draw',
+  Line = 'line',
+  Fill = 'fill',
+}
 
 export interface CanvasState {
 
@@ -9,8 +15,8 @@ export interface CanvasState {
   started: boolean;
   width: number;
   filename: string | undefined;
-  lastDrawnPixelIndex: number | undefined;
   undoBuffer: Pixel[][];
   redoBuffer: Pixel[][];
+  tool: CanvasTool
 
 }

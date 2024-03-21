@@ -14,7 +14,7 @@ export class SaveLoadService {
 
   save(fileName: string, canvas: Pixel[]): void {
     this.localStorageService.updateItem<SavedModels>(this.savedModelsKey, (currSavedModels) => {
-      const savedModels = currSavedModels ?? {};
+      const savedModels = { ...currSavedModels };
       savedModels[fileName] = canvas;
       return savedModels;
     });

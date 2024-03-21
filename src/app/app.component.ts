@@ -51,7 +51,9 @@ import { ModalButtonDirective, ModalComponent } from './shared/components/modal/
           <sf-toolbar
             class="mx-auto flex"
             [colour]="canvasService.state.colour()"
-            (updateColour)="canvasService.state.colour.set($event)">
+            [tool]="canvasService.state.tool()"
+            (updateColour)="canvasService.state.colour.set($event)"
+            (updateTool)="canvasService.state.tool.set($event)">
           </sf-toolbar>
         </div>
       </div>

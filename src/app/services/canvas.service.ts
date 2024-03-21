@@ -3,6 +3,8 @@ import { canvasState } from '../state/canvas-state';
 import { bresenhamLine } from '../shared/helpers/bresenham-line';
 import { pixelIndexToPoint2D, point2DToPixelIndex } from '../shared/helpers/pixels';
 import { SaveLoadService } from './save-load.service';
+import { CanvasTool } from '../interfaces/canvas-state.interface';
+import { toolService } from './tool.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,32 +21,35 @@ export class CanvasService {
     started: false,
     width: 0,
     filename: undefined,
-    lastDrawnPixelIndex: undefined,
     undoBuffer: [],
     redoBuffer: [],
+    tool: CanvasTool.Draw
   });
+
+  toolService = toolService(this.state);
 
   initCanvas(width: number, height: number): void {
     this.state.initCanvas(width, height);
-  } 
-
-  updatePixel(pixelIndex: number): void {
-    this.state.updatePixel(pixelIndex);
-    if (this.state.lastDrawnPixelIndex() !== undefined) {
-      this.fillLine(this.state.lastDrawnPixelIndex() as number, pixelIndex);
-    }
-    this.state.lastDrawnPixelIndex.set(pixelIndex);
   }
 
   startPainting(pixelIndex: number): void {
     this.state.commit();
-    this.state.lastDrawnPixelIndex.set(pixelIndex);
+    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width())
+    this.toolService.start(pixelPoint, this.state.canvas());
+    this.toolService.paint(pixelPoint);
     this.state.painting.set(true);
   }
 
+  paint(pixelIndex: number): void {
+    if (!this.state.painting()) {
+      return;
+    }
+    this.toolService.paint(pixelIndexToPoint2D(pixelIndex, this.state.width()));
+  }
+
   stopPainting(): void {
-    this.state.lastDrawnPixelIndex.set(undefined);
     this.state.painting.set(false);
+    this.toolService.end();
   }
 
   undo(): void {
