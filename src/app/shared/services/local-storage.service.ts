@@ -1,30 +1,45 @@
 import { Injectable, Signal, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { filter, fromEvent, map } from 'rxjs';
+import { fromEvent } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
+  storageSignal = toSignal(fromEvent<StorageEvent>(window, 'storage'));
+
   listen<T>(key: string): Signal<T | null | undefined> {
-    return toSignal<T | null>(fromEvent<StorageEvent>(window, 'storage')
-      .pipe(
-        filter((event) => event?.key === key),
-        map((event: StorageEvent) => event.newValue
-          ? JSON.parse(event.newValue)
-          : event.newValue
-        )
-      ));
+    return computed<T | undefined>(() => {
+      const storageEvent = this.storageSignal();
+
+      // try to cover initial case with no storage event
+      if (!storageEvent) {
+        return this.getItem<T>(key);
+      }
+
+      if (storageEvent?.key === key) {
+        return storageEvent.newValue
+          ? JSON.parse(storageEvent.newValue)
+          : storageEvent.newValue
+      }
+    });
   }
 
-  getItem<T, S = unknown>(key: string, reviver?: (key: string, value: S) => T): T | null {
+  getItem<T>(key: string): T | null {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item, reviver) : null;
+    return item ? JSON.parse(item) : null;
   }
 
   setItem(key: string, value: any): void {
     localStorage.setItem(key, JSON.stringify(value));
+
+    const event = new StorageEvent('storage', {
+      key,
+      newValue: JSON.stringify(value)
+    });
+    
+    dispatchEvent(event);
   }
 
   updateItem<T>(key: string, callback: (currValue: T | null) => T): void {

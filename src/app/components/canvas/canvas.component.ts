@@ -8,7 +8,7 @@ import { KeyValuePipe } from '@angular/common';
   standalone: true,
   imports: [PixelComponent, KeyValuePipe],
   template: `
-    <div class="canvas-container p-2 rounded-lg">
+    <div class="bg-light p-2 rounded-lg">
       <div
         class="canvas grid"
         [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
@@ -21,9 +21,6 @@ import { KeyValuePipe } from '@angular/common';
     </div>
   `,
   styles: [`
-    .canvas-container {
-      background-color: var(--sf-bg-light);
-    }
     .canvas {
       pointer-events: none;
       background: repeating-linear-gradient(

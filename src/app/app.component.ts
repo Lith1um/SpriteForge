@@ -3,39 +3,46 @@ import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { PreviewComponent } from './shared/components/preview/preview.component';
-import { ModalButtonDirective, ModalComponent } from './shared/components/modal/modal.component';
+import { SaveModalComponent } from './components/save-modal/save-modal.component';
+import { LoadModalComponent } from './components/load-modal/load-modal.component';
+import { SavedModel } from './interfaces/saved-model.model';
 
 @Component({
   selector: 'app-root',
-  imports: [CanvasComponent, IconComponent, ToolbarComponent, PreviewComponent, ModalComponent, ModalButtonDirective],
+  imports: [CanvasComponent, IconComponent, ToolbarComponent, LoadModalComponent, SaveModalComponent],
   standalone: true,
   template: `
     <div class="flex h-100 w-100 p-4 gap-4">
-      <div #menu class="sidebar transition-all p-4 rounded-2xl" [style.marginLeft.px]="menuMargin()">
+      <div #menu class="bg-light sidebar transition-all p-4 rounded-2xl" [style.marginLeft.px]="menuMargin()">
         <h5>Menu</h5>
       </div>
 
       <div class="flex-1 relative min-w-0">
         <div class="flex flex-col h-100">
-          <div class="toolbar p-3 rounded-2xl flex gap-2">
+          <div class="bg-light p-3 rounded-2xl flex gap-2">
             <button (click)="toggleMenu()"><sf-icon>menu</sf-icon></button> SpriteForge!
 
             <button
+              title="Undo"
               (click)="canvasService.state.undo()"
               [disabled]="canvasService.state.undoBuffer().length === 0">
               <sf-icon>undo</sf-icon>
             </button>
             <button
+              title="Redo"
               (click)="canvasService.state.redo()"
               [disabled]="canvasService.state.redoBuffer().length === 0">
               <sf-icon>redo</sf-icon>
             </button>
 
-            <button (click)="openModelVisible.set(true)">
+            <button title="Open" (click)="openModelVisible.set(true)">
               <sf-icon>folder_open</sf-icon>
             </button>
-            <button (click)="triggerSave()">
+            <button title="Save as" (click)="triggerSaveAs()">
+              <sf-icon>save</sf-icon>
+              Save As
+            </button>
+            <button title="Save" (click)="triggerSave()" [disabled]="!canvasService.state.filename()">
               <sf-icon>save</sf-icon>
             </button>
           </div>
@@ -59,44 +66,22 @@ import { ModalButtonDirective, ModalComponent } from './shared/components/modal/
       </div>
     </div>
 
-    <sf-modal
+    <sf-load-modal
       [(visible)]="openModelVisible"
-      modalTitle="Open a model!">
-      <button sfModalButton (click)="openModelVisible.set(false)">
-        Cancel
-      </button>
-    </sf-modal>
+      (load)="loadModel($event)">
+    </sf-load-modal>
 
-    <sf-modal
+    <sf-save-modal
       [(visible)]="saveModelVisible"
-      modalTitle="Save your art!">
-      <label>
-        <div>Name your piece</div>
-        <input type="text"/>
-      </label>
-      <div>Preview of current art:</div>
-      <sf-preview
-        style="width: 200px"
-        [pixels]="canvasService.state.canvas()"
-        [width]="canvasService.state.width()"
-        [height]="canvasService.state.height()">
-      </sf-preview>
-      <button sfModalButton (click)="saveModel()">
-        Save
-      </button>
-      <button sfModalButton (click)="saveModelVisible.set(false)">
-        Cancel
-      </button>
-    </sf-modal>
+      [canvas]="canvasService.state.canvas()"
+      [width]="canvasService.state.width()"
+      [height]="canvasService.state.height()"
+      (save)="saveModel($event)">
+    </sf-save-modal>
   `,
   styles: [`
     .sidebar {
-      background-color: var(--sf-bg-light);
       width: 250px;
-    }
-
-    .toolbar {
-      background-color: var(--sf-bg-light);
     }
 
     .canvas-container {
@@ -116,7 +101,7 @@ export class AppComponent {
   saveModelVisible = signal<boolean>(false);
 
   constructor() {
-    this.canvasService.initCanvas(128, 128);
+    this.canvasService.initCanvas(64, 64);
   }
 
   toggleMenu(): void {
@@ -126,15 +111,25 @@ export class AppComponent {
       : 0);
   }
 
+  triggerSaveAs(): void {
+    this.saveModelVisible.set(true);
+  }
+
   triggerSave(): void {
     if (!this.canvasService.state.filename()) {
       this.saveModelVisible.set(true);
     } else {
       // trigger a save
+      this.canvasService.save();
     }
   }
 
-  saveModel(): void {
-    this.canvasService.save('testModel');
+  saveModel(filename: string): void {
+    this.canvasService.saveAs(filename);
+    this.saveModelVisible.set(false);
+  }
+
+  loadModel(model: SavedModel): void {
+    this.canvasService.load(model);
   }
 }

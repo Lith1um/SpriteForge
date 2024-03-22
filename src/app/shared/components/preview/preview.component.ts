@@ -6,7 +6,7 @@ import { Pixel } from '../../../interfaces/pixel.interface';
   standalone: true,
   template: `
     <canvas #canvas class="hidden" [height]="height()" [width]="width()"></canvas>
-    <img [src]="previewImg()" class="border-color border-1 preview-image h-100 w-100" style="object-fit: contain;" />
+    <img [src]="previewImg()" class="preview-image h-100 w-100" style="object-fit: contain;" />
   `,
   styles: [`
     :host {

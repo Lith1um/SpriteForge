@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
 
@@ -7,7 +7,7 @@ import { CanvasTool } from '../../interfaces/canvas-state.interface';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="toolbar p-3 rounded-2xl flex gap-2">
+    <div class="bg-light p-3 rounded-2xl flex gap-2">
       Toolbar
       <label>
         <input type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (change)="onInput($event)"/>
@@ -27,11 +27,6 @@ import { CanvasTool } from '../../interfaces/canvas-state.interface';
       </button>
     </div>
   `,
-  styles: [`
-    .toolbar {
-      background-color: var(--sf-bg-light);
-    }
-  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
@@ -41,11 +36,8 @@ export class ToolbarComponent {
 
   readonly ToolEnum = CanvasTool;
 
-  @Output()
-  updateColour = new EventEmitter<string>();
-
-  @Output()
-  updateTool = new EventEmitter<CanvasTool>();
+  updateColour = output<string>();
+  updateTool = output<CanvasTool>();
 
   onInput(e: Event): void {
     this.updateColour.emit((e.target as HTMLInputElement).value);

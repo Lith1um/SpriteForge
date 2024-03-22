@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Directive, EventEmitter, Output, contentChildren, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, contentChildren, input, model, output } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Directive({
@@ -53,7 +53,6 @@ export class ModalComponent {
 
   visible = model.required<boolean>();
 
-  @Output()
-  closed = new EventEmitter<void>();
+  closed = output<void>();
   
 }

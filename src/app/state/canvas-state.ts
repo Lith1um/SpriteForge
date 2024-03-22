@@ -1,5 +1,6 @@
 import { CanvasState } from "../interfaces/canvas-state.interface";
 import { Pixel } from "../interfaces/pixel.interface";
+import { SavedModel } from "../interfaces/saved-model.model";
 import { ObjectSignalState, objectSignal } from "../shared/state/object-signal-state";
 
 export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
@@ -10,6 +11,7 @@ export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
   commit: () => void;
   undo: () => void;
   redo: () => void;
+  load: (model: SavedModel) => void;
 }
 
 // TODO: this should really be a service
@@ -92,6 +94,18 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
           ...currState.undoBuffer
         ].slice(0, bufferSize),
         redoBuffer
+      }));
+    },
+
+    load: (model: SavedModel): void => {
+      state.update(currState => ({
+        ...currState,
+        canvas: model.canvas,
+        width: model.width,
+        height: model.height,
+        filename: model.filename,
+        undoBuffer: [],
+        redoBuffer: []
       }));
     }
   };

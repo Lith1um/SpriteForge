@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { canvasState } from '../state/canvas-state';
-import { bresenhamLine } from '../shared/helpers/bresenham-line';
-import { pixelIndexToPoint2D, point2DToPixelIndex } from '../shared/helpers/pixels';
+import { pixelIndexToPoint2D } from '../shared/helpers/pixels';
 import { SaveLoadService } from './save-load.service';
 import { CanvasTool } from '../interfaces/canvas-state.interface';
 import { toolService } from './tool.service';
+import { SavedModel } from '../interfaces/saved-model.model';
 
 @Injectable({
   providedIn: 'root'
@@ -60,16 +60,16 @@ export class CanvasService {
     this.state.redo();
   }
 
-  fillLine(startIndex: number, endIndex: number): void {
-    const startPoint = pixelIndexToPoint2D(startIndex, this.state.width());
-    const endPoint = pixelIndexToPoint2D(endIndex, this.state.width());
-
-    const points = bresenhamLine(startPoint.x, endPoint.x, startPoint.y, endPoint.y);
-
-    this.state.updatePixels(points.map(point => point2DToPixelIndex(point, this.state.width())));
+  save(): void {
+    this.saveLoadService.save(this.state.filename(), this.state.canvas());
   }
 
-  save(filename: string): void {
-    this.saveLoadService.save(filename, this.state.canvas());
+  saveAs(filename: string): void {
+    this.saveLoadService.saveAs(filename, this.state.canvas(), this.state.width(), this.state.height());
+    this.state.filename.set(filename);
+  }
+
+  load(model: SavedModel): void {
+    this.state.load(model);
   }
 }
