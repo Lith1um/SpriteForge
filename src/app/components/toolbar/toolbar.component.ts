@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
+import { debounce } from '../../shared/helpers/debounce';
 
 @Component({
   selector: 'sf-toolbar',
@@ -8,21 +9,24 @@ import { CanvasTool } from '../../interfaces/canvas-state.interface';
   imports: [IconComponent],
   template: `
     <div class="bg-light p-3 rounded-2xl flex gap-2">
-      Toolbar
-      <label>
-        <input type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (change)="onInput($event)"/>
-        <sf-icon [style.color]="colour()">palette</sf-icon>
+      <label class="flex" title="colour">
+        <input #colorInput type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
+        <button (click)="colorInput.click()">
+          <sf-icon [style.color]="colour()">palette</sf-icon>
+        </button>
       </label>
 
-      <button [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
+      <div class="border-dark border-r"></div>
+
+      <button title="pencil" [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
         <sf-icon>draw</sf-icon>
       </button>
 
-      <button [disabled]="tool() === ToolEnum.Line" (click)="updateTool.emit(ToolEnum.Line)">
+      <button title="line" [disabled]="tool() === ToolEnum.Line" (click)="updateTool.emit(ToolEnum.Line)">
         <sf-icon>drive_file_rename_outline</sf-icon>
       </button>
 
-      <button [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
+      <button title="fill" [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
         <sf-icon>format_color_fill</sf-icon>
       </button>
     </div>
@@ -39,7 +43,9 @@ export class ToolbarComponent {
   updateColour = output<string>();
   updateTool = output<CanvasTool>();
 
+  debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
+
   onInput(e: Event): void {
-    this.updateColour.emit((e.target as HTMLInputElement).value);
+    this.debounceColor((<HTMLInputElement>e.target).value);
   }
 }

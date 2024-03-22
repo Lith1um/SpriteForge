@@ -59,7 +59,7 @@ import { SavedModel } from './interfaces/saved-model.model';
             class="mx-auto flex"
             [colour]="canvasService.state.colour()"
             [tool]="canvasService.state.tool()"
-            (updateColour)="canvasService.state.colour.set($event)"
+            (updateColour)="updateColour($event)"
             (updateTool)="canvasService.state.tool.set($event)">
           </sf-toolbar>
         </div>
@@ -101,7 +101,7 @@ export class AppComponent {
   saveModelVisible = signal<boolean>(false);
 
   constructor() {
-    this.canvasService.initCanvas(64, 64);
+    this.canvasService.initCanvas(32, 32);
   }
 
   toggleMenu(): void {
@@ -131,5 +131,10 @@ export class AppComponent {
 
   loadModel(model: SavedModel): void {
     this.canvasService.load(model);
+  }
+
+  updateColour(colour: string): void {
+    console.log('updateColour');
+    this.canvasService.state.colour.set(colour);
   }
 }
