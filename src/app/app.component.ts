@@ -59,7 +59,7 @@ import { SavedModel } from './interfaces/saved-model.model';
             class="mx-auto flex"
             [colour]="canvasService.state.colour()"
             [tool]="canvasService.state.tool()"
-            (updateColour)="updateColour($event)"
+            (updateColour)="canvasService.state.colour.set($event)"
             (updateTool)="canvasService.state.tool.set($event)">
           </sf-toolbar>
         </div>
@@ -131,10 +131,5 @@ export class AppComponent {
 
   loadModel(model: SavedModel): void {
     this.canvasService.load(model);
-  }
-
-  updateColour(colour: string): void {
-    console.log('updateColour');
-    this.canvasService.state.colour.set(colour);
   }
 }
