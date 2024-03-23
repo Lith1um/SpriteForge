@@ -15,7 +15,7 @@ import { Pixel } from '../../interfaces/pixel.interface';
     }
 
     .pixel:hover {
-      background: var(--hover-colour) !important;
+      box-shadow: inset 0px 0px 0px 1px var(--hover-colour);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush

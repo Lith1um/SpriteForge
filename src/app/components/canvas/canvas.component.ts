@@ -11,8 +11,11 @@ import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
   template: `
     <div class="bg-light p-2 rounded-lg">
       <div
+        id="sprite-forge-canvas"
         sfPaintCanvas
         [pixelGrid]="canvasService.state.canvas()"
+        [width]="canvasService.state.width()"
+        [height]="canvasService.state.height()"
         class="canvas grid"
         [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
   
@@ -25,6 +28,8 @@ import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
   `,
   styles: [`
     .canvas {
+      user-select: none;
+      touch-action: none;
       pointer-events: none;
       background: repeating-linear-gradient(
         -45deg,
