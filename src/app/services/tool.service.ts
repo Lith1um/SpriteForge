@@ -22,25 +22,78 @@ export const toolService = (canvasState: CanvasStateSignal) => {
     startingCanvas: undefined,
   });
 
-  const drawLine = (startPoint: Point2D, endPoint: Point2D): number[] => {
-    return bresenhamLine(startPoint.x, endPoint.x, startPoint.y, endPoint.y)
+  const draw = (pixel: Point2D): void => {
+    const lastDrawnPixel = state.lastDrawnPixel();
+
+    if (lastDrawnPixel) {
+      const indexes = bresenhamLine(lastDrawnPixel.x, pixel.x, lastDrawnPixel.y, pixel.y)
+        .map(point => point2DToPixelIndex(point, canvasState.width()))
+      canvasState.updatePixels(indexes);
+    } else {
+      canvasState.updatePixel(point2DToPixelIndex(pixel, canvasState.width()));
+    }
+    state.lastDrawnPixel.set(pixel);
+  }
+
+  const drawLine = (pixel: Point2D): void => {
+    const start = state.startPixel();
+    const canvas = state.startingCanvas();
+
+    if (!start || !canvas) {
+      return;
+    }
+    const lineIndexes = bresenhamLine(start.x, pixel.x, start.y, pixel.y)
       .map(point => point2DToPixelIndex(point, canvasState.width()));
+
+    canvasState.updateCanvas(lineIndexes, canvas);
   };
 
-  const fill = (startPoint: Point2D, clickedColour: string | null): number[] => {
-    return floodFill(startPoint.x, startPoint.y, canvasState.width(), canvasState.height(), canvasState.canvas(), clickedColour)
-      .map(point => point2DToPixelIndex(point, canvasState.width()));
+  const fill = (pixel: Point2D): void => {
+    const start = state.startPixel();
+    const canvas = state.startingCanvas();
+
+    if (!start || !canvas) {
+      return;
+    }
+    const currentPixel = canvasState.canvas().get(point2DToPixelIndex(pixel, canvasState.width()));
+
+    const fillIndexes = floodFill(
+      start.x,
+      start.y,
+      canvasState.width(),
+      canvasState.height(),
+      canvasState.canvas(),
+      currentPixel?.colour ?? null
+    ).map(point => point2DToPixelIndex(point, canvasState.width()));
+
+    canvasState.updatePixels(fillIndexes);
   };
 
-  const drawRectangle = (startPoint: Point2D, endPoint: Point2D): number[] => {
-    return rectangle(startPoint.x, endPoint.x, startPoint.y, endPoint.y)
+  const drawRectangle = (pixel: Point2D): void => {
+    const start = state.startPixel();
+    const canvas = state.startingCanvas();
+
+    if (!start || !canvas) {
+      return;
+    }
+    const rectangleIndexes = rectangle(start.x, pixel.x, start.y, pixel.y)
       .map(point => point2DToPixelIndex(point, canvasState.width()));
+
+    canvasState.updateCanvas(rectangleIndexes, canvas);
   };
 
-  const drawCircle = (startPoint: Point2D, endPoint: Point2D): number[] => {
-    console.log(ellipse(startPoint.x, endPoint.x, startPoint.y, endPoint.y));
-    return ellipse(startPoint.x, endPoint.x, startPoint.y, endPoint.y)
+  const drawCircle = (pixel: Point2D): void => {
+    const start = state.startPixel();
+    const canvas = state.startingCanvas();
+
+    if (!start || !canvas) {
+      return;
+    }
+
+    const circleIndexes = ellipse(start.x, pixel.x, start.y, pixel.y)
       .map(point => point2DToPixelIndex(point, canvasState.width()));
+
+    canvasState.updateCanvas(Array.from(new Set(circleIndexes)), canvas);
   };
 
   return {
@@ -57,52 +110,23 @@ export const toolService = (canvasState: CanvasStateSignal) => {
     paint: (pixel: Point2D): void => {
       switch (canvasState.tool()) {
         case CanvasTool.Draw:
-
-          if (state.lastDrawnPixel()) {
-            canvasState.updatePixels(drawLine(state.lastDrawnPixel() as Point2D, pixel));
-          } else {
-            canvasState.updatePixel(point2DToPixelIndex(pixel, canvasState.width()));
-          }
-          state.lastDrawnPixel.set(pixel);
+          draw(pixel);
           break;
 
         case CanvasTool.Line:
-
-          if (!state.startPixel() || !state.startingCanvas()) {
-            return;
-          }
-          const lineIndexes = drawLine(state.startPixel() as Point2D, pixel);
-          canvasState.updateCanvas(lineIndexes, state.startingCanvas() as Map<number, Pixel>);
+          drawLine(pixel);
           break;
 
         case CanvasTool.Fill:
-          
-          if (!state.startPixel() || !state.startingCanvas()) {
-            return;
-          }
-          const currentPixel = canvasState.canvas().get(point2DToPixelIndex(pixel, canvasState.width()));
-
-          const fillIndexes = fill(state.startPixel() as Point2D, currentPixel?.colour ?? null);
-          canvasState.updatePixels(fillIndexes);
+          fill(pixel);
           break;
 
         case CanvasTool.Rectangle:
-
-          if (!state.startPixel() || !state.startingCanvas()) {
-            return;
-          }
-          const rectangleIndexes = drawRectangle(state.startPixel() as Point2D, pixel);
-          canvasState.updateCanvas(rectangleIndexes, state.startingCanvas() as Map<number, Pixel>);
+          drawRectangle(pixel);
           break;
 
         case CanvasTool.Circle:
-
-          if (!state.startPixel() || !state.startingCanvas()) {
-            return;
-          }
-          const circleIndexes = drawCircle(state.startPixel() as Point2D, pixel);
-          console.log(circleIndexes);
-          canvasState.updateCanvas(circleIndexes, state.startingCanvas() as Map<number, Pixel>);
+          drawCircle(pixel);
           break;
       }
     },
