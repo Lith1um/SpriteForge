@@ -29,6 +29,12 @@ import { debounce } from '../../shared/helpers/debounce';
       <button title="fill" [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
         <sf-icon>format_color_fill</sf-icon>
       </button>
+
+      <div class="border-dark border-r"></div>
+
+      <button title="clear canvas" (click)="clearCanvas.emit()">
+        <sf-icon>delete</sf-icon>
+      </button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +48,7 @@ export class ToolbarComponent {
 
   updateColour = output<string>();
   updateTool = output<CanvasTool>();
+  clearCanvas = output<void>();
 
   debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
 

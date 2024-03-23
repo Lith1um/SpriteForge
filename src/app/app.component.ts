@@ -60,7 +60,8 @@ import { SavedModel } from './interfaces/saved-model.model';
             [colour]="canvasService.state.colour()"
             [tool]="canvasService.state.tool()"
             (updateColour)="canvasService.state.colour.set($event)"
-            (updateTool)="canvasService.state.tool.set($event)">
+            (updateTool)="canvasService.state.tool.set($event)"
+            (clearCanvas)="canvasService.clearCanvas()">
           </sf-toolbar>
         </div>
       </div>

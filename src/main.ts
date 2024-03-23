@@ -5,6 +5,6 @@ import { GlobalErrorHandler } from './app/shared/services/global-error-handler.s
 
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: ErrorHandler, useClass: GlobalErrorHandler }
+    // { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ]
 }).catch((err) => console.error(err));

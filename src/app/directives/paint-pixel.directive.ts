@@ -1,43 +1,59 @@
-import { Directive, HostListener, Renderer2, input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2, input, signal } from '@angular/core';
 import { CanvasService } from '../services/canvas.service';
 import { Pixel } from '../interfaces/pixel.interface';
 
 @Directive({
-  selector: '[sfPaintPixel]',
+  selector: '[sfPaintCanvas]',
   standalone: true
 })
-export class PaintPixelDirective {
+export class PaintCanvasDirective {
 
-  pixel = input.required<Pixel>();
+  pixelGrid = input.required<Map<number, Pixel>>();
+
+  lastFoundPixel = signal<number | undefined>(undefined);
 
   private mouseupListener: () => void;
+  private mousemoveListener: () => void;
 
   constructor(
+    private el: ElementRef,
     private renderer: Renderer2,
     private canvasService: CanvasService) {}
 
-  @HostListener('mousedown')
-  onMousedown(): void {
-    this.canvasService.startPainting(this.pixel().index);
-    this.addMouseupListener();
+  @HostListener('mousedown', ['$event'])
+  onMousedown(e: MouseEvent): void {
+    const pixelIndex = this.parsePixel(e);
+    this.canvasService.startPainting(pixelIndex);
+    this.addListeners();
   }
 
-  @HostListener('mouseenter')
-  onMouseenter(): void {
-    this.canvasService.paint(this.pixel().index);
+  private parsePixel(e: MouseEvent): number {
+    return parseInt((<HTMLElement>e.target).id.split('-')[1]);
+  }
+
+  private onMousemove(e: MouseEvent): void {
+    const pixelIndex = this.parsePixel(e);
+
+    if (pixelIndex !== this.lastFoundPixel()) {
+      this.canvasService.paint(pixelIndex);
+      this.lastFoundPixel.set(pixelIndex);
+    }
   }
 
   private onMouseup(): void {
     this.canvasService.stopPainting();
-    this.removeMouseupListener();
+    this.removeListeners();
   }
 
-  private addMouseupListener(): void {
+  private addListeners(): void {
     this.mouseupListener = this.renderer.listen(window, 'mouseup', () => this.onMouseup())
+    this.mousemoveListener = this.renderer.listen(this.el.nativeElement, 'mousemove', (e) => this.onMousemove(e))
   }
 
-  private removeMouseupListener(): void {
+  private removeListeners(): void {
     this.mouseupListener?.();
+    this.mousemoveListener?.();
+    this.lastFoundPixel.set(undefined);
   }
 
 }

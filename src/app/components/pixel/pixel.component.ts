@@ -1,13 +1,11 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { Pixel } from '../../interfaces/pixel.interface';
-import { PaintPixelDirective } from '../../directives/paint-pixel.directive';
 
 @Component({
   selector: 'sf-pixel',
   standalone: true,
-  imports: [PaintPixelDirective],
   template: `
-    <div sfPaintPixel class="pixel" [pixel]="pixel()" [style.background]="pixel().colour" [style.--hover-colour]="colour()"></div>
+    <div [id]="'pixel-'+pixel().index" class="pixel" [style.background]="pixel().colour" [style.--hover-colour]="colour()"></div>
   `,
   styles: [`
     .pixel {

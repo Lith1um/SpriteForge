@@ -5,6 +5,7 @@ import { ObjectSignalState, objectSignal } from "../shared/state/object-signal-s
 
 export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
   initCanvas: (width: number, height: number) => void;
+  clearCanvas: () => void;
   updatePixel: (pixelIndex: number) => void;
   updatePixels: (pixelIndexes: number[]) => void;
   updateCanvas: (pixelIndexes: number[], canvas: Map<number, Pixel>) => void;
@@ -30,6 +31,12 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
         .map((_, index) => ([index, { index, colour: null }]))),
       started: true
     })),
+
+    clearCanvas: (): void => state.canvas.update(canvas => {
+      const newCanvas = new Map();
+      canvas.forEach((pixel, key) => newCanvas.set(key, { index: key, colour: null }))
+      return newCanvas;
+    }),
 
     updatePixel: (pixelIndex: number): void => {
       const newCanvas = new Map(state.canvas());

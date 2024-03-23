@@ -32,6 +32,11 @@ export class CanvasService {
     this.state.initCanvas(width, height);
   }
 
+  clearCanvas(): void {
+    this.state.commit();
+    this.state.clearCanvas();
+  }
+
   startPainting(pixelIndex: number): void {
     this.state.commit();
     const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width())

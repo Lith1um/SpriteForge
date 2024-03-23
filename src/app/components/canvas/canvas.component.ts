@@ -2,14 +2,17 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
 import { PixelComponent } from '../pixel/pixel.component';
 import { KeyValuePipe } from '@angular/common';
+import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
 
 @Component({
   selector: 'sf-canvas',
   standalone: true,
-  imports: [PixelComponent, KeyValuePipe],
+  imports: [PixelComponent, KeyValuePipe, PaintCanvasDirective],
   template: `
     <div class="bg-light p-2 rounded-lg">
       <div
+        sfPaintCanvas
+        [pixelGrid]="canvasService.state.canvas()"
         class="canvas grid"
         [style.gridTemplateColumns]="'repeat('+ canvasService.state.width() + ', 1fr)'">
   
