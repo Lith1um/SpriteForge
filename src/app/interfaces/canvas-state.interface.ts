@@ -4,6 +4,8 @@ export enum CanvasTool {
   Draw = 'draw',
   Line = 'line',
   Fill = 'fill',
+  Rectangle = 'rectangle',
+  Circle = 'circle',
 }
 
 export interface CanvasState {

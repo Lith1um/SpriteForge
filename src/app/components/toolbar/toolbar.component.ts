@@ -26,6 +26,14 @@ import { debounce } from '../../shared/helpers/debounce';
         <sf-icon>drive_file_rename_outline</sf-icon>
       </button>
 
+      <button title="rectangle" [disabled]="tool() === ToolEnum.Rectangle" (click)="updateTool.emit(ToolEnum.Rectangle)">
+        <sf-icon>rectangle</sf-icon>
+      </button>
+
+      <button title="circle" [disabled]="tool() === ToolEnum.Circle" (click)="updateTool.emit(ToolEnum.Circle)">
+        <sf-icon>brightness_1</sf-icon>
+      </button>
+
       <button title="fill" [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
         <sf-icon>format_color_fill</sf-icon>
       </button>
