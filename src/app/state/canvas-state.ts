@@ -80,6 +80,11 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
 
     undo: (): void => {
       const [lastUndo, ...undoBuffer] = state.undoBuffer();
+
+      if (!lastUndo) {
+        return;
+      }
+
       state.update(currState => ({
         ...currState,
         canvas: lastUndo,
@@ -93,6 +98,11 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
 
     redo: (): void => {
       const [lastRedo, ...redoBuffer] = state.redoBuffer();
+
+      if (!lastRedo) {
+        return;
+      }
+
       state.update(currState => ({
         ...currState,
         canvas: lastRedo,

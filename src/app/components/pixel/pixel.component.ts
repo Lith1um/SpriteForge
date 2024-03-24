@@ -11,7 +11,7 @@ import { Pixel } from '../../interfaces/pixel.interface';
     .pixel {
       user-select: none;
       pointer-events: auto;
-      aspect-ratio: 1/ 1;
+      aspect-ratio: 1 / 1;
     }
 
     .pixel:hover {

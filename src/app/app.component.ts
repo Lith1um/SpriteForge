@@ -6,10 +6,22 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { SaveModalComponent } from './components/save-modal/save-modal.component';
 import { LoadModalComponent } from './components/load-modal/load-modal.component';
 import { SavedModel } from './interfaces/saved-model.model';
+import { FormsModule } from '@angular/forms';
+import { UndoRedoDirective } from './directives/undo-redo.directive';
+import { SaveOpenDirective } from './directives/save-open.directive';
 
 @Component({
   selector: 'app-root',
-  imports: [CanvasComponent, IconComponent, ToolbarComponent, LoadModalComponent, SaveModalComponent],
+  imports: [
+    CanvasComponent,
+    IconComponent,
+    ToolbarComponent,
+    LoadModalComponent,
+    SaveModalComponent,
+    FormsModule,
+    UndoRedoDirective,
+    SaveOpenDirective
+  ],
   standalone: true,
   template: `
     <div class="flex h-100 w-100 p-4 gap-4">
@@ -18,7 +30,7 @@ import { SavedModel } from './interfaces/saved-model.model';
       </div>
 
       <div class="flex-1 relative min-w-0">
-        <div class="flex flex-col h-100">
+        <div class="flex flex-col h-100 gap-4">
           <div class="bg-light p-3 rounded-2xl flex gap-2">
             <button (click)="toggleMenu()"><sf-icon>menu</sf-icon></button> SpriteForge!
 
@@ -47,12 +59,32 @@ import { SavedModel } from './interfaces/saved-model.model';
             </button>
           </div>
 
-          <div class="flex-1 flex items-center justify-center">
-            <div class="canvas-container">
-              @if (canvasService.state.started()) {
-                <sf-canvas></sf-canvas>
-              }
-            </div>
+          <div class="flex-1 flex items-stretch justify-stretch min-h-0">
+            @if (canvasService.state.started()) {
+              <sf-canvas
+                sfUndoRedo
+                sfSaveOpen
+                (saveAs)="saveModelVisible.set(true)"
+                (openModel)="openModelVisible.set(true)"
+                class="canvas-container mx-auto"
+                [style.aspectRatio]="canvasService.state.width() + '/' + canvasService.state.height()">
+              </sf-canvas>
+            } @else {
+              <div class="flex flex-col gap-2 items-center mx-auto">
+                <label>
+                  Width
+                  <input type="number" [(ngModel)]="width"/>
+                </label>
+                <label>
+                  Height
+                  <input type="number" [(ngModel)]="height"/>
+                </label>
+
+                <button [disabled]="!width() || !height()" (click)="startCanvas()">
+                  Start painting
+                </button>
+              </div>
+            }
           </div>
 
           <sf-toolbar
@@ -87,7 +119,7 @@ import { SavedModel } from './interfaces/saved-model.model';
 
     .canvas-container {
       max-width: 100%;
-      width: 600px;
+      max-height: 100%;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -101,8 +133,11 @@ export class AppComponent {
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
 
-  constructor() {
-    this.canvasService.initCanvas(32, 32);
+  width = signal<number>(16);
+  height = signal<number>(16);
+
+  startCanvas(): void {
+    this.canvasService.initCanvas(this.width(), this.height());
   }
 
   toggleMenu(): void {
