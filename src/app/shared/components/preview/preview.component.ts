@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, output, viewChild } from '@angular/core';
 import { Pixel } from '../../../interfaces/pixel.interface';
+import { pixelsToPng } from '../../helpers/pixels-to-png';
 
 @Component({
   selector: 'sf-preview',
@@ -27,29 +28,17 @@ export class PreviewComponent {
   width = input.required<number>();
   height = input.required<number>();
 
-  previewImg = computed(() => {
-    const context = this.canvas().nativeElement.getContext('2d');
+  image = output<string>();
 
-    if (!context) {
-      return;
-    }
-
-    context.clearRect(0, 0, this.canvas().nativeElement.width, this.canvas().nativeElement.height);
-
-    const pixelSize = 1;
-
-    this.pixels().forEach(pixel => {
-      const row = Math.floor(pixel.index / this.width());
-      const col = pixel.index % this.width();
-
-      if (!pixel.colour) {
+  constructor() {
+    effect(() => {
+      const img = this.previewImg();
+      if (!img) {
         return;
       }
-
-      context.fillStyle = pixel.colour;
-      context.fillRect(col*pixelSize, row*pixelSize, pixelSize, pixelSize);
+      this.image.emit(img);
     });
+  }
 
-    return this.canvas().nativeElement.toDataURL("image/png").replace("image/png", "image/octet-stream")
-  });
+  previewImg = computed(() => pixelsToPng(this.canvas().nativeElement, this.pixels()));
 }

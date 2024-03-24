@@ -69,4 +69,17 @@ export class SaveLoadService {
     return SavedModel.fromJson(savedModelJson);
   }
 
+  delete(filename: string): void {
+    this.localStorageService.updateItem<{[key: string]: SavedModelJson}>(this.savedModelsKey, (currSavedModels) => {
+      if (!currSavedModels?.[filename]) {
+        throw new Error(`SaveLoadService::delete(): File with name ${filename} could not be found for deletion`);
+      }
+
+      // @ts-ignore
+      const { [filename]: model, ...savedModels } = currSavedModels;
+
+      return savedModels;
+    });
+  }
+
 }

@@ -679,3 +679,7 @@ hr {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.translate-none {
+	transform: translate3d(0, 0, 0) !important;
+}

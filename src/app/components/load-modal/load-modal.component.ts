@@ -4,11 +4,12 @@ import { PreviewComponent } from '../../shared/components/preview/preview.compon
 import { SaveLoadService } from '../../services/save-load.service';
 import { SavedModel } from '../../interfaces/saved-model.model';
 import { KeyValuePipe } from '@angular/common';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'sf-load-modal',
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, KeyValuePipe],
+  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, IconComponent],
   template: `
     @if (visible()) {
       <sf-modal
@@ -26,6 +27,9 @@ import { KeyValuePipe } from '@angular/common';
 
             <div class="flex-1">
               <h6>{{ savedModel.filename }}</h6>
+              <button (click)="saveLoadService.delete(savedModel.filename)">
+                <sf-icon>delete</sf-icon>
+              </button>
             </div>
           </div>
         }

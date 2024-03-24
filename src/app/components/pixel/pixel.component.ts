@@ -5,7 +5,7 @@ import { Pixel } from '../../interfaces/pixel.interface';
   selector: 'sf-pixel',
   standalone: true,
   template: `
-    <div [id]="'pixel-'+pixel().index" class="pixel" [style.background]="pixel().colour" [style.--hover-colour]="colour()"></div>
+    <div class="pixel" [style.background]="pixel().colour" [style.--hover-colour]="colour()"></div>
   `,
   styles: [`
     .pixel {

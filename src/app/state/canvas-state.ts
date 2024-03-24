@@ -28,7 +28,12 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
       width,
       height,
       canvas: new Map(new Array(width * height).fill(undefined)
-        .map((_, index) => ([index, { index, colour: null }]))),
+        .map((_, index) => ([index, {
+          index,
+          row: Math.floor(index / width),
+          col: index % width,
+          colour: null
+        }]))),
       started: true
     })),
 
@@ -41,7 +46,7 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
     updatePixel: (pixelIndex: number): void => {
       const newCanvas = new Map(state.canvas());
       newCanvas.set(pixelIndex, {
-        index: pixelIndex,
+        ...newCanvas.get(pixelIndex)!,
         colour: state.colour()
       })
       state.canvas.set(newCanvas);
@@ -50,7 +55,7 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
     updatePixels: (pixelIndexes: number[]): void => {
       const newCanvas = new Map(state.canvas());
       pixelIndexes.forEach(pixelIndex => newCanvas.set(pixelIndex, {
-        index: pixelIndex,
+        ...newCanvas.get(pixelIndex)!,
         colour: state.colour()
       }));
       state.canvas.set(newCanvas);
@@ -59,7 +64,7 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
     updateCanvas: (pixelIndexes: number[], canvas: Map<number, Pixel>): void => {
       const newCanvas = new Map(canvas);
       pixelIndexes.forEach(pixelIndex => newCanvas.set(pixelIndex, {
-        index: pixelIndex,
+        ...newCanvas.get(pixelIndex)!,
         colour: state.colour()
       }));
       state.canvas.set(newCanvas);
