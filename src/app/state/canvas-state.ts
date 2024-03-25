@@ -6,8 +6,8 @@ import { ObjectSignalState, objectSignal } from "../shared/state/object-signal-s
 export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
   initCanvas: (width: number, height: number) => void;
   clearCanvas: () => void;
-  updatePixel: (pixelIndex: number) => void;
-  updatePixels: (pixelIndexes: number[]) => void;
+  updatePixel: (pixelIndex: number, erase?: boolean) => void;
+  updatePixels: (pixelIndexes: number[], erase?: boolean) => void;
   updateCanvas: (pixelIndexes: number[], canvas: Map<number, Pixel>) => void;
   commit: () => void;
   undo: () => void;
@@ -43,20 +43,20 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
       return newCanvas;
     }),
 
-    updatePixel: (pixelIndex: number): void => {
+    updatePixel: (pixelIndex: number, erase?: boolean): void => {
       const newCanvas = new Map(state.canvas());
       newCanvas.set(pixelIndex, {
         ...newCanvas.get(pixelIndex)!,
-        colour: state.colour()
+        colour: erase ? null : state.colour()
       })
       state.canvas.set(newCanvas);
     },
 
-    updatePixels: (pixelIndexes: number[]): void => {
+    updatePixels: (pixelIndexes: number[], erase?: boolean): void => {
       const newCanvas = new Map(state.canvas());
       pixelIndexes.forEach(pixelIndex => newCanvas.set(pixelIndex, {
         ...newCanvas.get(pixelIndex)!,
-        colour: state.colour()
+        colour: erase ? null : state.colour()
       }));
       state.canvas.set(newCanvas);
     },

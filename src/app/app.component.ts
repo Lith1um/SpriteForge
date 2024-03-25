@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
 import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
@@ -9,6 +9,8 @@ import { SavedModel } from './interfaces/saved-model.model';
 import { FormsModule } from '@angular/forms';
 import { UndoRedoDirective } from './directives/undo-redo.directive';
 import { SaveOpenDirective } from './directives/save-open.directive';
+import { ToolSelectDirective } from './directives/tool-select.directive';
+import { NewCanvasComponent } from './components/new-canvas/new-canvas.component';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +20,10 @@ import { SaveOpenDirective } from './directives/save-open.directive';
     ToolbarComponent,
     LoadModalComponent,
     SaveModalComponent,
-    FormsModule,
     UndoRedoDirective,
-    SaveOpenDirective
+    SaveOpenDirective,
+    ToolSelectDirective,
+    NewCanvasComponent,
   ],
   standalone: true,
   template: `
@@ -68,26 +71,19 @@ import { SaveOpenDirective } from './directives/save-open.directive';
           <sf-canvas
             sfUndoRedo
             sfSaveOpen
+            sfToolSelect
             (saveAs)="saveModelVisible.set(true)"
             (openModel)="openModelVisible.set(true)"
             class="canvas-container mx-auto"
             [style.aspectRatio]="canvasService.state.width() + '/' + canvasService.state.height()">
           </sf-canvas>
         } @else {
-          <div class="flex flex-col gap-2 items-center mx-auto">
-            <label>
-              Width
-              <input type="number" [(ngModel)]="width"/>
-            </label>
-            <label>
-              Height
-              <input type="number" [(ngModel)]="height"/>
-            </label>
-
-            <button [disabled]="!width() || !height()" (click)="startCanvas()">
-              Start painting
-            </button>
-          </div>
+          <sf-new-canvas
+            class="mx-auto"
+            [(width)]="width"
+            [(height)]="height"
+            (startCanvas)="startCanvas()">
+          </sf-new-canvas>
         }
       </div>
 

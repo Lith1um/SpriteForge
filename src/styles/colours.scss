@@ -5,6 +5,8 @@
   --sf-primary: #3a84d9;
   --sf-secondary: #e67fc2;
   --sf-accent: #e16666;
+
+  --sf-text-error: #ff3333;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,6 +17,8 @@
     --sf-primary: #2670c5;
     --sf-secondary: #80195c;
     --sf-accent: #991e1e;
+    
+    --sf-text-error: #ff3333;
   }
 }
 
@@ -24,4 +28,8 @@
 
 .bg-light {
   background-color: var(--sf-bg-light);
+}
+
+.text-error {
+  color: var(--sf-text-error);
 }

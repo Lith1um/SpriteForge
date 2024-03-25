@@ -3,6 +3,7 @@ import { Pixel } from "./pixel.interface";
 export enum CanvasTool {
   Draw = 'draw',
   Line = 'line',
+  Erase = 'erase',
   Fill = 'fill',
   Rectangle = 'rectangle',
   Circle = 'circle',

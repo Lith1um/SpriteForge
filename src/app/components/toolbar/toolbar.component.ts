@@ -18,12 +18,16 @@ import { debounce } from '../../shared/helpers/debounce';
 
       <div class="border-dark border-r"></div>
 
-      <button title="pencil" [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
-        <sf-icon>draw</sf-icon>
+      <button title="draw" [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
+        <sf-icon>brush</sf-icon>
       </button>
 
       <button title="line" [disabled]="tool() === ToolEnum.Line" (click)="updateTool.emit(ToolEnum.Line)">
         <sf-icon>drive_file_rename_outline</sf-icon>
+      </button>
+
+      <button title="erase" [disabled]="tool() === ToolEnum.Erase" (click)="updateTool.emit(ToolEnum.Erase)">
+        <sf-icon>ink_eraser</sf-icon>
       </button>
 
       <button title="rectangle" [disabled]="tool() === ToolEnum.Rectangle" (click)="updateTool.emit(ToolEnum.Rectangle)">

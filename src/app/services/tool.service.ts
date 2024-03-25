@@ -22,15 +22,15 @@ export const toolService = (canvasState: CanvasStateSignal) => {
     startingCanvas: undefined,
   });
 
-  const draw = (pixel: Point2D): void => {
+  const draw = (pixel: Point2D, erase: boolean = false): void => {
     const lastDrawnPixel = state.lastDrawnPixel();
 
     if (lastDrawnPixel) {
       const indexes = bresenhamLine(lastDrawnPixel.x, pixel.x, lastDrawnPixel.y, pixel.y)
         .map(point => point2DToPixelIndex(point, canvasState.width()))
-      canvasState.updatePixels(indexes);
+      canvasState.updatePixels(indexes, erase);
     } else {
-      canvasState.updatePixel(point2DToPixelIndex(pixel, canvasState.width()));
+      canvasState.updatePixel(point2DToPixelIndex(pixel, canvasState.width()), erase);
     }
     state.lastDrawnPixel.set(pixel);
   }
@@ -115,6 +115,10 @@ export const toolService = (canvasState: CanvasStateSignal) => {
 
         case CanvasTool.Line:
           drawLine(pixel);
+          break;
+
+        case CanvasTool.Erase:
+          draw(pixel, true);
           break;
 
         case CanvasTool.Fill:
