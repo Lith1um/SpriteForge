@@ -1,10 +1,16 @@
 import { Pixel } from "../../interfaces/pixel.interface";
 
 export const pixelsToPng = (canvas: HTMLCanvasElement, pixels: Map<number, Pixel>): string | undefined => {
+  canvas = drawCanvasPixels(canvas, pixels);
+
+  return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+};
+
+export const drawCanvasPixels = (canvas: HTMLCanvasElement, pixels: Map<number, Pixel>): HTMLCanvasElement => {
   const context = canvas.getContext('2d');
 
   if (!context) {
-    return;
+    return canvas;
   }
 
   context.clearRect(0, 0, canvas.width, canvas.height);
@@ -20,5 +26,5 @@ export const pixelsToPng = (canvas: HTMLCanvasElement, pixels: Map<number, Pixel
     context.fillRect(pixel.col*pixelSize, pixel.row*pixelSize, pixelSize, pixelSize);
   });
 
-  return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+  return canvas;
 };

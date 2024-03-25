@@ -69,7 +69,7 @@ export class NewModalComponent {
 
   isValid = computed(() => this.isWidthValid() && this.isHeightValid());
 
-  maxDimension = 128;
+  maxDimension = 256;
   minDimension = 1;
 
   validateNum(val: number): boolean {

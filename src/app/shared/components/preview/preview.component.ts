@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, output, viewChild } from '@angular/core';
 import { Pixel } from '../../../interfaces/pixel.interface';
-import { pixelsToPng } from '../../helpers/pixels-to-png';
+import { pixelsToPng } from '../../helpers/canvas';
 
 @Component({
   selector: 'sf-preview',

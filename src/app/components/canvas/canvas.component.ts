@@ -4,6 +4,7 @@ import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
 import { debounceTime, fromEvent } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { drawCanvasPixels } from '../../shared/helpers/canvas';
 
 @Component({
   selector: 'sf-canvas',
@@ -71,23 +72,10 @@ export class CanvasComponent {
     effect(() => {
       const canvas = canvasService.state.canvas();
       const canvasElem = this.canvasRef().nativeElement;
-      const context = canvasElem.getContext('2d');
-      if (!canvas || !canvasElem || !context) {
+      if (!canvas || !canvasElem) {
         return;
       }
-
-      context.clearRect(0, 0, canvasElem.width, canvasElem.height);
-
-      const pixelSize = 1;
-
-      canvas.forEach(pixel => {
-        if (!pixel.colour) {
-          return;
-        }
-
-        context.fillStyle = pixel.colour;
-        context.fillRect(pixel.col*pixelSize, pixel.row*pixelSize, pixelSize, pixelSize);
-      });
+      drawCanvasPixels(canvasElem, canvas);
     });
   }
 }
