@@ -17,8 +17,8 @@ import { FormsModule } from '@angular/forms';
             [max]="maxDimension"
             [(ngModel)]="width"/>
           @if (!isWidthValid()) {
-            <div class="text-sm text-error">
-              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}
+            <div class="text-sm text-error font-weight-semi-bold">
+              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
             </div>
           }
           <div></div>
@@ -32,8 +32,8 @@ import { FormsModule } from '@angular/forms';
             [max]="maxDimension"
             [(ngModel)]="height"/>
           @if (!isHeightValid()) {
-            <div class="text-sm text-error">
-              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}
+            <div class="text-sm text-error font-weight-semi-bold">
+              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
             </div>
           }
         </label>
@@ -63,7 +63,7 @@ export class NewCanvasComponent {
 
   isValid = computed(() => this.isWidthValid() && this.isHeightValid());
 
-  maxDimension = 256;
+  maxDimension = 128;
   minDimension = 1;
 
   validateNum(val: number): boolean {
