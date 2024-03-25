@@ -7,7 +7,7 @@ import { CanvasService } from '../../services/canvas.service';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="bg-light p-3 m-3 rounded-2xl flex gap-2 items-center">
+    <div class="bg-light p-3 m-3 rounded-2xl flex flex-wrap gap-2 items-center">
       <button (click)="toggleMenu.emit()">
         <sf-icon>menu</sf-icon>
       </button>

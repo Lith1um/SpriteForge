@@ -8,7 +8,7 @@ import { debounce } from '../../shared/helpers/debounce';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="bg-light p-3 rounded-2xl flex gap-2">
+    <div class="bg-light p-3 rounded-2xl flex flex-wrap gap-2">
       <label class="flex" title="colour">
         <input #colorInput type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
         <button (click)="colorInput.click()">

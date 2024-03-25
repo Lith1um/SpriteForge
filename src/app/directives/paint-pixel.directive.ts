@@ -11,8 +11,8 @@ import { throttle } from '../shared/helpers/throttle';
 export class PaintCanvasDirective {
 
   pixelGrid = input.required<Map<number, Pixel>>();
-  width = input.required<number>();
-  height = input.required<number>();
+  canvasWidth = input.required<number>();
+  canvasHeight = input.required<number>();
 
   lastFoundPixel = signal<number | undefined>(undefined);
 
@@ -20,7 +20,7 @@ export class PaintCanvasDirective {
   private mousemoveListener: () => void;
 
   constructor(
-    private el: ElementRef,
+    private el: ElementRef<HTMLCanvasElement>,
     private renderer: Renderer2,
     private canvasService: CanvasService) {}
 
@@ -70,11 +70,11 @@ export class PaintCanvasDirective {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const xIndex = Math.floor((x / rect.width) * this.width());
-    const yIndex = Math.floor((y / rect.height) * this.height());
+    const xIndex = Math.floor((x / rect.width) * this.canvasWidth());
+    const yIndex = Math.floor((y / rect.height) * this.canvasHeight());
 
-    if (xIndex >= 0 && xIndex < this.width() && yIndex >= 0 && yIndex < this.height()) {
-      return point2DToPixelIndex({ x: xIndex, y: yIndex }, this.width());
+    if (xIndex >= 0 && xIndex < this.canvasWidth() && yIndex >= 0 && yIndex < this.canvasHeight()) {
+      return point2DToPixelIndex({ x: xIndex, y: yIndex }, this.canvasWidth());
     }
     return undefined;
   }

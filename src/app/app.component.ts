@@ -36,7 +36,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         (saveFile)="triggerSave()">
       </sf-navbar>
 
-      <div class="flex-1 flex items-stretch justify-stretch min-h-0 relative">
+      <div class="flex-1 min-h-0 relative">
         <div class="sidebar pl-3 absolute top-0 bottom-0 transition-all" [class.translate-none]="menuOpen()">
           <div class="bg-light p-3 rounded-2xl h-100">
             <h5>Menu</h5>
@@ -49,9 +49,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
             sfSaveOpen
             sfToolSelect
             (saveAs)="saveModelVisible.set(true)"
-            (openModel)="openModelVisible.set(true)"
-            class="canvas-container mx-auto"
-            [style.aspectRatio]="canvasService.state.width() + '/' + canvasService.state.height()">
+            (openModel)="openModelVisible.set(true)">
           </sf-canvas>
         }
       </div>
