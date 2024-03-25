@@ -13,20 +13,7 @@ export class CanvasService {
 
   saveLoadService = inject(SaveLoadService);
 
-  initialState = {
-    canvas: new Map(),
-    colour: '#FF0000',
-    height: 0,
-    painting: false,
-    started: false,
-    width: 0,
-    filename: undefined,
-    undoBuffer: [],
-    redoBuffer: [],
-    tool: CanvasTool.Draw
-  };
-
-  state = canvasState(this.initialState);
+  state = canvasState();
 
   toolService = toolService(this.state);
 
@@ -37,10 +24,6 @@ export class CanvasService {
   clearCanvas(): void {
     this.state.commit();
     this.state.clearCanvas();
-  }
-
-  newFile(): void {
-    this.state.set(this.initialState);
   }
 
   startPainting(pixelIndex: number): void {

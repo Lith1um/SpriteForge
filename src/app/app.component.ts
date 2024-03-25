@@ -6,11 +6,10 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { SaveModalComponent } from './components/save-modal/save-modal.component';
 import { LoadModalComponent } from './components/load-modal/load-modal.component';
 import { SavedModel } from './interfaces/saved-model.model';
-import { FormsModule } from '@angular/forms';
 import { UndoRedoDirective } from './directives/undo-redo.directive';
 import { SaveOpenDirective } from './directives/save-open.directive';
 import { ToolSelectDirective } from './directives/tool-select.directive';
-import { NewCanvasComponent } from './components/new-canvas/new-canvas.component';
+import { NewModalComponent } from './components/new-modal/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
@@ -25,13 +24,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     SaveOpenDirective,
     ToolSelectDirective,
     NavbarComponent,
-    NewCanvasComponent,
+    NewModalComponent,
   ],
   standalone: true,
   template: `
     <div class="flex h-100 w-100 flex-col">
       <sf-navbar
         (toggleMenu)="toggleMenu()"
+        (newFile)="newModelVisible.set(true)"
         (openFile)="openModelVisible.set(true)"
         (saveFile)="triggerSave()">
       </sf-navbar>
@@ -53,13 +53,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
             class="canvas-container mx-auto"
             [style.aspectRatio]="canvasService.state.width() + '/' + canvasService.state.height()">
           </sf-canvas>
-        } @else {
-          <sf-new-canvas
-            class="mx-auto"
-            [(width)]="width"
-            [(height)]="height"
-            (startCanvas)="startCanvas()">
-          </sf-new-canvas>
         }
       </div>
 
@@ -74,6 +67,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
         </sf-toolbar>
       }
     </div>
+
+    <sf-new-modal
+      [(visible)]="newModelVisible"
+      [(width)]="width"
+      [(height)]="height"
+      (startCanvas)="startCanvas()">
+    </sf-new-modal>
 
     <sf-load-modal
       [(visible)]="openModelVisible"
@@ -104,11 +104,16 @@ export class AppComponent {
   canvasService = inject(CanvasService);
   
   menuOpen = signal<boolean>(false);
+  newModelVisible = signal<boolean>(false);
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
 
   width = signal<number>(16);
   height = signal<number>(16);
+
+  constructor() {
+    this.startCanvas();
+  }
 
   startCanvas(): void {
     this.canvasService.initCanvas(this.width(), this.height());

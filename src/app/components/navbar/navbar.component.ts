@@ -14,7 +14,7 @@ import { CanvasService } from '../../services/canvas.service';
 
       SpriteForge!
 
-      <button title="New" (click)="canvasService.newFile()">
+      <button title="New" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>
       </button>
 
@@ -46,6 +46,7 @@ export class NavbarComponent {
   canvasService = inject(CanvasService);
 
   toggleMenu = output<void>();
+  newFile = output<void>();
   openFile = output<void>();
   saveFile = output<void>();
 

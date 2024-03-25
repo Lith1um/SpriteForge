@@ -1,4 +1,4 @@
-import { CanvasState } from "../interfaces/canvas-state.interface";
+import { CanvasState, CanvasTool } from "../interfaces/canvas-state.interface";
 import { Pixel } from "../interfaces/pixel.interface";
 import { SavedModel } from "../interfaces/saved-model.model";
 import { ObjectSignalState, objectSignal } from "../shared/state/object-signal-state";
@@ -16,7 +16,20 @@ export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
 }
 
 // TODO: this should really be a service
-export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
+export const canvasState = (): CanvasStateSignal => {
+
+  const initialState: CanvasState = {
+    canvas: new Map(),
+    colour: '#FF0000',
+    height: 0,
+    painting: false,
+    started: false,
+    width: 0,
+    filename: undefined,
+    undoBuffer: [],
+    redoBuffer: [],
+    tool: CanvasTool.Draw
+  };
 
   const state = objectSignal<CanvasState>(initialState);
 
@@ -24,7 +37,7 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
 
   const methods = {
     initCanvas: (width: number, height: number): void => state.update(currState => ({
-      ...currState,
+      ...initialState,
       width,
       height,
       canvas: new Map(new Array(width * height).fill(undefined)
@@ -34,7 +47,7 @@ export const canvasState = (initialState: CanvasState): CanvasStateSignal => {
           col: index % width,
           colour: null
         }]))),
-      started: true
+      started: true,
     })),
 
     clearCanvas: (): void => state.canvas.update(canvas => {

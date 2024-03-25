@@ -11,39 +11,33 @@ export class ToolSelectDirective {
   canvasService = inject(CanvasService);
 
   @HostListener('window:keydown.d')
-  onDKeydown(): boolean {
+  onDKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Draw);
-    return false;
   }
 
   @HostListener('window:keydown.l')
-  onLKeydown(): boolean {
+  onLKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Line);
-    return false;
   }
 
   @HostListener('window:keydown.e')
-  onEKeydown(): boolean {
+  onEKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Erase);
-    return false;
   }
 
   @HostListener('window:keydown.r')
-  onRKeydown(): boolean {
+  onRKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Rectangle);
-    return false;
   }
 
   @HostListener('window:keydown.c')
-  onCKeydown(): boolean {
+  onCKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Circle);
-    return false;
   }
 
   @HostListener('window:keydown.f')
-  onFKeydown(): boolean {
+  onFKeydown(): void {
     this.canvasService.state.tool.set(CanvasTool.Fill);
-    return false;
   }
 
 }

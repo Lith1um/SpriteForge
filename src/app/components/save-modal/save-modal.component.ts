@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, input, model, output, signal } from
 import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
 import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { Pixel } from '../../interfaces/pixel.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'sf-save-modal',
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, PreviewComponent],
+  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, FormsModule],
   template: `
     @if (visible()) {
       <sf-modal
@@ -14,7 +15,7 @@ import { Pixel } from '../../interfaces/pixel.interface';
         modalTitle="Save your art!">
         <label>
           <div>Give it a name</div>
-          <input type="text" [value]="filename()" (input)="onFilenameInput($event)"/>
+          <input type="text" [(ngModel)]="filename"/>
         </label>
         <div>Preview of current art:</div>
         <sf-preview
@@ -53,11 +54,6 @@ export class SaveModalComponent {
     }
     this.save.emit(filename);
     this.filename.set(null);
-  }
-
-  onFilenameInput(e: Event): void {
-    const value = (e.target as HTMLInputElement).value;
-    this.filename.set(value);
   }
 
 }
