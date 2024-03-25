@@ -11,6 +11,8 @@ import { SaveOpenDirective } from './directives/save-open.directive';
 import { ToolSelectDirective } from './directives/tool-select.directive';
 import { NewModalComponent } from './components/new-modal/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { PalettesService } from './services/palettes.service';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +27,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ToolSelectDirective,
     NavbarComponent,
     NewModalComponent,
+    SidebarComponent,
   ],
   standalone: true,
   template: `
@@ -37,11 +40,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative">
-        <div class="sidebar pl-3 absolute top-0 bottom-0 transition-all" [class.translate-none]="menuOpen()">
-          <div class="bg-light p-3 rounded-2xl h-100">
-            <h5>Menu</h5>
-          </div>
-        </div>
+        <sf-sidebar
+          [(show)]="menuOpen"
+          (updateColour)="canvasService.state.colour.set($event)">
+        </sf-sidebar>
 
         @if (canvasService.state.started()) {
           <sf-canvas
@@ -86,16 +88,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
       (save)="saveModel($event)">
     </sf-save-modal>
   `,
-  styles: [`
-    .sidebar {
-      transform: translateX(-100%);
-    }
-
-    .canvas-container {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
@@ -125,7 +117,6 @@ export class AppComponent {
     if (!this.canvasService.state.filename()) {
       this.saveModelVisible.set(true);
     } else {
-      // trigger a save
       this.canvasService.save();
     }
   }

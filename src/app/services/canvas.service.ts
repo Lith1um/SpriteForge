@@ -5,6 +5,7 @@ import { SaveLoadService } from './save-load.service';
 import { CanvasTool } from '../interfaces/canvas-state.interface';
 import { toolService } from './tool.service';
 import { SavedModel } from '../interfaces/saved-model.model';
+import { PalettesService } from './palettes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ import { SavedModel } from '../interfaces/saved-model.model';
 export class CanvasService {
 
   saveLoadService = inject(SaveLoadService);
+  palettesService = inject(PalettesService);
 
   state = canvasState();
 
@@ -28,6 +30,7 @@ export class CanvasService {
 
   startPainting(pixelIndex: number): void {
     this.state.commit();
+    this.palettesService.addRecentColor(this.state.colour());
     const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width())
     this.toolService.start(pixelPoint, this.state.canvas());
     this.toolService.paint(pixelPoint);

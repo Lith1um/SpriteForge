@@ -14,15 +14,15 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
     <div #container class="h-100 w-100 relative">
       <canvas
         #canvas
-        id="sprite-forge-canvas"
         sfPaintCanvas
+        id="sprite-forge-canvas"
+        class="canvas absolute center-xy"
         [pixelGrid]="canvasService.state.canvas()"
         [canvasWidth]="canvasService.state.width()"
         [canvasHeight]="canvasService.state.height()"
         width="{{canvasService.state.width()}}"
         height="{{canvasService.state.height()}}"
-        [ngStyle]="size()"
-        class="canvas absolute center-xy">
+        [ngStyle]="size()">
       </canvas>
     </div>
   `,
@@ -51,6 +51,7 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
 export class CanvasComponent {
   container = viewChild.required<ElementRef<HTMLElement>>('container');
   canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
+
   resize = toSignal(fromEvent(window, 'resize').pipe(debounceTime(10)));
 
   size = computed(() => {
