@@ -18,7 +18,6 @@ export class PalettesService {
     if (!colour || colour === this.recentlyUsedSignal()?.[0]) {
       return;
     }
-    console.log('updating colour');
     this.localStorageService.updateItem<string[]>(this.recentlyUsedColoursKey, usedColors => ([
       colour,
       ...(usedColors ?? [])?.filter(usedColor => usedColor !== colour)
