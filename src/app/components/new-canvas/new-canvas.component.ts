@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
   template: `
     <div class="h-100 flex items-center">
       <div class="container bg-light p-4 rounded-2xl flex flex-col gap-2 justify-center">
+        <h5 class="m-0">Create some art</h5>
         <label>
           <div>Width</div>
           <input
