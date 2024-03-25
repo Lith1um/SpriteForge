@@ -11,6 +11,7 @@ import { UndoRedoDirective } from './directives/undo-redo.directive';
 import { SaveOpenDirective } from './directives/save-open.directive';
 import { ToolSelectDirective } from './directives/tool-select.directive';
 import { NewCanvasComponent } from './components/new-canvas/new-canvas.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -23,42 +24,17 @@ import { NewCanvasComponent } from './components/new-canvas/new-canvas.component
     UndoRedoDirective,
     SaveOpenDirective,
     ToolSelectDirective,
+    NavbarComponent,
     NewCanvasComponent,
   ],
   standalone: true,
   template: `
     <div class="flex h-100 w-100 flex-col">
-      <div class="bg-light p-3 m-3 rounded-2xl flex gap-2 items-center">
-        <button (click)="toggleMenu()">
-          <sf-icon>menu</sf-icon>
-        </button>
-
-        SpriteForge!
-
-        <button title="New" (click)="canvasService.newFile()">
-          <sf-icon>note_add</sf-icon>
-        </button>
-
-        <button
-          title="Undo"
-          (click)="canvasService.state.undo()"
-          [disabled]="canvasService.state.undoBuffer().length === 0">
-          <sf-icon>undo</sf-icon>
-        </button>
-        <button
-          title="Redo"
-          (click)="canvasService.state.redo()"
-          [disabled]="canvasService.state.redoBuffer().length === 0">
-          <sf-icon>redo</sf-icon>
-        </button>
-
-        <button title="Open" (click)="openModelVisible.set(true)">
-          <sf-icon>folder_open</sf-icon>
-        </button>
-        <button title="Save as" (click)="triggerSave()" [disabled]="!canvasService.state.started()">
-          <sf-icon>save</sf-icon>
-        </button>
-      </div>
+      <sf-navbar
+        (toggleMenu)="toggleMenu()"
+        (openFile)="openModelVisible.set(true)"
+        (saveFile)="triggerSave()">
+      </sf-navbar>
 
       <div class="flex-1 flex items-stretch justify-stretch min-h-0 relative">
         <div class="sidebar pl-3 absolute top-0 bottom-0 transition-all" [class.translate-none]="menuOpen()">
