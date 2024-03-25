@@ -12,20 +12,29 @@ export class SaveOpenDirective {
   saveAs = output<void>();
   openModel = output<void>();
 
-  @HostListener('window:keydown.meta.o') onCtrlO() {
+  @HostListener('window:keydown.control.o')
+  @HostListener('window:keydown.meta.o')
+  onCtrlO() {
     this.openModel.emit();
+    return false;
   }
 
-  @HostListener('window:keydown.meta.s') onCtrlS() {
+  @HostListener('window:keydown.control.s')
+  @HostListener('window:keydown.meta.s')
+  onCtrlS() {
     if (!this.canvasService.state.filename()) {
       this.saveAs.emit();
-      return;
+      return false;
     }
     this.canvasService.save();
+    return false;
   }
 
-  @HostListener('window:keydown.meta.shift.s') onShiftCtrlS() {
+  @HostListener('window:keydown.control.shift.s')
+  @HostListener('window:keydown.meta.shift.s')
+  onShiftCtrlS() {
     this.saveAs.emit();
+    return false;
   }
 
 }
