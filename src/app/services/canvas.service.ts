@@ -121,7 +121,7 @@ export class CanvasService {
     this.state.filename.set(filename);
   }
 
-  load(model: SavedModel): void {
-    this.state.load(model);
+  load(model: SavedModel, isImport: boolean = false): void {
+    this.state.load(model, isImport);
   }
 }

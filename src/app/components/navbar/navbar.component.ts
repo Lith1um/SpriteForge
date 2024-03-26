@@ -37,8 +37,11 @@ import { CanvasService } from '../../services/canvas.service';
       <button title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
+      <button title="Import" (click)="importFile.emit()" [disabled]="!canvasService.state.started()">
+        <sf-icon>download</sf-icon>
+      </button>
       <button title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
-        <sf-icon>upload_file</sf-icon>
+        <sf-icon>upload</sf-icon>
       </button>
       
     </div>
@@ -53,6 +56,7 @@ export class NavbarComponent {
   newFile = output<void>();
   openFile = output<void>();
   saveFile = output<void>();
+  importFile = output<void>();
   exportFile = output<void>();
 
 }

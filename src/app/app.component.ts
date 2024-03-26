@@ -13,6 +13,7 @@ import { NewModalComponent } from './components/modals/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ExportModalComponent } from './components/modals/export-modal.component';
+import { ImportModalComponent } from './components/modals/import-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
     LoadModalComponent,
     SaveModalComponent,
     ExportModalComponent,
+    ImportModalComponent,
     UndoRedoDirective,
     SaveOpenDirective,
     ToolSelectDirective,
@@ -38,7 +40,8 @@ import { ExportModalComponent } from './components/modals/export-modal.component
         (newFile)="newModelVisible.set(true)"
         (openFile)="openModelVisible.set(true)"
         (saveFile)="triggerSave()"
-        (exportFile)="exportModelVisible.set(true)">
+        (exportFile)="exportModelVisible.set(true)"
+        (importFile)="importModelVisible.set(true)">
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative flex px-3">
@@ -103,6 +106,11 @@ import { ExportModalComponent } from './components/modals/export-modal.component
       [width]="canvasService.state.width()"
       [height]="canvasService.state.height()">
     </sf-export-modal>
+
+    <sf-import-modal
+      [(visible)]="importModelVisible"
+      (import)="canvasService.load($event, true)">
+    </sf-import-modal>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -114,6 +122,7 @@ export class AppComponent {
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
   exportModelVisible = signal<boolean>(false);
+  importModelVisible = signal<boolean>(false);
 
   width = signal<number>(32);
   height = signal<number>(32);

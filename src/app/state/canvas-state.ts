@@ -11,7 +11,7 @@ export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
   commit: () => void;
   undo: () => void;
   redo: () => void;
-  load: (model: SavedModel) => void;
+  load: (model: SavedModel, isImport: boolean) => void;
 }
 
 // TODO: this should really be a service
@@ -124,15 +124,22 @@ export const canvasState = (): CanvasStateSignal => {
       }));
     },
 
-    load: (model: SavedModel): void => {
-      state.update(currState => ({
-        ...currState,
+    load: (model: SavedModel, isImport: boolean): void => {
+      const newState: Partial<CanvasState> = {
         canvas: model.canvas,
         width: model.width,
         height: model.height,
-        filename: model.filename,
         undoBuffer: [],
         redoBuffer: []
+      }
+
+      if (!isImport) {
+        newState.filename = model.filename;
+      }
+
+      state.update(currState => ({
+        ...currState,
+        ...newState,
       }));
     }
   };
