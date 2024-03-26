@@ -34,7 +34,7 @@ import { CanvasService } from '../../services/canvas.service';
       <button title="Open" (click)="openFile.emit()">
         <sf-icon>folder_open</sf-icon>
       </button>
-      <button title="Save as" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
+      <button title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
       <button title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">

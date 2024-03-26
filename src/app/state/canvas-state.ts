@@ -19,7 +19,7 @@ export const canvasState = (): CanvasStateSignal => {
 
   const initialState: CanvasState = {
     canvas: new Map(),
-    colour: '#3a84d9',
+    colour: '#000000',
     height: 0,
     painting: false,
     started: false,

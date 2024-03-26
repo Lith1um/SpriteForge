@@ -12,7 +12,7 @@ import { debounce } from '../../shared/helpers/debounce';
       <label class="flex" title="colour">
         <input #colorInput type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
         <button [style.backgroundColor]="colour()" (click)="colorInput.click()">
-          <sf-icon>palette</sf-icon>
+          <sf-icon style="color: transparent;">palette</sf-icon>
         </button>
       </label>
 

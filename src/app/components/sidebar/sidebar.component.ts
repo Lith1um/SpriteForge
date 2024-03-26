@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output } from '@angular/core';
 import { PalettesService } from '../../services/palettes.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
@@ -12,12 +12,14 @@ import { debounceTime, fromEvent, startWith } from 'rxjs';
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
       <div class="bg-light p-3 rounded-2xl h-100">
-        <h5>Menu</h5>
+        <h5>Options</h5>
+
         <div>Recent colours</div>
         <div class="grid gap-1 used-colours">
           @for (colour of palettesService.recentlyUsedSignal(); track $index) {
             <div
               class="w-100 colour border-dark border-1 pointer"
+              [class.selected]="selectedColour() === colour"
               [style.backgroundColor]="colour"
               (click)="updateColour.emit(colour)">
             </div>
@@ -55,12 +57,18 @@ import { debounceTime, fromEvent, startWith } from 'rxjs';
 
     .colour {
       aspect-ratio: 1 / 1;
+
+      &.selected {
+        box-shadow: inset 0px 0px 0px 0.25rem var(--sf-primary);
+      }
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
   palettesService = inject(PalettesService);
+
+  selectedColour = input.required<string>();
 
   resize = toSignal(fromEvent(window, 'resize').pipe(startWith(false), debounceTime(10)));
   isMobile = computed(() => {
