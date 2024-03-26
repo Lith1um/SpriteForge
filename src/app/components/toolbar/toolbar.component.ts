@@ -11,8 +11,8 @@ import { debounce } from '../../shared/helpers/debounce';
     <div class="bg-light p-3 rounded-2xl flex flex-wrap gap-2">
       <label class="flex" title="colour">
         <input #colorInput type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
-        <button (click)="colorInput.click()">
-          <sf-icon [style.color]="colour()">palette</sf-icon>
+        <button [style.backgroundColor]="colour()" (click)="colorInput.click()">
+          <sf-icon>palette</sf-icon>
         </button>
       </label>
 

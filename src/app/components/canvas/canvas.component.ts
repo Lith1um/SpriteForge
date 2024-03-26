@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, input, viewChild } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
@@ -24,6 +24,13 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
         height="{{canvasService.state.height()}}"
         [ngStyle]="size()">
       </canvas>
+
+      @if (mirrorY()) {
+        <div class="mirror-y absolute h-100 center-x"></div>
+      }
+      @if (mirrorX()) {
+        <div class="mirror-x absolute w-100 center-y"></div>
+      }
     </div>
   `,
   styles: [`
@@ -45,12 +52,22 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
         var(--sf-bg-light) 2%,
       );
     }
+    .mirror-y {
+      border-right: 2px dashed var(--sf-primary);
+    }
+    .mirror-x {
+      border-bottom: 2px dashed var(--sf-primary);
+    }
+
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CanvasComponent {
   container = viewChild.required<ElementRef<HTMLElement>>('container');
   canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
+
+  mirrorY = input.required<boolean>();
+  mirrorX = input.required<boolean>();
 
   resize = toSignal(fromEvent(window, 'resize').pipe(startWith(false), debounceTime(10)));
 

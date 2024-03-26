@@ -52,6 +52,8 @@ import { ExportModalComponent } from './components/modals/export-modal.component
             sfUndoRedo
             sfSaveOpen
             sfToolSelect
+            [mirrorX]="canvasService.state.mirrorHorizontal()"
+            [mirrorY]="canvasService.state.mirrorVertical()"
             (saveAs)="saveModelVisible.set(true)"
             (openModel)="openModelVisible.set(true)">
           </sf-canvas>
