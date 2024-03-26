@@ -25,7 +25,7 @@ export const toolService = (canvasState: CanvasStateSignal) => {
   const draw = (pixels: Point2D[], erase: boolean = false): void => {
     const lastDrawnPixels = state.lastDrawnPixels();
 
-    if (lastDrawnPixels?.length) {
+    if (lastDrawnPixels && lastDrawnPixels.length >= pixels.length) {
       // possible bug when changing mirror values
       const indexes = pixels.flatMap((pixel, index) => {
         return bresenhamLine(lastDrawnPixels[index].x, pixel.x, lastDrawnPixels[index].y, pixel.y)

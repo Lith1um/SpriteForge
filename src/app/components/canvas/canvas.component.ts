@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, inject, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, viewChild } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
@@ -88,14 +88,15 @@ export class CanvasComponent {
     };
   });
 
-  constructor(readonly canvasService: CanvasService, private host: ElementRef) {
+  constructor(readonly canvasService: CanvasService) {
     effect(() => {
       const canvas = canvasService.state.canvas();
       const canvasElem = this.canvasRef().nativeElement;
       if (!canvas || !canvasElem) {
         return;
       }
-      drawCanvasPixels(canvasElem, canvas);
+      // this is horrible but something about the size of the canvas changing causes this to break
+      setTimeout(() => drawCanvasPixels(canvasElem, canvas), 10);
     });
   }
 }
