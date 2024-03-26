@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input, mo
 import { PalettesService } from '../../services/palettes.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
+import { CanvasService } from '../../services/canvas.service';
 
 @Component({
   selector: 'sf-sidebar',
@@ -13,6 +14,20 @@ import { debounceTime, fromEvent, startWith } from 'rxjs';
       [class.show]="show()">
       <div class="bg-light p-3 rounded-2xl h-100">
         <h5>Options</h5>
+
+        @if (usedColours().length) {
+          <div>Colours in model</div>
+          <div class="grid gap-1 used-colours mb-3">
+            @for (colour of usedColours(); track $index) {
+              <div
+                class="w-100 colour border-dark border-1 pointer"
+                [class.selected]="selectedColour() === colour"
+                [style.backgroundColor]="colour"
+                (click)="updateColour.emit(colour)">
+              </div>
+            }
+          </div>
+        }
 
         <div>Recent colours</div>
         <div class="grid gap-1 used-colours">
@@ -66,6 +81,7 @@ import { debounceTime, fromEvent, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
+  canvasService = inject(CanvasService);
   palettesService = inject(PalettesService);
 
   selectedColour = input.required<string>();
@@ -75,6 +91,14 @@ export class SidebarComponent {
     // trigger on resize
     this.resize();
     return window.innerWidth <= 768;
+  });
+
+  usedColours = computed(() => {
+    const canvas = this.canvasService.state.canvas();
+    const usedColours = new Set<string>();
+
+    canvas.forEach(pixel => pixel.colour && usedColours.add(pixel.colour));
+    return Array.from(usedColours);
   });
 
   show = model.required<boolean>();
