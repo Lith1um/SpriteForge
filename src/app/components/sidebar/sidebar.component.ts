@@ -105,4 +105,12 @@ export class SidebarComponent {
 
   updateColour = output<string>();
 
+  constructor() {
+    effect(() => {
+      if (this.isMobile()) {
+        this.show.set(false);
+      }
+    }, {allowSignalWrites: true});
+  }
+
 }

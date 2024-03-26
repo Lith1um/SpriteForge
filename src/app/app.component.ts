@@ -117,7 +117,7 @@ import { ImportModalComponent } from './components/modals/import-modal.component
 export class AppComponent {
   canvasService = inject(CanvasService);
   
-  menuOpen = signal<boolean>(false);
+  menuOpen = signal<boolean>(true);
   newModelVisible = signal<boolean>(false);
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
