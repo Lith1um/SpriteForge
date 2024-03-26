@@ -75,7 +75,6 @@ export class CanvasComponent {
       this.cdr.detectChanges();
     });
 
-    // Observe one or multiple elements
     ro.observe(this.host.nativeElement);
     return () => ro.unobserve(this.host.nativeElement);
   }));
@@ -104,8 +103,9 @@ export class CanvasComponent {
       if (!canvas || !canvasElem) {
         return;
       }
-      // this is horrible but something about the size of the canvas changing causes this to break
-      setTimeout(() => drawCanvasPixels(canvasElem, canvas), 10);
+      // needed to ensure the canvas elem is updated
+      this.cdr.detectChanges();
+      drawCanvasPixels(canvasElem, canvas);
     });
   }
 }
