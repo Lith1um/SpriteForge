@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Signal, computed, effect, input, viewChild } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
-import { debounceTime, fromEvent, startWith } from 'rxjs';
+import { NextObserver, Observable, Subscriber, debounceTime, filter, fromEvent, map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { drawCanvasPixels } from '../../shared/helpers/canvas';
 
@@ -11,27 +11,25 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
   standalone: true,
   imports: [KeyValuePipe, PaintCanvasDirective, CommonModule],
   template: `
-    <div #container class="h-100 w-100 relative">
-      <canvas
-        #canvas
-        sfPaintCanvas
-        id="sprite-forge-canvas"
-        class="canvas absolute center-xy"
-        [pixelGrid]="canvasService.state.canvas()"
-        [canvasWidth]="canvasService.state.width()"
-        [canvasHeight]="canvasService.state.height()"
-        width="{{canvasService.state.width()}}"
-        height="{{canvasService.state.height()}}"
-        [ngStyle]="size()">
-      </canvas>
+    <canvas
+      #canvas
+      sfPaintCanvas
+      id="sprite-forge-canvas"
+      class="canvas absolute center-xy"
+      [pixelGrid]="canvasService.state.canvas()"
+      [canvasWidth]="canvasService.state.width()"
+      [canvasHeight]="canvasService.state.height()"
+      width="{{canvasService.state.width()}}"
+      height="{{canvasService.state.height()}}"
+      [ngStyle]="size()">
+    </canvas>
 
-      @if (mirrorY()) {
-        <div class="mirror-y absolute h-100 center-x"></div>
-      }
-      @if (mirrorX()) {
-        <div class="mirror-x absolute w-100 center-y"></div>
-      }
-    </div>
+    @if (mirrorY()) {
+      <div class="mirror-y absolute h-100 center-x"></div>
+    }
+    @if (mirrorX()) {
+      <div class="mirror-x absolute w-100 center-y"></div>
+    }
   `,
   styles: [`
     :host {
@@ -65,21 +63,32 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CanvasComponent {
-  container = viewChild.required<ElementRef<HTMLElement>>('container');
   canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   mirrorY = input.required<boolean>();
   mirrorX = input.required<boolean>();
 
-  resize = toSignal(fromEvent(window, 'resize').pipe(startWith(false), debounceTime(10)));
+  resize = toSignal(new Observable<{ width: number, height: number }>(subscriber => {
+    const ro = new ResizeObserver(entries => {
+      const { width, height } = entries[0].contentRect;
+      subscriber.next({ width, height });
+      this.cdr.detectChanges();
+    });
+
+    // Observe one or multiple elements
+    ro.observe(this.host.nativeElement);
+    return () => ro.unobserve(this.host.nativeElement);
+  }));
 
   size = computed(() => {
-    // re-compute on resize
-    this.resize();
+    const resize = this.resize();
+    if (!resize) {
+      return;
+    }
 
     const ratio = Math.min(
-      this.container().nativeElement.clientWidth / this.canvasService.state.width(),
-      this.container().nativeElement.clientHeight / this.canvasService.state.height()
+      resize.width / this.canvasService.state.width(),
+      resize.height / this.canvasService.state.height()
     );
 
     return {
@@ -88,7 +97,7 @@ export class CanvasComponent {
     };
   });
 
-  constructor(readonly canvasService: CanvasService) {
+  constructor(readonly canvasService: CanvasService, private host: ElementRef, private cdr: ChangeDetectorRef) {    
     effect(() => {
       const canvas = canvasService.state.canvas();
       const canvasElem = this.canvasRef().nativeElement;

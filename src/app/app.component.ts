@@ -41,7 +41,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
         (exportFile)="exportModelVisible.set(true)">
       </sf-navbar>
 
-      <div class="flex-1 min-h-0 relative">
+      <div class="flex-1 min-h-0 relative flex px-3">
         <sf-sidebar
           [(show)]="menuOpen"
           (updateColour)="canvasService.state.colour.set($event)">
