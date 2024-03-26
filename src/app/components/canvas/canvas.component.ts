@@ -53,9 +53,11 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
       );
     }
     .mirror-y {
+      pointer-events: none;
       border-right: 2px dashed var(--sf-primary);
     }
     .mirror-x {
+      pointer-events: none;
       border-bottom: 2px dashed var(--sf-primary);
     }
 
