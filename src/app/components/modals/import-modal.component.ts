@@ -51,8 +51,7 @@ export class ImportModalComponent {
     const result = UPNG.decode(await file.arrayBuffer());
 
     if (result.width > 256 || result.height > 256) {
-      // TODO: add message to show user informing image too large
-      return;
+      throw new Error(`Import image too large. [${result.width}, ${result.height}]`);
     }
 
     const pixelColours = this.groupArray([...new Uint8Array(result.data)], 4).slice(0, result.width * result.height);
