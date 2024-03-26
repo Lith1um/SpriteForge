@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, injec
 import { CanvasService } from '../../services/canvas.service';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
-import { debounceTime, fromEvent } from 'rxjs';
+import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { drawCanvasPixels } from '../../shared/helpers/canvas';
 
@@ -52,7 +52,7 @@ export class CanvasComponent {
   container = viewChild.required<ElementRef<HTMLElement>>('container');
   canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  resize = toSignal(fromEvent(window, 'resize').pipe(debounceTime(10)));
+  resize = toSignal(fromEvent(window, 'resize').pipe(startWith(false), debounceTime(10)));
 
   size = computed(() => {
     // re-compute on resize

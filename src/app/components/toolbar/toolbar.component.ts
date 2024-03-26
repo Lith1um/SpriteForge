@@ -16,6 +16,14 @@ import { debounce } from '../../shared/helpers/debounce';
         </button>
       </label>
 
+      <button title="horizontal mirror" [style.filter]="mirrorY() ? 'invert(1)': ''" (click)="mirrorVertical.emit()">
+        <sf-icon>flip</sf-icon>
+      </button>
+
+      <button title="vertical mirror" [style.filter]="mirrorX() ? 'invert(1)': ''" (click)="mirrorHorizontal.emit()">
+        <sf-icon class="rotate-90 block">flip</sf-icon>
+      </button>
+
       <div class="border-dark border-r"></div>
 
       <button title="draw" [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
@@ -39,7 +47,7 @@ import { debounce } from '../../shared/helpers/debounce';
       </button>
 
       <button title="fill" [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
-        <sf-icon>format_color_fill</sf-icon>
+        <sf-icon>colors</sf-icon>
       </button>
 
       <div class="border-dark border-r"></div>
@@ -56,11 +64,16 @@ export class ToolbarComponent {
   colour = input.required<string>();
   tool = input.required<CanvasTool>();
 
+  mirrorX = input.required<boolean>();
+  mirrorY = input.required<boolean>();
+
   readonly ToolEnum = CanvasTool;
 
   updateColour = output<string>();
   updateTool = output<CanvasTool>();
   clearCanvas = output<void>();
+  mirrorHorizontal = output<void>();
+  mirrorVertical = output<void>();
 
   debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
 

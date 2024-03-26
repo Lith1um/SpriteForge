@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { canvasState } from '../state/canvas-state';
 import { pixelIndexToPoint2D } from '../shared/helpers/pixels';
 import { SaveLoadService } from './save-load.service';
@@ -6,6 +6,7 @@ import { CanvasTool } from '../interfaces/canvas-state.interface';
 import { toolService } from './tool.service';
 import { SavedModel } from '../interfaces/saved-model.model';
 import { PalettesService } from './palettes.service';
+import { Point2D } from '../shared/models/point.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,8 @@ export class CanvasService {
 
   toolService = toolService(this.state);
 
+  mirrorXY = computed(() => this.state.mirrorHorizontal() && this.state.mirrorVertical());
+
   initCanvas(width: number, height: number): void {
     this.state.initCanvas(width, height);
   }
@@ -31,9 +34,36 @@ export class CanvasService {
   startPainting(pixelIndex: number): void {
     this.state.commit();
     this.palettesService.addRecentColor(this.state.colour());
-    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width())
-    this.toolService.start(pixelPoint, this.state.canvas());
-    this.toolService.paint(pixelPoint);
+
+    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
+    const pixelPoints = [pixelPoint];
+
+    if (this.state.mirrorVertical()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: pixelPoint.y
+      });
+    }
+
+    if (this.state.mirrorHorizontal()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+
+    if (this.mirrorXY()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+
+    this.toolService.start(pixelPoints, this.state.canvas());
+    this.toolService.paint(pixelPoints);
     this.state.painting.set(true);
   }
 
@@ -41,7 +71,32 @@ export class CanvasService {
     if (!this.state.painting()) {
       return;
     }
-    this.toolService.paint(pixelIndexToPoint2D(pixelIndex, this.state.width()));
+
+    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
+    const pixelPoints = [pixelPoint];
+
+    if (this.state.mirrorVertical()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: pixelPoint.y
+      });
+    }
+    if (this.state.mirrorHorizontal()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+    if (this.mirrorXY()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+    this.toolService.paint(pixelPoints);
   }
 
   stopPainting(): void {

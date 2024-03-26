@@ -28,7 +28,9 @@ export const canvasState = (): CanvasStateSignal => {
     filename: undefined,
     undoBuffer: [],
     redoBuffer: [],
-    tool: CanvasTool.Draw
+    tool: CanvasTool.Draw,
+    mirrorHorizontal: false,
+    mirrorVertical: false,
   };
 
   const state = objectSignal<CanvasState>(initialState);

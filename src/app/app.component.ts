@@ -3,16 +3,16 @@ import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { SaveModalComponent } from './components/save-modal/save-modal.component';
-import { LoadModalComponent } from './components/load-modal/load-modal.component';
+import { SaveModalComponent } from './components/modals/save-modal.component';
+import { LoadModalComponent } from './components/modals/load-modal.component';
 import { SavedModel } from './interfaces/saved-model.model';
 import { UndoRedoDirective } from './directives/undo-redo.directive';
 import { SaveOpenDirective } from './directives/save-open.directive';
 import { ToolSelectDirective } from './directives/tool-select.directive';
-import { NewModalComponent } from './components/new-modal/new-modal.component';
+import { NewModalComponent } from './components/modals/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { PalettesService } from './services/palettes.service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ExportModalComponent } from './components/modals/export-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +22,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     ToolbarComponent,
     LoadModalComponent,
     SaveModalComponent,
+    ExportModalComponent,
     UndoRedoDirective,
     SaveOpenDirective,
     ToolSelectDirective,
@@ -36,7 +37,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
         (toggleMenu)="toggleMenu()"
         (newFile)="newModelVisible.set(true)"
         (openFile)="openModelVisible.set(true)"
-        (saveFile)="triggerSave()">
+        (saveFile)="triggerSave()"
+        (exportFile)="exportModelVisible.set(true)">
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative">
@@ -61,9 +63,13 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
           class="mx-auto flex p-3"
           [colour]="canvasService.state.colour()"
           [tool]="canvasService.state.tool()"
+          [mirrorX]="canvasService.state.mirrorHorizontal()"
+          [mirrorY]="canvasService.state.mirrorVertical()"
           (updateColour)="canvasService.state.colour.set($event)"
           (updateTool)="canvasService.state.tool.set($event)"
-          (clearCanvas)="canvasService.clearCanvas()">
+          (clearCanvas)="canvasService.clearCanvas()"
+          (mirrorHorizontal)="toggleMirrorX()"
+          (mirrorVertical)="toggleMirrorY()">
         </sf-toolbar>
       }
     </div>
@@ -87,6 +93,13 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
       [height]="canvasService.state.height()"
       (save)="saveModel($event)">
     </sf-save-modal>
+
+    <sf-export-modal
+      [(visible)]="exportModelVisible"
+      [canvas]="canvasService.state.canvas()"
+      [width]="canvasService.state.width()"
+      [height]="canvasService.state.height()">
+    </sf-export-modal>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -97,9 +110,10 @@ export class AppComponent {
   newModelVisible = signal<boolean>(false);
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
+  exportModelVisible = signal<boolean>(false);
 
-  width = signal<number>(16);
-  height = signal<number>(16);
+  width = signal<number>(32);
+  height = signal<number>(32);
 
   constructor() {
     this.startCanvas();
@@ -111,6 +125,14 @@ export class AppComponent {
 
   toggleMenu(): void {
     this.menuOpen.update(open => !open);
+  }
+
+  toggleMirrorX(): void {
+    this.canvasService.state.mirrorHorizontal.update(mirrorX => !mirrorX);
+  }
+
+  toggleMirrorY(): void {
+    this.canvasService.state.mirrorVertical.update(mirrorY => !mirrorY);
   }
 
   triggerSave(): void {

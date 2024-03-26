@@ -20,6 +20,8 @@ export interface CanvasState {
   filename: string | undefined;
   undoBuffer: Map<number, Pixel>[];
   redoBuffer: Map<number, Pixel>[];
-  tool: CanvasTool
+  tool: CanvasTool;
+  mirrorHorizontal: boolean;
+  mirrorVertical: boolean;
 
 }

@@ -37,6 +37,10 @@ import { CanvasService } from '../../services/canvas.service';
       <button title="Save as" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
+      <button title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
+        <sf-icon>upload_file</sf-icon>
+      </button>
+      
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,5 +53,6 @@ export class NavbarComponent {
   newFile = output<void>();
   openFile = output<void>();
   saveFile = output<void>();
+  exportFile = output<void>();
 
 }
