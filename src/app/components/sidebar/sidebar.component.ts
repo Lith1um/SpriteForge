@@ -17,29 +17,33 @@ import { CanvasService } from '../../services/canvas.service';
 
         @if (usedColours().length) {
           <div>Colours in model</div>
-          <div class="grid used-colours overflow-y-auto mb-3">
-            @for (colour of usedColours(); track $index) {
-              <div
-                class="w-100 colour border-dark border-1 pointer"
-                [class.selected]="selectedColour() === colour"
-                [style.backgroundColor]="colour"
-                (click)="updateColour.emit(colour)">
-              </div>
-            }
+          <div class="palette-container overflow-y-auto mb-3">
+            <div class="grid used-colours border-dark border-1 ">
+              @for (colour of usedColours(); track $index) {
+                <div
+                  class="w-100 colour pointer"
+                  [class.selected]="selectedColour() === colour"
+                  [style.backgroundColor]="colour"
+                  (click)="updateColour.emit(colour)">
+                </div>
+              }
+            </div>
           </div>
         }
 
         @if (palettesService.recentlyUsedSignal()?.length) {
           <div>Recent colours</div>
-          <div class="grid used-colours overflow-y-auto mb-3">
-            @for (colour of palettesService.recentlyUsedSignal(); track $index) {
-              <div
-                class="w-100 colour border-dark border-1 pointer"
-                [class.selected]="selectedColour() === colour"
-                [style.backgroundColor]="colour"
-                (click)="updateColour.emit(colour)">
-              </div>
-            }
+          <div class="palette-container overflow-y-auto mb-3">
+            <div class="grid used-colours border-dark border-1">
+              @for (colour of palettesService.recentlyUsedSignal(); track $index) {
+                <div
+                  class="w-100 colour pointer"
+                  [class.selected]="selectedColour() === colour"
+                  [style.backgroundColor]="colour"
+                  (click)="updateColour.emit(colour)">
+                </div>
+              }
+            </div>
           </div>
         }
       </div>
@@ -68,9 +72,14 @@ import { CanvasService } from '../../services/canvas.service';
       }
     }
 
+    .palette-container {
+      max-height: 251px;
+    }
+
     .used-colours {
+      gap: 1px;
+      background-color: var(--sf-bg);
       grid-template-columns: repeat(5, 1fr);
-      aspect-ratio: 1 / 1;
     }
 
     .colour {
