@@ -35,32 +35,7 @@ export class CanvasService {
     this.state.commit();
     this.palettesService.addRecentColor(this.state.colour());
 
-    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
-    const pixelPoints = [pixelPoint];
-
-    if (this.state.mirrorVertical()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: this.state.width() - 1 - pixelPoint.x,
-        y: pixelPoint.y
-      });
-    }
-
-    if (this.state.mirrorHorizontal()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: pixelPoint.x,
-        y: this.state.height() - 1 - pixelPoint.y
-      });
-    }
-
-    if (this.mirrorXY()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: this.state.width() - 1 - pixelPoint.x,
-        y: this.state.height() - 1 - pixelPoint.y
-      });
-    }
+    const pixelPoints = this.pointsForPaint(pixelIndex);
 
     this.toolService.start(pixelPoints, this.state.canvas());
     this.toolService.paint(pixelPoints);
@@ -72,30 +47,7 @@ export class CanvasService {
       return;
     }
 
-    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
-    const pixelPoints = [pixelPoint];
-
-    if (this.state.mirrorVertical()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: this.state.width() - 1 - pixelPoint.x,
-        y: pixelPoint.y
-      });
-    }
-    if (this.state.mirrorHorizontal()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: pixelPoint.x,
-        y: this.state.height() - 1 - pixelPoint.y
-      });
-    }
-    if (this.mirrorXY()) {
-      // mirror the actions
-      pixelPoints.push({
-        x: this.state.width() - 1 - pixelPoint.x,
-        y: this.state.height() - 1 - pixelPoint.y
-      });
-    }
+    const pixelPoints = this.pointsForPaint(pixelIndex);
     this.toolService.paint(pixelPoints);
   }
 
@@ -124,4 +76,32 @@ export class CanvasService {
   load(model: SavedModel, isImport: boolean = false): void {
     this.state.load(model, isImport);
   }
+
+  private pointsForPaint(pixelIndex: number): Point2D[] {
+    const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
+    const pixelPoints = [pixelPoint];
+
+    if (this.state.mirrorVertical()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: pixelPoint.y
+      });
+    }
+    if (this.state.mirrorHorizontal()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+    if (this.mirrorXY()) {
+      // mirror the actions
+      pixelPoints.push({
+        x: this.state.width() - 1 - pixelPoint.x,
+        y: this.state.height() - 1 - pixelPoint.y
+      });
+    }
+    return pixelPoints;
+  } 
 }

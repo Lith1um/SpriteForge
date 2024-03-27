@@ -12,12 +12,12 @@ import { CanvasService } from '../../services/canvas.service';
       class="sidebar transition-all h-100 mr-3"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
-      <div class="bg-light p-3 rounded-2xl h-100">
+      <div class="bg-light p-3 rounded-2xl h-100 overflow-y-auto">
         <h5>Options</h5>
 
         @if (usedColours().length) {
           <div>Colours in model</div>
-          <div class="grid gap-1 used-colours mb-3">
+          <div class="grid used-colours overflow-y-auto mb-3">
             @for (colour of usedColours(); track $index) {
               <div
                 class="w-100 colour border-dark border-1 pointer"
@@ -29,17 +29,19 @@ import { CanvasService } from '../../services/canvas.service';
           </div>
         }
 
-        <div>Recent colours</div>
-        <div class="grid gap-1 used-colours">
-          @for (colour of palettesService.recentlyUsedSignal(); track $index) {
-            <div
-              class="w-100 colour border-dark border-1 pointer"
-              [class.selected]="selectedColour() === colour"
-              [style.backgroundColor]="colour"
-              (click)="updateColour.emit(colour)">
-            </div>
-          }
-        </div>
+        @if (palettesService.recentlyUsedSignal()?.length) {
+          <div>Recent colours</div>
+          <div class="grid used-colours overflow-y-auto mb-3">
+            @for (colour of palettesService.recentlyUsedSignal(); track $index) {
+              <div
+                class="w-100 colour border-dark border-1 pointer"
+                [class.selected]="selectedColour() === colour"
+                [style.backgroundColor]="colour"
+                (click)="updateColour.emit(colour)">
+              </div>
+            }
+          </div>
+        }
       </div>
     </div>
   `,
@@ -68,13 +70,14 @@ import { CanvasService } from '../../services/canvas.service';
 
     .used-colours {
       grid-template-columns: repeat(5, 1fr);
+      aspect-ratio: 1 / 1;
     }
 
     .colour {
       aspect-ratio: 1 / 1;
 
       &.selected {
-        box-shadow: inset 0px 0px 0px 0.25rem var(--sf-primary);
+        box-shadow: inset 0px 0px 0px 0.25rem white;
       }
     }
   `],

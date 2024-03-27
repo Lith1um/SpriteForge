@@ -21,7 +21,7 @@ export class PalettesService {
     this.localStorageService.updateItem<string[]>(this.recentlyUsedColoursKey, usedColors => ([
       colour,
       ...(usedColors ?? [])?.filter(usedColor => usedColor !== colour)
-    ].slice(0, 25)));
+    ].slice(0, 50)));
   }
 
   removeRecentColour(colour: string): void {
