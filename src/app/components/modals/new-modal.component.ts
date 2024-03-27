@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, model, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
+import { Point2D } from '../../shared/models/point.interface';
 
 @Component({
   selector: 'sf-new-modal',
@@ -13,6 +14,13 @@ import { ModalButtonDirective, ModalComponent } from '../../shared/components/mo
         modalTitle="Create some art!">
 
         <div class="flex flex-col gap-2">
+          <div>
+            @for (preset of presets; track $index) {
+              <button (click)="presetCanvas(preset.x, preset.y)">
+                {{preset.x}}x{{preset.y}}
+              </button>
+            }
+          </div>
           <label>
             <div>Width</div>
             <input
@@ -72,6 +80,14 @@ export class NewModalComponent {
   maxDimension = 256;
   minDimension = 1;
 
+  presets: Point2D[] = [
+    { x: 8, y: 8 },
+    { x: 16, y: 16 },
+    { x: 32, y: 32 },
+    { x: 64, y: 64 },
+    { x: 128, y: 128 },
+  ];
+
   validateNum(val: number): boolean {
     if (val < this.minDimension || val > this.maxDimension) {
       return false;
@@ -82,5 +98,11 @@ export class NewModalComponent {
   createCanvas(): void {
     this.startCanvas.emit();
     this.visible.set(false);
+  }
+
+  presetCanvas(width: number, height: number): void {
+    this.width.set(width);
+    this.height.set(height);
+    this.createCanvas();
   }
 }
