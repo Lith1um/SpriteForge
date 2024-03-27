@@ -24,7 +24,7 @@ import { CanvasService } from '../../services/canvas.service';
                   class="w-100 colour pointer"
                   [class.selected]="selectedColour() === colour"
                   [style.backgroundColor]="colour"
-                  (click)="updateColour.emit(colour)">
+                  (click)="clickedColour(colour)">
                 </div>
               }
             </div>
@@ -40,7 +40,7 @@ import { CanvasService } from '../../services/canvas.service';
                   class="w-100 colour pointer"
                   [class.selected]="selectedColour() === colour"
                   [style.backgroundColor]="colour"
-                  (click)="updateColour.emit(colour)">
+                  (click)="clickedColour(colour)">
                 </div>
               }
             </div>
@@ -86,7 +86,7 @@ import { CanvasService } from '../../services/canvas.service';
       aspect-ratio: 1 / 1;
 
       &.selected {
-        box-shadow: inset 0px 0px 0px 0.25rem white;
+        box-shadow: inset 0px 0px 0px 0.25rem var(--sf-bg-dark);
       }
     }
   `],
@@ -123,6 +123,13 @@ export class SidebarComponent {
         this.show.set(false);
       }
     }, {allowSignalWrites: true});
+  }
+
+  clickedColour(colour: string): void {
+    this.updateColour.emit(colour);
+    if (this.isMobile()) {
+      this.show.set(false);
+    }
   }
 
 }
