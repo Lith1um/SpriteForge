@@ -14,15 +14,13 @@ export class LocalStorageService {
       const storageEvent = this.storageSignal();
 
       // try to cover initial case with no storage event
-      if (!storageEvent) {
+      if (!storageEvent || storageEvent?.key !== key) {
         return this.getItem<T>(key);
       }
 
-      if (storageEvent?.key === key) {
-        return storageEvent.newValue
-          ? JSON.parse(storageEvent.newValue)
-          : storageEvent.newValue
-      }
+      return storageEvent.newValue
+        ? JSON.parse(storageEvent.newValue)
+        : storageEvent.newValue;
     });
   }
 

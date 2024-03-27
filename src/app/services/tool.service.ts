@@ -108,7 +108,6 @@ export const toolService = (canvasState: CanvasStateSignal) => {
   return {
     start: (pixels: Point2D[], canvas: Map<number, Pixel>) => {
       state.set({
-        // TODO: make into array
         startPixels: pixels,
         startingCanvas: canvas,
         lastDrawnPixels: canvasState.tool() === CanvasTool.Draw
