@@ -30,27 +30,27 @@ import { debounce } from '../../shared/helpers/debounce';
 
       <div class="border-dark border-r"></div>
 
-      <button title="draw" [disabled]="tool() === ToolEnum.Draw" (click)="updateTool.emit(ToolEnum.Draw)">
+      <button title="draw" [style.filter]="tool() === ToolEnum.Draw ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Draw)">
         <sf-icon>brush</sf-icon>
       </button>
 
-      <button title="line" [disabled]="tool() === ToolEnum.Line" (click)="updateTool.emit(ToolEnum.Line)">
+      <button title="line" [style.filter]="tool() === ToolEnum.Line ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Line)">
         <sf-icon>drive_file_rename_outline</sf-icon>
       </button>
 
-      <button title="erase" [disabled]="tool() === ToolEnum.Erase" (click)="updateTool.emit(ToolEnum.Erase)">
+      <button title="erase" [style.filter]="tool() === ToolEnum.Erase ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Erase)">
         <sf-icon>ink_eraser</sf-icon>
       </button>
 
-      <button title="rectangle" [disabled]="tool() === ToolEnum.Rectangle" (click)="updateTool.emit(ToolEnum.Rectangle)">
+      <button title="rectangle" [style.filter]="tool() === ToolEnum.Rectangle ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Rectangle)">
         <sf-icon>rectangle</sf-icon>
       </button>
 
-      <button title="circle" [disabled]="tool() === ToolEnum.Circle" (click)="updateTool.emit(ToolEnum.Circle)">
+      <button title="circle" [style.filter]="tool() === ToolEnum.Circle ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Circle)">
         <sf-icon>brightness_1</sf-icon>
       </button>
 
-      <button title="fill" [disabled]="tool() === ToolEnum.Fill" (click)="updateTool.emit(ToolEnum.Fill)">
+      <button title="fill" [style.filter]="tool() === ToolEnum.Fill ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Fill)">
         <sf-icon>colors</sf-icon>
       </button>
 
@@ -61,6 +61,14 @@ import { debounce } from '../../shared/helpers/debounce';
       </button>
     </div>
   `,
+  styles: [`
+    button {
+      aspect-ratio: 1 / 1;
+      border-color: var(--sf-bg-dark);
+      background-color: var(--sf-bg);
+      color: var(--sf-text);
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {

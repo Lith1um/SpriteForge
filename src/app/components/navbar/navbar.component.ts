@@ -48,15 +48,23 @@ import { DarkModeService } from '../../services/dark-mode.service';
       <button title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
-      <button title="Import" (click)="importFile.emit()" [disabled]="!canvasService.state.started()">
+      <!-- <button title="Import" (click)="importFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>download</sf-icon>
-      </button>
+      </button> -->
       <button title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>upload</sf-icon>
       </button>
       
     </div>
   `,
+  styles: [`
+    button {
+      aspect-ratio: 1 / 1;
+      border-color: var(--sf-bg-dark);
+      background-color: var(--sf-bg);
+      color: var(--sf-text);
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {

@@ -18,7 +18,7 @@ export class ModalButtonDirective {}
         (click)="closed.emit(); visible.set(false)">
 
         <div class="modal flex flex-col rounded-lg" (click)="$event.stopPropagation()">
-          <div class="p-2 flex gap-2 h6 m-0 border-color border-b items-center">
+          <div class="p-2 flex gap-2 h6 m-0 border-light border-b items-center">
             <div class="flex-1 truncate">{{ modalTitle() }}</div>
             <button (click)="closed.emit(); visible.set(false)">
               <sf-icon>close</sf-icon>
@@ -29,7 +29,7 @@ export class ModalButtonDirective {}
             <ng-content></ng-content>
           </div>
   
-          <div class="p-2 flex gap-2 border-color border-t justify-end" [class.hidden]="buttons().length === 0">
+          <div class="p-2 flex gap-2 border-light border-t justify-end" [class.hidden]="buttons().length === 0">
             <ng-content select="[sfModalButton]"></ng-content>
           </div>
         </div>

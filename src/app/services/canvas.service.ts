@@ -2,7 +2,6 @@ import { Injectable, computed, inject } from '@angular/core';
 import { canvasState } from '../state/canvas-state';
 import { pixelIndexToPoint2D } from '../shared/helpers/pixels';
 import { SaveLoadService } from './save-load.service';
-import { CanvasTool } from '../interfaces/canvas-state.interface';
 import { toolService } from './tool.service';
 import { SavedModel } from '../interfaces/saved-model.model';
 import { PalettesService } from './palettes.service';

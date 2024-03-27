@@ -18,7 +18,7 @@ import { CanvasService } from '../../services/canvas.service';
         @if (usedColours().length) {
           <div>Colours in model</div>
           <div class="palette-container overflow-y-auto mb-3">
-            <div class="grid used-colours border-dark border-1 ">
+            <div class="grid used-colours border border-1 ">
               @for (colour of usedColours(); track $index) {
                 <div
                   class="w-100 colour pointer"
@@ -34,7 +34,7 @@ import { CanvasService } from '../../services/canvas.service';
         @if (palettesService.recentlyUsedSignal()?.length) {
           <div>Recent colours</div>
           <div class="palette-container overflow-y-auto mb-3">
-            <div class="grid used-colours border-dark border-1">
+            <div class="grid used-colours border border-1">
               @for (colour of palettesService.recentlyUsedSignal(); track $index) {
                 <div
                   class="w-100 colour pointer"

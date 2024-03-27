@@ -39,7 +39,7 @@ export const canvasState = (): CanvasStateSignal => {
 
   const methods = {
     initCanvas: (width: number, height: number): void => state.update(currState => ({
-      ...initialState,
+      ...currState,
       width,
       height,
       canvas: new Map(new Array(width * height).fill(undefined)
@@ -49,7 +49,10 @@ export const canvasState = (): CanvasStateSignal => {
           col: index % width,
           colour: null
         }]))),
+      filename: undefined,
       started: true,
+      undoBuffer: [],
+      redoBuffer: [],
     })),
 
     clearCanvas: (): void => state.canvas.update(canvas => {

@@ -221,12 +221,16 @@ hr {
   border-width: 0;
 }
 
-.border-color {
+.border-light {
   border: 0 solid var(--sf-bg-light);
 }
 
-.border-dark {
+.border {
   border: 0 solid var(--sf-bg);
+}
+
+.border-dark {
+  border: 0 solid var(--sf-bg-dark);
 }
 
 .border-1 {

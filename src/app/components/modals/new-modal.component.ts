@@ -85,7 +85,6 @@ export class NewModalComponent {
     { x: 16, y: 16 },
     { x: 32, y: 32 },
     { x: 64, y: 64 },
-    { x: 128, y: 128 },
   ];
 
   validateNum(val: number): boolean {
