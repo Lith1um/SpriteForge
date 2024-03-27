@@ -21,6 +21,7 @@ export interface CanvasState {
   undoBuffer: Map<number, Pixel>[];
   redoBuffer: Map<number, Pixel>[];
   tool: CanvasTool;
+  showGrid: boolean;
   mirrorHorizontal: boolean;
   mirrorVertical: boolean;
 

@@ -28,6 +28,7 @@ export const canvasState = (): CanvasStateSignal => {
     undoBuffer: [],
     redoBuffer: [],
     tool: CanvasTool.Draw,
+    showGrid: true,
     mirrorHorizontal: false,
     mirrorVertical: false,
   };

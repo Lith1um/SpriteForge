@@ -11,25 +11,42 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
   standalone: true,
   imports: [KeyValuePipe, PaintCanvasDirective, CommonModule],
   template: `
-    <canvas
-      #canvas
-      sfPaintCanvas
-      id="sprite-forge-canvas"
-      class="canvas absolute center-xy"
-      [pixelGrid]="canvasService.state.canvas()"
-      [canvasWidth]="canvasService.state.width()"
-      [canvasHeight]="canvasService.state.height()"
-      width="{{canvasService.state.width()}}"
-      height="{{canvasService.state.height()}}"
-      [ngStyle]="size()">
-    </canvas>
+    <div class="inline-flex absolute center-xy">
+      <canvas
+        #canvas
+        sfPaintCanvas
+        id="sprite-forge-canvas"
+        class="canvas"
+        [pixelGrid]="canvasService.state.canvas()"
+        [canvasWidth]="canvasService.state.width()"
+        [canvasHeight]="canvasService.state.height()"
+        width="{{canvasService.state.width()}}"
+        height="{{canvasService.state.height()}}"
+        [style.width.px]="size()?.width"
+        [style.height.px]="size()?.height">
+      </canvas>
 
-    @if (mirrorY()) {
-      <div class="mirror-y absolute h-100 center-x"></div>
-    }
-    @if (mirrorX()) {
-      <div class="mirror-x absolute w-100 center-y"></div>
-    }
+      @if (canvasService.state.showGrid()) {
+        @for (col of cols(); let i = $index; track i) {
+          <div
+            class="grid-line-y absolute h-100"
+            [style.left.px]="pixelWidth() * (i + 1)"></div>
+        }
+
+        @for (row of rows(); let i = $index; track i) {
+          <div
+            class="grid-line-x absolute w-100"
+            [style.top.px]="pixelHeight() * (i + 1)"></div>
+        }
+      }
+  
+      @if (canvasService.state.mirrorVertical()) {
+        <div class="mirror-y absolute h-100 center-x"></div>
+      }
+      @if (canvasService.state.mirrorHorizontal()) {
+        <div class="mirror-x absolute w-100 center-y"></div>
+      }
+    </div>
   `,
   styles: [`
     :host {
@@ -59,14 +76,23 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
       border-bottom: 2px dashed var(--sf-primary);
     }
 
+    .grid-line-x {
+      pointer-events: none;
+      border-bottom: 1px dashed var(--sf-primary);
+    }
+    .grid-line-y {
+      pointer-events: none;
+      border-right: 1px dashed var(--sf-primary);
+    }
+
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CanvasComponent {
   canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
-  mirrorY = input.required<boolean>();
-  mirrorX = input.required<boolean>();
+  cols = computed(() => new Array(this.canvasService.state.width() - 1).fill(undefined));
+  rows = computed(() => new Array(this.canvasService.state.height() - 1).fill(undefined));
 
   resize = toSignal(new Observable<{ width: number, height: number }>(subscriber => {
     const ro = new ResizeObserver(entries => {
@@ -91,10 +117,13 @@ export class CanvasComponent {
     );
 
     return {
-      width: `${this.canvasService.state.width() * ratio}px`,
-      height: `${this.canvasService.state.height() * ratio}px`
+      width: this.canvasService.state.width() * ratio,
+      height: this.canvasService.state.height() * ratio
     };
   });
+
+  pixelWidth = computed(() => (this.size()?.width ?? 0) / this.canvasService.state.width());
+  pixelHeight = computed(() => (this.size()?.height ?? 0) / this.canvasService.state.height());
 
   constructor(readonly canvasService: CanvasService, private host: ElementRef, private cdr: ChangeDetectorRef) {    
     effect(() => {

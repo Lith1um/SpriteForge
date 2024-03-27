@@ -16,6 +16,10 @@ import { debounce } from '../../shared/helpers/debounce';
         </button>
       </label>
 
+      <button title="toggle grid" [style.filter]="showGrid() ? 'invert(1)': ''" (click)="toggleGrid.emit()">
+        <sf-icon>grid_on</sf-icon>
+      </button>
+
       <button title="horizontal mirror" [style.filter]="mirrorY() ? 'invert(1)': ''" (click)="mirrorVertical.emit()">
         <sf-icon>flip</sf-icon>
       </button>
@@ -64,6 +68,7 @@ export class ToolbarComponent {
   colour = input.required<string>();
   tool = input.required<CanvasTool>();
 
+  showGrid = input.required<boolean>();
   mirrorX = input.required<boolean>();
   mirrorY = input.required<boolean>();
 
@@ -72,6 +77,7 @@ export class ToolbarComponent {
   updateColour = output<string>();
   updateTool = output<CanvasTool>();
   clearCanvas = output<void>();
+  toggleGrid = output<void>();
   mirrorHorizontal = output<void>();
   mirrorVertical = output<void>();
 

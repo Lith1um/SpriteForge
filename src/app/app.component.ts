@@ -56,8 +56,6 @@ import { ImportModalComponent } from './components/modals/import-modal.component
             sfUndoRedo
             sfSaveOpen
             sfToolSelect
-            [mirrorX]="canvasService.state.mirrorHorizontal()"
-            [mirrorY]="canvasService.state.mirrorVertical()"
             (saveAs)="saveModelVisible.set(true)"
             (openModel)="openModelVisible.set(true)">
           </sf-canvas>
@@ -69,11 +67,13 @@ import { ImportModalComponent } from './components/modals/import-modal.component
           class="mx-auto flex p-3"
           [colour]="canvasService.state.colour()"
           [tool]="canvasService.state.tool()"
+          [showGrid]="canvasService.state.showGrid()"
           [mirrorX]="canvasService.state.mirrorHorizontal()"
           [mirrorY]="canvasService.state.mirrorVertical()"
           (updateColour)="canvasService.state.colour.set($event)"
           (updateTool)="canvasService.state.tool.set($event)"
           (clearCanvas)="canvasService.clearCanvas()"
+          (toggleGrid)="toggleGrid()"
           (mirrorHorizontal)="toggleMirrorX()"
           (mirrorVertical)="toggleMirrorY()">
         </sf-toolbar>
@@ -137,6 +137,10 @@ export class AppComponent {
 
   toggleMenu(): void {
     this.menuOpen.update(open => !open);
+  }
+
+  toggleGrid(): void {
+    this.canvasService.state.showGrid.update(show => !show);
   }
 
   toggleMirrorX(): void {

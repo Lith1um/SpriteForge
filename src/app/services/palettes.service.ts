@@ -1,7 +1,5 @@
-import { Injectable, computed, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { LocalStorageService } from '../shared/services/local-storage.service';
-import { Pixel } from '../interfaces/pixel.interface';
-import { SavedModel, SavedModelJson } from '../interfaces/saved-model.model';
 
 @Injectable({
   providedIn: 'root'

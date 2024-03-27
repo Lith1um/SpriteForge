@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasService } from '../../services/canvas.service';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'sf-navbar',
@@ -13,6 +14,16 @@ import { CanvasService } from '../../services/canvas.service';
       </button>
 
       SpriteForge!
+
+      @if (darkModeService.darkModeSignal()) {
+        <button title="Dark mode" (click)="darkModeService.toggleDarkMode(false)">
+          <sf-icon>dark_mode</sf-icon>
+        </button>
+      } @else {
+        <button title="Light mode" (click)="darkModeService.toggleDarkMode(true)">
+          <sf-icon>light_mode</sf-icon>
+        </button>
+      }
 
       <button title="New" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>
@@ -50,6 +61,7 @@ import { CanvasService } from '../../services/canvas.service';
 })
 export class NavbarComponent {
 
+  darkModeService = inject(DarkModeService);
   canvasService = inject(CanvasService);
 
   toggleMenu = output<void>();
@@ -58,5 +70,17 @@ export class NavbarComponent {
   saveFile = output<void>();
   importFile = output<void>();
   exportFile = output<void>();
+
+  constructor() {
+    effect(() => {
+      const darkMode = this.darkModeService.darkModeSignal();
+
+      if (darkMode) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+    })
+  }
 
 }

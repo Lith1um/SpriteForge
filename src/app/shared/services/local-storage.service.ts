@@ -29,7 +29,7 @@ export class LocalStorageService {
     return item ? JSON.parse(item) : null;
   }
 
-  setItem(key: string, value: any): void {
+  setItem<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
 
     const event = new StorageEvent('storage', {
