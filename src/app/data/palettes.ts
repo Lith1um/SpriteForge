@@ -47,6 +47,37 @@ export const palettes: CustomPalette[] = [
     ]
   },
   { 
+    name: 'Beachy',
+    colours: [
+      '#23233b',
+      '#2c4268',
+      '#007bba',
+      '#00a9e2',
+      '#7ccdf4',
+      '#bce3fa',
+      '#9b9c9b',
+      '#b2b0b0',
+      '#c5c6c6',
+      '#ebebeb',
+    ]
+  },
+  { 
+    name: 'Vaporwave',
+    colours: [
+      '#210830',
+      '#430845',
+      '#C051F4',
+      '#F4BEFA',
+      '#F7DFFC',
+      '#FE24C5',
+      '#FE9321',
+      '#FFD401',
+      '#01B1DD',
+      '#0043C4',
+    ]
+  },
+
+  { 
     name: 'Unicorn',
     colours: [
       '#fbf8cc',
