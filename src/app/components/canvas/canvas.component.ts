@@ -28,22 +28,22 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
       @if (canvasService.state.showGrid()) {
         @for (col of cols(); let i = $index; track i) {
           <div
-            class="grid-line-y absolute h-100"
+            class="pointers-none absolute h-100 border-dark border-r border-dashed"
             [style.left.px]="pixelWidth() * (i + 1)"></div>
         }
 
         @for (row of rows(); let i = $index; track i) {
           <div
-            class="grid-line-x absolute w-100"
+            class="pointers-none absolute w-100 border-dark border-b border-dashed"
             [style.top.px]="pixelHeight() * (i + 1)"></div>
         }
       }
   
       @if (canvasService.state.mirrorVertical()) {
-        <div class="mirror-y absolute h-100 center-x"></div>
+        <div class="pointers-none absolute h-100 center-x border-dark border-r-2 border-dashed"></div>
       }
       @if (canvasService.state.mirrorHorizontal()) {
-        <div class="mirror-x absolute w-100 center-y"></div>
+        <div class="pointers-none absolute w-100 center-y border-dark border-b-2 border-dashed"></div>
       }
     </div>
   `,
@@ -66,24 +66,6 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
         var(--sf-bg-light) 2%,
       );
     }
-    .mirror-y {
-      pointer-events: none;
-      border-right: 2px dashed var(--sf-primary);
-    }
-    .mirror-x {
-      pointer-events: none;
-      border-bottom: 2px dashed var(--sf-primary);
-    }
-
-    .grid-line-x {
-      pointer-events: none;
-      border-bottom: 1px dashed var(--sf-primary);
-    }
-    .grid-line-y {
-      pointer-events: none;
-      border-right: 1px dashed var(--sf-primary);
-    }
-
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

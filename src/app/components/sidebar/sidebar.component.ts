@@ -12,7 +12,7 @@ import { CanvasService } from '../../services/canvas.service';
       class="sidebar transition-all h-100 mr-3"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
-      <div class="bg-light p-3 rounded-2xl h-100 overflow-y-auto">
+      <div class="bg-light p-3 h-100 overflow-y-auto">
         <h5>Options</h5>
 
         @if (usedColours().length) {

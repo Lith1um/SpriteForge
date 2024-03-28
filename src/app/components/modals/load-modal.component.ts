@@ -16,7 +16,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         modalTitle="Load a model!">
 
         @for (savedModel of saveLoadService.savedModelsSignal(); track savedModel.filename) {
-          <div class="pointer bg-light card w-100 flex gap-2 p-2 rounded-md mb-2" (click)="loadModel(savedModel)">
+          <div class="pointer bg-light card w-100 flex gap-2 p-2 mb-2" (click)="loadModel(savedModel)">
             <sf-preview
               style="width: 100px"
               [pixels]="savedModel.canvas"
