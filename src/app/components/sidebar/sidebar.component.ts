@@ -15,37 +15,41 @@ import { CanvasService } from '../../services/canvas.service';
       <div class="bg-light p-3 h-100 overflow-y-auto">
         <h5>Options</h5>
 
-        @if (usedColours().length) {
-          <div>Colours in model</div>
-          <div class="palette-container overflow-y-auto mb-3">
-            <div class="grid used-colours border border-1 ">
-              @for (colour of usedColours(); track $index) {
-                <div
-                  class="w-100 colour pointer"
-                  [class.selected]="selectedColour() === colour"
-                  [style.backgroundColor]="colour"
-                  (click)="clickedColour(colour)">
-                </div>
-              }
-            </div>
+        <div>Colours in model</div>
+        <div class="palette-container overflow-y-auto mb-3">
+          <div class="grid used-colours border border-1 ">
+            @for (colour of usedColours(); track $index) {
+              <div
+                class="w-100 colour pointer"
+                [class.selected]="selectedColour() === colour"
+                [style.backgroundColor]="colour"
+                (click)="clickedColour(colour)">
+              </div>
+            } @empty {
+              <div class="text-center p-2" [style.gridColumn]="'1 / span 5'">
+                No colours in use
+              </div>
+            }
           </div>
-        }
+        </div>
 
-        @if (palettesService.recentlyUsedSignal()?.length) {
-          <div>Recent colours</div>
-          <div class="palette-container overflow-y-auto mb-3">
-            <div class="grid used-colours border border-1">
-              @for (colour of palettesService.recentlyUsedSignal(); track $index) {
-                <div
-                  class="w-100 colour pointer"
-                  [class.selected]="selectedColour() === colour"
-                  [style.backgroundColor]="colour"
-                  (click)="clickedColour(colour)">
-                </div>
-              }
-            </div>
+        <div>Recent colours</div>
+        <div class="palette-container overflow-y-auto mb-3">
+          <div class="grid used-colours border border-1">
+            @for (colour of palettesService.recentlyUsedSignal(); track $index) {
+              <div
+                class="w-100 colour pointer"
+                [class.selected]="selectedColour() === colour"
+                [style.backgroundColor]="colour"
+                (click)="clickedColour(colour)">
+              </div>
+            } @empty {
+              <div class="text-center p-2" [style.gridColumn]="'1 / span 5'">
+                No recently used colours
+              </div>
+            }
           </div>
-        }
+        </div>
       </div>
     </div>
   `,
