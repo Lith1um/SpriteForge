@@ -16,8 +16,6 @@ import { palettes } from '../../data/palettes';
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
       <div class="bg-light p-3 h-100 overflow-y-auto">
-        <h5>Options</h5>
-
         <sf-palette
           name="Colours in model"
           [colours]="usedColours()"

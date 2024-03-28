@@ -8,12 +8,12 @@ import { DarkModeService } from '../../services/dark-mode.service';
   standalone: true,
   imports: [IconComponent],
   template: `
-    <div class="bg-light p-3 m-3 flex flex-wrap gap-2 items-center">
+    <div class="bg-light p-3 m-3 flex flex-wrap gap-2">
       <button class="icon-button" (click)="toggleMenu.emit()">
         <sf-icon>menu</sf-icon>
       </button>
 
-      SpriteForge!
+      <div class="text-lg font-weight-bold">SpriteForge</div>
 
       @if (darkModeService.darkModeSignal()) {
         <button class="icon-button" title="Dark mode" (click)="darkModeService.toggleDarkMode(false)">
@@ -25,8 +25,16 @@ import { DarkModeService } from '../../services/dark-mode.service';
         </button>
       }
 
+    <div class="border-dark border-r"></div>
+    
       <button class="icon-button" title="New" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>
+      </button>
+      <button class="icon-button" title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
+        <sf-icon>save</sf-icon>
+      </button>
+      <button class="icon-button" title="Open" (click)="openFile.emit()">
+        <sf-icon>folder_open</sf-icon>
       </button>
 
       <button
@@ -44,16 +52,9 @@ import { DarkModeService } from '../../services/dark-mode.service';
         <sf-icon>redo</sf-icon>
       </button>
 
-      <button class="icon-button" title="Open" (click)="openFile.emit()">
-        <sf-icon>folder_open</sf-icon>
-      </button>
-      <button class="icon-button" title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
-        <sf-icon>save</sf-icon>
-      </button>
       <button class="icon-button" title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>upload</sf-icon>
       </button>
-      
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

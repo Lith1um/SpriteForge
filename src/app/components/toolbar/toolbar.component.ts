@@ -10,7 +10,7 @@ import { debounce } from '../../shared/helpers/debounce';
   template: `
     <div class="bg-light p-3 flex flex-wrap gap-2">
       <label class="flex" title="colour">
-        <input #colorInput type="color" class="h-100 w-0 border-0 m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
+        <input #colorInput type="color" class="h-100 w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
         <button class="icon-button" [style.backgroundColor]="colour()" (click)="colorInput.click()">
           <sf-icon style="color: transparent;">palette</sf-icon>
         </button>
