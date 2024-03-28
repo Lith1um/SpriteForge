@@ -24,7 +24,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   `,
   styles: [`
     .palette-container {
-      max-height: 251px;
+      max-height: 200px;
     }
 
     .used-colours {
