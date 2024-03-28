@@ -1,24 +1,36 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { PalettesService } from '../../services/palettes.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
 import { PaletteComponent } from '../../shared/components/palette/palette.component';
 import { palettes } from '../../data/palettes';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { debounce } from '../../shared/helpers/debounce';
+import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
 
 @Component({
-  selector: 'sf-sidebar',
+  selector: 'sf-palette-bar',
   standalone: true,
-  imports: [PaletteComponent],
+  imports: [PaletteComponent, IconComponent, StringSortPipe],
   template: `
     <div
-      class="sidebar transition-all h-100 mr-3"
+      class="sidebar transition-all h-100 ml-3"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
       <div class="bg-light p-3 h-100 overflow-y-auto">
+
+        <h6>New colour</h6>
+        <div class="flex mb-4">
+          <input #colorInput type="color" class="w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
+          <button class="icon-button" (click)="colorInput.click()">
+            <sf-icon>add</sf-icon>
+          </button>
+        </div>
+
         <sf-palette
           name="Colours in model"
-          [colours]="usedColours()"
+          [colours]="usedColours() | stringSort"
           [selectedColour]="selectedColour()"
           (updateColour)="clickedColour($event)">
         </sf-palette>
@@ -44,10 +56,10 @@ import { palettes } from '../../data/palettes';
   styles: [`
     .sidebar {
       width: 300px;
-      margin-left: calc(-300px - 1rem);
+      margin-right: calc(-300px - 1rem);
 
       &.show {
-        margin-left: 0;
+        margin-right: 0;
       }
     }
     
@@ -60,13 +72,17 @@ import { palettes } from '../../data/palettes';
       max-width: 80%;
       
       &.show {
-        transform: translate3d(0, 0, 0);
+        transform: translateX(calc(-100% - 1rem));
       }
+    }
+
+    input[type=color] {
+      height: 35px;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarComponent {
+export class PaletteBarComponent {
   canvasService = inject(CanvasService);
   palettesService = inject(PalettesService);
 
@@ -93,6 +109,9 @@ export class SidebarComponent {
 
   customPalettes = palettes;
 
+  colour = signal<string>('#ffffff');
+  debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
+
   constructor() {
     effect(() => {
       if (this.isMobile()) {
@@ -106,6 +125,10 @@ export class SidebarComponent {
     if (this.isMobile()) {
       this.show.set(false);
     }
+  }
+
+  onInput(e: Event): void {
+    this.debounceColor((<HTMLInputElement>e.target).value);
   }
 
 }

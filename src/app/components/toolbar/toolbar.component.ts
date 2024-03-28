@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
 import { debounce } from '../../shared/helpers/debounce';
@@ -10,8 +10,7 @@ import { debounce } from '../../shared/helpers/debounce';
   template: `
     <div class="bg-light p-3 flex flex-wrap gap-2">
       <label class="flex" title="colour">
-        <input #colorInput type="color" class="h-100 w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
-        <button class="icon-button" [style.backgroundColor]="colour()" (click)="colorInput.click()">
+        <button class="icon-button" [style.backgroundColor]="colour()" (click)="togglePalette()">
           <sf-icon style="color: transparent;">palette</sf-icon>
         </button>
       </label>
@@ -72,18 +71,17 @@ export class ToolbarComponent {
   mirrorX = input.required<boolean>();
   mirrorY = input.required<boolean>();
 
+  showPalette = model.required<boolean>();
+
   readonly ToolEnum = CanvasTool;
 
-  updateColour = output<string>();
   updateTool = output<CanvasTool>();
   clearCanvas = output<void>();
   toggleGrid = output<void>();
   mirrorHorizontal = output<void>();
   mirrorVertical = output<void>();
 
-  debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
-
-  onInput(e: Event): void {
-    this.debounceColor((<HTMLInputElement>e.target).value);
+  togglePalette(): void {
+    this.showPalette.update(show => !show);
   }
 }

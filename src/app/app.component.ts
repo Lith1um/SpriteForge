@@ -11,7 +11,7 @@ import { SaveOpenDirective } from './directives/save-open.directive';
 import { ToolSelectDirective } from './directives/tool-select.directive';
 import { NewModalComponent } from './components/modals/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { PaletteBarComponent } from './components/palette-bar/palette-bar.component';
 import { ExportModalComponent } from './components/modals/export-modal.component';
 
 @Component({
@@ -28,7 +28,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
     ToolSelectDirective,
     NavbarComponent,
     NewModalComponent,
-    SidebarComponent,
+    PaletteBarComponent,
   ],
   standalone: true,
   template: `
@@ -41,13 +41,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
         (exportFile)="exportModelVisible.set(true)">
       </sf-navbar>
 
-      <div class="flex-1 min-h-0 relative flex px-3">
-        <sf-sidebar
-          [(show)]="menuOpen"
-          [selectedColour]="canvasService.state.colour()"
-          (updateColour)="canvasService.state.colour.set($event)">
-        </sf-sidebar>
-
+      <div class="flex-1 min-h-0 relative flex px-3 overflow-hidden">
         @if (canvasService.state.started()) {
           <sf-canvas
             sfUndoRedo
@@ -57,6 +51,12 @@ import { ExportModalComponent } from './components/modals/export-modal.component
             (openModel)="openModelVisible.set(true)">
           </sf-canvas>
         }
+
+        <sf-palette-bar
+          [(show)]="paletteOpen"
+          [selectedColour]="canvasService.state.colour()"
+          (updateColour)="canvasService.state.colour.set($event)">
+        </sf-palette-bar>
       </div>
 
       @if (canvasService.state.started()) {
@@ -65,9 +65,9 @@ import { ExportModalComponent } from './components/modals/export-modal.component
           [colour]="canvasService.state.colour()"
           [tool]="canvasService.state.tool()"
           [showGrid]="canvasService.state.showGrid()"
+          [(showPalette)]="paletteOpen"
           [mirrorX]="canvasService.state.mirrorHorizontal()"
           [mirrorY]="canvasService.state.mirrorVertical()"
-          (updateColour)="canvasService.state.colour.set($event)"
           (updateTool)="canvasService.state.tool.set($event)"
           (clearCanvas)="canvasService.clearCanvas()"
           (toggleGrid)="toggleGrid()"
@@ -110,6 +110,7 @@ export class AppComponent {
   canvasService = inject(CanvasService);
   
   menuOpen = signal<boolean>(true);
+  paletteOpen = signal<boolean>(true);
   newModelVisible = signal<boolean>(false);
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);

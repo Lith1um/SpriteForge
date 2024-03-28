@@ -4,8 +4,8 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   selector: 'sf-palette',
   standalone: true,
   template: `
-    <div>{{ name() }}</div>
-    <div class="palette-container overflow-y-auto mb-3">
+    <h6>{{ name() }}</h6>
+    <div class="palette-container overflow-y-auto mb-4">
       <div class="grid used-colours border border-1">
         @for (colour of colours(); track $index) {
           <div
