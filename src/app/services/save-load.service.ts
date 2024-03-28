@@ -38,6 +38,7 @@ export class SaveLoadService {
         canvas: Array.from(canvas.entries()),
         width: savedModels[filename].width,
         height: savedModels[filename].height,
+        timestamp: Date.now()
       };
       return savedModels;
     });
@@ -55,6 +56,7 @@ export class SaveLoadService {
         canvas: Array.from(canvas.entries()),
         width,
         height,
+        timestamp: Date.now()
       };
       return savedModels;
     });

@@ -39,7 +39,6 @@ import { ExportModalComponent } from './components/modals/export-modal.component
         (openFile)="openModelVisible.set(true)"
         (saveFile)="triggerSave()"
         (exportFile)="exportModelVisible.set(true)">
-        <!-- (importFile)="importModelVisible.set(true)"> -->
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative flex px-3">

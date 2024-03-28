@@ -4,18 +4,21 @@ import { PreviewComponent } from '../../shared/components/preview/preview.compon
 import { SaveLoadService } from '../../services/save-load.service';
 import { SavedModel } from '../../interfaces/saved-model.model';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
+import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
 
 @Component({
   selector: 'sf-load-modal',
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, IconComponent],
+  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, IconComponent, TimeAgoPipe, NumberSortPipe],
   template: `
     @if (visible()) {
       <sf-modal
         [(visible)]="visible"
+        height="400px"
         modalTitle="Load a model!">
 
-        @for (savedModel of saveLoadService.savedModelsSignal(); track savedModel.filename) {
+        @for (savedModel of saveLoadService.savedModelsSignal() | numSort : 'timestamp'; track savedModel.filename) {
           <div class="pointer bg-light card w-100 flex gap-2 p-2 mb-2" (click)="loadModel(savedModel)">
             <sf-preview
               style="width: 100px"
@@ -25,7 +28,8 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             </sf-preview>
 
             <div class="flex-1">
-              <h6>{{ savedModel.filename }}</h6>
+              <h6 class="m-0">{{ savedModel.filename }}</h6>
+              Last saved: {{ savedModel.timestamp | timeAgo }}
               <button class="icon-button" (click)="saveLoadService.delete(savedModel.filename)">
                 <sf-icon>delete</sf-icon>
               </button>

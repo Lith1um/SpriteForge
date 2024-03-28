@@ -5,6 +5,7 @@ export interface SavedModelJson {
   canvas: [number, Pixel][];
   width: number;
   height: number;
+  timestamp: number;
 }
 
 export class SavedModel {
@@ -14,7 +15,8 @@ export class SavedModel {
       filename: json.filename,
       width: json.width,
       height: json.height,
-      canvas: new Map(json.canvas)
+      canvas: new Map(json.canvas),
+      timestamp: json.timestamp
     }
   }
 
@@ -22,7 +24,8 @@ export class SavedModel {
     readonly filename: string,
     readonly canvas: Map<number, Pixel>,
     readonly width: number,
-    readonly height: number
+    readonly height: number,
+    readonly timestamp: number,
   ) {}
 
 }
