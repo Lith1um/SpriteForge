@@ -9,62 +9,53 @@ import { DarkModeService } from '../../services/dark-mode.service';
   imports: [IconComponent],
   template: `
     <div class="bg-light p-3 m-3 rounded-2xl flex flex-wrap gap-2 items-center">
-      <button (click)="toggleMenu.emit()">
+      <button class="icon-button" (click)="toggleMenu.emit()">
         <sf-icon>menu</sf-icon>
       </button>
 
       SpriteForge!
 
       @if (darkModeService.darkModeSignal()) {
-        <button title="Dark mode" (click)="darkModeService.toggleDarkMode(false)">
+        <button class="icon-button" title="Dark mode" (click)="darkModeService.toggleDarkMode(false)">
           <sf-icon>dark_mode</sf-icon>
         </button>
       } @else {
-        <button title="Light mode" (click)="darkModeService.toggleDarkMode(true)">
+        <button class="icon-button" title="Light mode" (click)="darkModeService.toggleDarkMode(true)">
           <sf-icon>light_mode</sf-icon>
         </button>
       }
 
-      <button title="New" (click)="newFile.emit()">
+      <button class="icon-button" title="New" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>
       </button>
 
       <button
+        class="icon-button"
         title="Undo"
         (click)="canvasService.state.undo()"
         [disabled]="canvasService.state.undoBuffer().length === 0">
         <sf-icon>undo</sf-icon>
       </button>
       <button
+        class="icon-button"
         title="Redo"
         (click)="canvasService.state.redo()"
         [disabled]="canvasService.state.redoBuffer().length === 0">
         <sf-icon>redo</sf-icon>
       </button>
 
-      <button title="Open" (click)="openFile.emit()">
+      <button class="icon-button" title="Open" (click)="openFile.emit()">
         <sf-icon>folder_open</sf-icon>
       </button>
-      <button title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
+      <button class="icon-button" title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
-      <!-- <button title="Import" (click)="importFile.emit()" [disabled]="!canvasService.state.started()">
-        <sf-icon>download</sf-icon>
-      </button> -->
-      <button title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
+      <button class="icon-button" title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>upload</sf-icon>
       </button>
       
     </div>
   `,
-  styles: [`
-    button {
-      aspect-ratio: 1 / 1;
-      border-color: var(--sf-bg-dark);
-      background-color: var(--sf-bg);
-      color: var(--sf-text);
-    }
-  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {

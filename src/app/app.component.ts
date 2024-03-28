@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, WritableSignal, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
@@ -13,7 +13,6 @@ import { NewModalComponent } from './components/modals/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ExportModalComponent } from './components/modals/export-modal.component';
-// import { ImportModalComponent } from './components/modals/import-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +23,6 @@ import { ExportModalComponent } from './components/modals/export-modal.component
     LoadModalComponent,
     SaveModalComponent,
     ExportModalComponent,
-    // ImportModalComponent,
     UndoRedoDirective,
     SaveOpenDirective,
     ToolSelectDirective,
@@ -106,11 +104,6 @@ import { ExportModalComponent } from './components/modals/export-modal.component
       [width]="canvasService.state.width()"
       [height]="canvasService.state.height()">
     </sf-export-modal>
-
-    <!-- <sf-import-modal
-      [(visible)]="importModelVisible"
-      (import)="canvasService.load($event, true)">
-    </sf-import-modal> -->
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -122,7 +115,6 @@ export class AppComponent {
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
   exportModelVisible = signal<boolean>(false);
-  // importModelVisible = signal<boolean>(false);
 
   width = signal<number>(16);
   height = signal<number>(16);

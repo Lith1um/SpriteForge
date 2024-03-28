@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
 import { Point2D } from '../../shared/models/point.interface';
@@ -14,7 +14,7 @@ import { Point2D } from '../../shared/models/point.interface';
         modalTitle="Create some art!">
 
         <div class="flex flex-col gap-2">
-          <div>
+          <div class="flex gap-2 flex-wrap">
             @for (preset of presets; track $index) {
               <button (click)="presetCanvas(preset.x, preset.y)">
                 {{preset.x}}x{{preset.y}}

@@ -20,7 +20,7 @@ export class ModalButtonDirective {}
         <div class="modal flex flex-col rounded-lg" (click)="$event.stopPropagation()">
           <div class="p-2 flex gap-2 h6 m-0 border-light border-b items-center">
             <div class="flex-1 truncate">{{ modalTitle() }}</div>
-            <button (click)="closed.emit(); visible.set(false)">
+            <button class="icon-button" (click)="closed.emit(); visible.set(false)">
               <sf-icon>close</sf-icon>
             </button>
           </div>

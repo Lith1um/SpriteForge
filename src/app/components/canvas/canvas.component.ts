@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Signal, computed, effect, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, computed, effect, viewChild } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
-import { CommonModule, KeyValuePipe } from '@angular/common';
 import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
-import { NextObserver, Observable, Subscriber, debounceTime, filter, fromEvent, map, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { drawCanvasPixels } from '../../shared/helpers/canvas';
 
 @Component({
   selector: 'sf-canvas',
   standalone: true,
-  imports: [KeyValuePipe, PaintCanvasDirective, CommonModule],
+  imports: [PaintCanvasDirective],
   template: `
     <div class="inline-flex absolute center-xy">
       <canvas

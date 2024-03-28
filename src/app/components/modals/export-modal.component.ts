@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, model, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, signal } from '@angular/core';
 import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
 import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { Pixel } from '../../interfaces/pixel.interface';

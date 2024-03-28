@@ -29,3 +29,25 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+button {
+  min-height: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-color: var(--sf-bg-dark);
+  background-color: var(--sf-bg);
+  color: var(--sf-text);
+  font-weight: 600;
+}
+
+button[disabled] {
+  cursor: default;
+  background-color: var(--sf-bg-light);
+}
+
+button.icon-button {
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  font-weight: 400;
+}

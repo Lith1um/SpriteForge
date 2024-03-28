@@ -1,8 +1,8 @@
-import { CanvasState } from "../../interfaces/canvas-state.interface";
 import { Pixel } from "../../interfaces/pixel.interface";
 import { Point2D } from "../models/point.interface";
 import { pixelIndexToPoint2D, point2DToPixelIndex } from "./pixels";
 
+// TODO: this is broken for some cases, investigate
 export const floodFill = (
   x: number,
   y: number,

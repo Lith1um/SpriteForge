@@ -86,7 +86,7 @@ import { CanvasService } from '../../services/canvas.service';
       aspect-ratio: 1 / 1;
 
       &.selected {
-        box-shadow: inset 0px 0px 0px 0.25rem var(--sf-bg-dark);
+        box-shadow: inset 0px 0px 0px 0.25rem white;
       }
     }
   `],

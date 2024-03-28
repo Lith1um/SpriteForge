@@ -3,7 +3,6 @@ import { ModalButtonDirective, ModalComponent } from '../../shared/components/mo
 import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { SaveLoadService } from '../../services/save-load.service';
 import { SavedModel } from '../../interfaces/saved-model.model';
-import { KeyValuePipe } from '@angular/common';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
@@ -27,7 +26,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
             <div class="flex-1">
               <h6>{{ savedModel.filename }}</h6>
-              <button (click)="saveLoadService.delete(savedModel.filename)">
+              <button class="icon-button" (click)="saveLoadService.delete(savedModel.filename)">
                 <sf-icon>delete</sf-icon>
               </button>
             </div>
