@@ -9,8 +9,8 @@ export class LocalStorageService {
 
   storageSignal = toSignal(fromEvent<StorageEvent>(window, 'storage'));
 
-  listen<T>(key: string): Signal<T | null | undefined> {
-    return computed<T | undefined>(() => {
+  listen<T>(key: string): Signal<T | null> {
+    return computed<T>(() => {
       const storageEvent = this.storageSignal();
 
       // try to cover initial case with no storage event

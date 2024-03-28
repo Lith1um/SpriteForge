@@ -3,10 +3,13 @@ import { PalettesService } from '../../services/palettes.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
+import { PaletteComponent } from '../../shared/components/palette/palette.component';
+import { palettes } from '../../data/palettes';
 
 @Component({
   selector: 'sf-sidebar',
   standalone: true,
+  imports: [PaletteComponent],
   template: `
     <div
       class="sidebar transition-all h-100 mr-3"
@@ -15,41 +18,28 @@ import { CanvasService } from '../../services/canvas.service';
       <div class="bg-light p-3 h-100 overflow-y-auto">
         <h5>Options</h5>
 
-        <div>Colours in model</div>
-        <div class="palette-container overflow-y-auto mb-3">
-          <div class="grid used-colours border border-1 ">
-            @for (colour of usedColours(); track $index) {
-              <div
-                class="w-100 colour pointer"
-                [class.selected]="selectedColour() === colour"
-                [style.backgroundColor]="colour"
-                (click)="clickedColour(colour)">
-              </div>
-            } @empty {
-              <div class="text-center p-2" [style.gridColumn]="'1 / span 5'">
-                No colours in use
-              </div>
-            }
-          </div>
-        </div>
+        <sf-palette
+          name="Colours in model"
+          [colours]="usedColours()"
+          [selectedColour]="selectedColour()"
+          (updateColour)="clickedColour($event)">
+        </sf-palette>
 
-        <div>Recent colours</div>
-        <div class="palette-container overflow-y-auto mb-3">
-          <div class="grid used-colours border border-1">
-            @for (colour of palettesService.recentlyUsedSignal(); track $index) {
-              <div
-                class="w-100 colour pointer"
-                [class.selected]="selectedColour() === colour"
-                [style.backgroundColor]="colour"
-                (click)="clickedColour(colour)">
-              </div>
-            } @empty {
-              <div class="text-center p-2" [style.gridColumn]="'1 / span 5'">
-                No recently used colours
-              </div>
-            }
-          </div>
-        </div>
+        <sf-palette
+          name="Recent colours"
+          [colours]="palettesService.recentlyUsedSignal()"
+          [selectedColour]="selectedColour()"
+          (updateColour)="clickedColour($event)">
+        </sf-palette>
+
+        @for (palette of customPalettes; track $index) {
+          <sf-palette
+            [name]="palette.name"
+            [colours]="palette.colours"
+            [selectedColour]="selectedColour()"
+            (updateColour)="clickedColour($event)">
+          </sf-palette>
+        }
       </div>
     </div>
   `,
@@ -73,24 +63,6 @@ import { CanvasService } from '../../services/canvas.service';
       
       &.show {
         transform: translate3d(0, 0, 0);
-      }
-    }
-
-    .palette-container {
-      max-height: 251px;
-    }
-
-    .used-colours {
-      gap: 1px;
-      background-color: var(--sf-bg);
-      grid-template-columns: repeat(5, 1fr);
-    }
-
-    .colour {
-      aspect-ratio: 1 / 1;
-
-      &.selected {
-        box-shadow: inset 0px 0px 0px 0.25rem white;
       }
     }
   `],
@@ -120,6 +92,8 @@ export class SidebarComponent {
   show = model.required<boolean>();
 
   updateColour = output<string>();
+
+  customPalettes = palettes;
 
   constructor() {
     effect(() => {
