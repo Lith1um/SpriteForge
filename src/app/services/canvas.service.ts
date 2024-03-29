@@ -76,6 +76,13 @@ export class CanvasService {
     this.state.load(model);
   }
 
+  deleteModel(filename: string): void {
+    this.saveLoadService.delete(filename);
+    if (filename === this.state.filename()) {
+      this.state.filename.set(undefined);
+    }
+  }
+
   private pointsForPaint(pixelIndex: number): Point2D[] {
     const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
     const pixelPoints = [pixelPoint];

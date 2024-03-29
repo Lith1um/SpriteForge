@@ -86,7 +86,8 @@ import { ExportModalComponent } from './components/modals/export-modal.component
 
     <sf-load-modal
       [(visible)]="openModelVisible"
-      (load)="loadModel($event)">
+      (load)="loadModel($event)"
+      (deleteModel)="deleteModel($event)">
     </sf-load-modal>
 
     <sf-save-modal
@@ -158,5 +159,9 @@ export class AppComponent {
 
   loadModel(model: SavedModel): void {
     this.canvasService.load(model);
+  }
+
+  deleteModel(filename: string): void {
+    this.canvasService.deleteModel(filename);
   }
 }

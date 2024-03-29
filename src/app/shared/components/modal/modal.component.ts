@@ -17,7 +17,7 @@ export class ModalButtonDirective {}
         class="fixed inset z-10 h-100 w-100 flex backdrop items-center justify-center"
         (click)="closed.emit(); visible.set(false)">
 
-        <div class="modal flex flex-col" [style.height]="height()" (click)="$event.stopPropagation()">
+        <div class="modal flex flex-col" [style.height]="height()"  [style.width]="width()" (click)="$event.stopPropagation()">
           <div class="p-2 flex gap-2 h6 m-0 border-light border-b items-center">
             <div class="flex-1 truncate">{{ modalTitle() }}</div>
             <button class="icon-button" (click)="closed.emit(); visible.set(false)">
@@ -26,7 +26,7 @@ export class ModalButtonDirective {}
           </div>
           
           <div class="flex-1 min-h-0 overflow-y-auto">
-            <div class="p-2">
+            <div class="p-2 h-100">
               <ng-content></ng-content>
             </div>
           </div>
@@ -54,6 +54,7 @@ export class ModalComponent {
   modalTitle = input.required<string>();
 
   height = input<string>('auto');
+  width = input<string>('auto');
 
   visible = model.required<boolean>();
 

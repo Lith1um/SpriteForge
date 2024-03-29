@@ -16,6 +16,7 @@ import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
       <sf-modal
         [(visible)]="visible"
         height="400px"
+        width="500px"
         modalTitle="Load a model!">
 
         @for (savedModel of saveLoadService.savedModelsSignal() | numSort : 'timestamp'; track savedModel.filename) {
@@ -30,10 +31,14 @@ import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
             <div class="flex-1">
               <h6 class="m-0">{{ savedModel.filename }}</h6>
               Last saved: {{ savedModel.timestamp | timeAgo }}
-              <button class="icon-button" (click)="saveLoadService.delete(savedModel.filename)">
+              <button class="icon-button" (click)="deleteModel.emit(savedModel.filename)">
                 <sf-icon>delete</sf-icon>
               </button>
             </div>
+          </div>
+        } @empty {
+          <div class="flex items-center justify-center h-100">
+            No saved models found
           </div>
         }
       </sf-modal>
@@ -53,6 +58,7 @@ export class LoadModalComponent {
   visible = model.required<boolean>();
 
   load = output<SavedModel>();
+  deleteModel = output<string>();
 
   loadModel(model: SavedModel): void {
     this.load.emit(model);
