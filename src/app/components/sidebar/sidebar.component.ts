@@ -15,6 +15,10 @@ import { CanvasService } from '../../services/canvas.service';
 
         <h6>Menu</h6>
 
+        <button (click)="canvasService.addFrame()">
+          Add frame
+        </button>
+
       </div>
     </div>
   `,

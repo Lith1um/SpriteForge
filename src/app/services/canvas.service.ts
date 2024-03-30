@@ -83,6 +83,16 @@ export class CanvasService {
     }
   }
 
+  addFrame(): void {
+    // save the canvas to the frames list
+    this.state.animationFrames.update(frames => ([
+      this.state.canvas(),
+      ...frames
+    ]));
+    // clear the canvas
+    this.state.clearCanvas();
+  }
+
   private pointsForPaint(pixelIndex: number): Point2D[] {
     const pixelPoint = pixelIndexToPoint2D(pixelIndex, this.state.width());
     const pixelPoints = [pixelPoint];

@@ -25,6 +25,7 @@ export const canvasState = (): CanvasStateSignal => {
     started: false,
     width: 0,
     filename: undefined,
+    animationFrames: [],
     undoBuffer: [],
     redoBuffer: [],
     tool: CanvasTool.Draw,

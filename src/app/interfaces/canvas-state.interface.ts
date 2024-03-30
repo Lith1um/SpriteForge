@@ -18,6 +18,7 @@ export interface CanvasState {
   started: boolean;
   width: number;
   filename: string | undefined;
+  animationFrames: Map<number, Pixel>[];
   undoBuffer: Map<number, Pixel>[];
   redoBuffer: Map<number, Pixel>[];
   tool: CanvasTool;
