@@ -23,7 +23,7 @@ import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
         <h6>New colour</h6>
         <div class="flex mb-4">
           <input #colorInput type="color" class="w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
-          <button class="icon-button" (click)="colorInput.click()">
+          <button class="icon-button text-center" [style.width]="'50px'" (click)="colorInput.click()">
             <sf-icon>add</sf-icon>
           </button>
         </div>
@@ -77,7 +77,7 @@ import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
     }
 
     input[type=color] {
-      height: 35px;
+      height: 50px;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
