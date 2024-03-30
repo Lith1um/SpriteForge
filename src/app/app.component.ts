@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
@@ -13,6 +13,8 @@ import { NewModalComponent } from './components/modals/new-modal.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PaletteBarComponent } from './components/palette-bar/palette-bar.component';
 import { ExportModalComponent } from './components/modals/export-modal.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ShortcutService } from './services/shortcut.service';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
     NavbarComponent,
     NewModalComponent,
     PaletteBarComponent,
+    SidebarComponent,
   ],
   standalone: true,
   template: `
@@ -42,13 +45,16 @@ import { ExportModalComponent } from './components/modals/export-modal.component
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative flex px-3 overflow-hidden">
+        <sf-sidebar [(show)]="menuOpen"></sf-sidebar>
+
         @if (canvasService.state.started()) {
           <sf-canvas
             sfUndoRedo
             sfSaveOpen
             sfToolSelect
             (saveAs)="saveModelVisible.set(true)"
-            (openModel)="openModelVisible.set(true)">
+            (openModel)="openModelVisible.set(true)"
+            (exportModel)="exportModelVisible.set(true)">
           </sf-canvas>
         }
 
@@ -109,6 +115,7 @@ import { ExportModalComponent } from './components/modals/export-modal.component
 })
 export class AppComponent {
   canvasService = inject(CanvasService);
+  shortcutService = inject(ShortcutService);
   
   menuOpen = signal<boolean>(true);
   paletteOpen = signal<boolean>(true);
@@ -122,6 +129,15 @@ export class AppComponent {
 
   constructor() {
     this.startCanvas();
+
+    // disable shortcuts when a modal is open
+    effect(() => {
+      if (this.newModelVisible() || this.openModelVisible() || this.saveModelVisible() || this.exportModelVisible()) {
+        this.shortcutService.disable();
+      } else {
+        this.shortcutService.enable();
+      }
+    }, { allowSignalWrites: true })
   }
 
   startCanvas(): void {

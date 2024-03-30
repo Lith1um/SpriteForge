@@ -9,9 +9,9 @@ import { DarkModeService } from '../../services/dark-mode.service';
   imports: [IconComponent],
   template: `
     <div class="bg-light p-3 m-3 flex flex-wrap gap-2">
-      <!-- <button class="icon-button" (click)="toggleMenu.emit()">
+      <button class="icon-button" (click)="toggleMenu.emit()">
         <sf-icon>menu</sf-icon>
-      </button> -->
+      </button>
 
       <div class="text-lg font-weight-bold">SpriteForge</div>
 
