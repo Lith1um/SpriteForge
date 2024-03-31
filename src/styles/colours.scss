@@ -1,5 +1,6 @@
 :root {
   --sf-text: #020608;
+  --sf-text-dark: #f7fbfd;
   --sf-bg: #fbfdfe;
   --sf-bg-light: #cfcfcf;
   --sf-bg-dark: #4a4a4a;
@@ -12,6 +13,7 @@
 
 body.dark {
   --sf-text: #f7fbfd;
+  --sf-text-dark: #020608;
   --sf-bg: #1F1F1F;
   --sf-bg-light: #4a4a4a;
   --sf-bg-dark: #E5E5E5;
@@ -41,6 +43,14 @@ body.dark {
 
 .bg-light {
   background-color: var(--sf-bg-light);
+}
+
+.bg-dark {
+  background-color: var(--sf-bg-dark);
+}
+
+.text-dark {
+  color: var(--sf-text-dark);
 }
 
 .text-error {

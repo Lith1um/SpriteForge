@@ -2,54 +2,58 @@ import { ChangeDetectionStrategy, Component, effect, inject, output } from '@ang
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasService } from '../../services/canvas.service';
 import { DarkModeService } from '../../services/dark-mode.service';
+import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'sf-navbar',
   standalone: true,
-  imports: [IconComponent],
+  imports: [IconComponent, TooltipDirective],
   template: `
     <div class="bg-light p-3 m-3 flex flex-wrap gap-2">
-      <button class="icon-button" (click)="toggleMenu.emit()">
+      <button sfTooltip tooltipText="Menu" class="icon-button" (click)="toggleMenu.emit()">
         <sf-icon>menu</sf-icon>
       </button>
 
       <div class="text-lg font-weight-bold">SpriteForge</div>
 
       <button
+        sfTooltip
         class="icon-button"
-        [title]="darkModeService.darkModeSignal() ? 'Dark mode' : 'Light mode'"
+        [tooltipText]="'Toggle light mode'"
         (click)="darkModeService.toggleDarkMode(!darkModeService.darkModeSignal())">
         <sf-icon>{{ darkModeService.darkModeSignal() ? 'dark_mode' : 'light_mode' }}</sf-icon>
       </button>
 
       <div class="border-dark border-r"></div>
     
-      <button class="icon-button" title="New" (click)="newFile.emit()">
+      <button sfTooltip tooltipText="New file" class="icon-button" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>
       </button>
-      <button class="icon-button" title="Save" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
+      <button sfTooltip tooltipText="Save work" class="icon-button" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>save</sf-icon>
       </button>
-      <button class="icon-button" title="Open" (click)="openFile.emit()">
+      <button sfTooltip tooltipText="Open file" class="icon-button" (click)="openFile.emit()">
         <sf-icon>folder_open</sf-icon>
       </button>
 
       <button
+        sfTooltip
+        tooltipText="Undo" 
         class="icon-button"
-        title="Undo"
         (click)="canvasService.state.undo()"
         [disabled]="canvasService.state.undoBuffer().length === 0">
         <sf-icon>undo</sf-icon>
       </button>
       <button
+        sfTooltip
+        tooltipText="Redo" 
         class="icon-button"
-        title="Redo"
         (click)="canvasService.state.redo()"
         [disabled]="canvasService.state.redoBuffer().length === 0">
         <sf-icon>redo</sf-icon>
       </button>
 
-      <button class="icon-button" title="Export" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
+      <button sfTooltip tooltipText="Export .png" class="icon-button" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>upload</sf-icon>
       </button>
     </div>

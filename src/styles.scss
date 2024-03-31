@@ -41,6 +41,7 @@ button {
   background-color: var(--sf-bg);
   color: var(--sf-text);
   font-weight: 600;
+  user-select: none;
 }
 
 button:focus {

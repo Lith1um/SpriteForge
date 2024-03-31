@@ -72,7 +72,6 @@ export class ModalComponent {
 
   private onEsc(): void {
     this.visible.set(false);
-    console.log('onEsc');
   }
   
 }
