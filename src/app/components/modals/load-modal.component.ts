@@ -6,11 +6,20 @@ import { SavedModel } from '../../interfaces/saved-model.model';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
+import { AnimationComponent } from '../../shared/components/animation/animation.component';
 
 @Component({
   selector: 'sf-load-modal',
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, PreviewComponent, IconComponent, TimeAgoPipe, NumberSortPipe],
+  imports: [
+    ModalComponent,
+    ModalButtonDirective,
+    PreviewComponent,
+    AnimationComponent,
+    IconComponent,
+    TimeAgoPipe,
+    NumberSortPipe
+  ],
   template: `
     @if (visible()) {
       <sf-modal
@@ -21,12 +30,21 @@ import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
 
         @for (savedModel of saveLoadService.savedModelsSignal() | numSort : 'timestamp'; track savedModel.filename) {
           <div class="pointer bg-light card w-100 flex gap-2 p-2 mb-2" (click)="loadModel(savedModel)">
-            <sf-preview
-              style="width: 100px"
-              [pixels]="savedModel.canvas"
-              [width]="savedModel.width"
-              [height]="savedModel.height">
-            </sf-preview>
+            @if (savedModel.frames) {
+              <sf-animation
+                style="width: 100px"
+                [frames]="savedModel.frames"
+                [width]="savedModel.width"
+                [height]="savedModel.height">
+              </sf-animation>
+            } @else {
+              <sf-preview
+                style="width: 100px"
+                [pixels]="savedModel.canvas"
+                [width]="savedModel.width"
+                [height]="savedModel.height">
+              </sf-preview>
+            }
 
             <div class="flex-1">
               <h6 class="m-0">{{ savedModel.filename }}</h6>
