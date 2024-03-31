@@ -4,18 +4,28 @@ import { PaintCanvasDirective } from '../../directives/paint-pixel.directive';
 import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { drawCanvasPixels } from '../../shared/helpers/canvas';
+import { PreviewComponent } from '../../shared/components/preview/preview.component';
 
 @Component({
   selector: 'sf-canvas',
   standalone: true,
-  imports: [PaintCanvasDirective],
+  imports: [PaintCanvasDirective, PreviewComponent],
   template: `
-    <div class="inline-flex absolute center-xy">
+    <div class="canvas-container inline-flex absolute center-xy">
+      @if (canvasService.state.lastFrame()) {
+        <sf-preview
+          class="absolute inset pointers-none opacity-50"
+          [pixels]="canvasService.state.lastFrame()"
+          [width]="canvasService.state.width()"
+          [height]="canvasService.state.height()">
+        </sf-preview>
+      }
+
       <canvas
         #canvas
         sfPaintCanvas
         id="sprite-forge-canvas"
-        class="canvas"
+        class="canvas relative z-1"
         [pixelGrid]="canvasService.state.canvas()"
         [canvasWidth]="canvasService.state.width()"
         [canvasHeight]="canvasService.state.height()"
@@ -28,22 +38,22 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
       @if (canvasService.state.showGrid()) {
         @for (col of cols(); let i = $index; track i) {
           <div
-            class="pointers-none absolute h-100 border-dark border-r border-dashed"
+            class="pointers-none absolute z-2 h-100 border-dark border-r border-dashed"
             [style.left.px]="pixelWidth() * (i + 1)"></div>
         }
 
         @for (row of rows(); let i = $index; track i) {
           <div
-            class="pointers-none absolute w-100 border-dark border-b border-dashed"
+            class="pointers-none absolute z-2 w-100 border-dark border-b border-dashed"
             [style.top.px]="pixelHeight() * (i + 1)"></div>
         }
       }
   
       @if (canvasService.state.mirrorVertical()) {
-        <div class="pointers-none absolute h-100 center-x border-dark border-r-2 border-dashed"></div>
+        <div class="pointers-none absolute z-2 h-100 center-x border-dark border-r-2 border-dashed"></div>
       }
       @if (canvasService.state.mirrorHorizontal()) {
-        <div class="pointers-none absolute w-100 center-y border-dark border-b-2 border-dashed"></div>
+        <div class="pointers-none absolute z-2 w-100 center-y border-dark border-b-2 border-dashed"></div>
       }
     </div>
   `,
@@ -54,10 +64,7 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
       height: 100%;
       position: relative;
     }
-    .canvas {
-      user-select: none;
-      touch-action: none;
-      image-rendering: pixelated;
+    .canvas-container {
       background: repeating-linear-gradient(
         -45deg,
         var(--sf-bg),
@@ -65,6 +72,11 @@ import { drawCanvasPixels } from '../../shared/helpers/canvas';
         var(--sf-bg-light) 1%,
         var(--sf-bg-light) 2%,
       );
+    }
+    .canvas {
+      user-select: none;
+      touch-action: none;
+      image-rendering: pixelated;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush

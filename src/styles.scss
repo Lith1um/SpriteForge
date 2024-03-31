@@ -32,6 +32,7 @@ html, body {
 
 button {
   min-height: 2rem;
+  outline: none;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -40,6 +41,10 @@ button {
   background-color: var(--sf-bg);
   color: var(--sf-text);
   font-weight: 600;
+}
+
+button:focus {
+  box-shadow: 0px 0px 0px 2px var(--sf-primary);
 }
 
 button[disabled] {
@@ -51,4 +56,18 @@ button.icon-button {
   min-height: 0;
   aspect-ratio: 1 / 1;
   font-weight: 400;
+}
+
+input {
+  outline: none;
+  min-height: 2rem;
+  border-color: var(--sf-bg-dark);
+  background-color: var(--sf-bg);
+  color: var(--sf-text);
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+}
+
+input:focus {
+  box-shadow: 0px 0px 0px 2px var(--sf-primary);
 }

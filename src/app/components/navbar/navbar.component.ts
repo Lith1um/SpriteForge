@@ -15,17 +15,14 @@ import { DarkModeService } from '../../services/dark-mode.service';
 
       <div class="text-lg font-weight-bold">SpriteForge</div>
 
-      @if (darkModeService.darkModeSignal()) {
-        <button class="icon-button" title="Dark mode" (click)="darkModeService.toggleDarkMode(false)">
-          <sf-icon>dark_mode</sf-icon>
-        </button>
-      } @else {
-        <button class="icon-button" title="Light mode" (click)="darkModeService.toggleDarkMode(true)">
-          <sf-icon>light_mode</sf-icon>
-        </button>
-      }
+      <button
+        class="icon-button"
+        [title]="darkModeService.darkModeSignal() ? 'Dark mode' : 'Light mode'"
+        (click)="darkModeService.toggleDarkMode(!darkModeService.darkModeSignal())">
+        <sf-icon>{{ darkModeService.darkModeSignal() ? 'dark_mode' : 'light_mode' }}</sf-icon>
+      </button>
 
-    <div class="border-dark border-r"></div>
+      <div class="border-dark border-r"></div>
     
       <button class="icon-button" title="New" (click)="newFile.emit()">
         <sf-icon>note_add</sf-icon>

@@ -1,9 +1,11 @@
+import { Signal, computed } from "@angular/core";
 import { CanvasState, CanvasTool } from "../interfaces/canvas-state.interface";
 import { Pixel } from "../interfaces/pixel.interface";
 import { SavedModel } from "../interfaces/saved-model.model";
 import { ObjectSignalState, objectSignal } from "../shared/state/object-signal-state";
 
 export type CanvasStateSignal = ObjectSignalState<CanvasState> & {
+  lastFrame: Signal<Map<number, Pixel>>;
   initCanvas: (width: number, height: number) => void;
   clearCanvas: () => void;
   updatePixels: (pixelIndexes: number[], erase?: boolean) => void;
@@ -39,6 +41,8 @@ export const canvasState = (): CanvasStateSignal => {
   const bufferSize = 100;
 
   const methods = {
+    lastFrame: computed(() => state.animationFrames()[state.animationFrames().length - 1]),
+
     initCanvas: (width: number, height: number): void => state.update(currState => ({
       ...currState,
       width,
@@ -133,6 +137,7 @@ export const canvasState = (): CanvasStateSignal => {
       state.update(currState => ({
         ...currState,
         canvas: model.canvas,
+        animationFrames: model.frames,
         width: model.width,
         height: model.height,
         filename: model.filename

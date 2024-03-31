@@ -2,10 +2,13 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, model } f
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
+import { PreviewComponent } from '../../shared/components/preview/preview.component';
+import { AnimationComponent } from '../../shared/components/animation/animation.component';
 
 @Component({
   selector: 'sf-sidebar',
   standalone: true,
+  imports: [AnimationComponent],
   template: `
     <div
       class="sidebar transition-all h-100 mr-3"
@@ -18,6 +21,14 @@ import { CanvasService } from '../../services/canvas.service';
         <button (click)="canvasService.addFrame()">
           Add frame
         </button>
+
+        @if (canvasService.state.animationFrames()) {
+          <sf-animation
+            [frames]="canvasService.state.animationFrames()"
+            [width]="canvasService.state.width()"
+            [height]="canvasService.state.height()">
+          </sf-animation>
+        }
 
       </div>
     </div>

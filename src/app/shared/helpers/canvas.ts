@@ -1,6 +1,6 @@
 import { Pixel } from "../../interfaces/pixel.interface";
 
-export const pixelsToPng = (canvas: HTMLCanvasElement, pixels: Map<number, Pixel>): string | undefined => {
+export const pixelsToPng = (canvas: HTMLCanvasElement, pixels: Map<number, Pixel>): string => {
   canvas = drawCanvasPixels(canvas, pixels);
 
   return canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");

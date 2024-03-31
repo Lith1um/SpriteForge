@@ -55,8 +55,8 @@ export class PaintCanvasDirective {
   }
 
   private addListeners(): void {
-    this.mouseupListener = this.renderer.listen(window, 'pointerup', () => this.onMouseup())
-    this.mousemoveListener = this.renderer.listen(this.el.nativeElement, 'pointermove', throttle((e) => this.onMousemove(e)))
+    this.mouseupListener = this.renderer.listen(window, 'pointerup', () => this.onMouseup());
+    this.mousemoveListener = this.renderer.listen(this.el.nativeElement, 'pointermove', throttle((e) => this.onMousemove(e)));
   }
 
   private removeListeners(): void {

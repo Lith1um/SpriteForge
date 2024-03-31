@@ -3,6 +3,7 @@ import { Pixel } from "./pixel.interface";
 export interface SavedModelJson {
   filename: string;
   canvas: [number, Pixel][];
+  frames: [number, Pixel][][];
   width: number;
   height: number;
   timestamp: number;
@@ -16,6 +17,7 @@ export class SavedModel {
       width: json.width,
       height: json.height,
       canvas: new Map(json.canvas),
+      frames: json.frames.map(frame => new Map(frame)),
       timestamp: json.timestamp
     }
   }
@@ -23,6 +25,7 @@ export class SavedModel {
   constructor(
     readonly filename: string,
     readonly canvas: Map<number, Pixel>,
+    readonly frames: Map<number, Pixel>[],
     readonly width: number,
     readonly height: number,
     readonly timestamp: number,

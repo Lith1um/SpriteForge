@@ -64,11 +64,21 @@ export class CanvasService {
   }
 
   save(): void {
-    this.saveLoadService.save(this.state.filename(), this.state.canvas());
+    this.saveLoadService.save(
+      this.state.filename(),
+      this.state.canvas(),
+      this.state.animationFrames()
+    );
   }
 
   saveAs(filename: string): void {
-    this.saveLoadService.saveAs(filename, this.state.canvas(), this.state.width(), this.state.height());
+    this.saveLoadService.saveAs(
+      filename,
+      this.state.canvas(),
+      this.state.animationFrames(),
+      this.state.width(),
+      this.state.height()
+    );
     this.state.filename.set(filename);
   }
 
@@ -86,8 +96,8 @@ export class CanvasService {
   addFrame(): void {
     // save the canvas to the frames list
     this.state.animationFrames.update(frames => ([
-      this.state.canvas(),
-      ...frames
+      ...frames,
+      this.state.canvas()
     ]));
     // clear the canvas
     this.state.clearCanvas();

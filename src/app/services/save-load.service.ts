@@ -22,7 +22,7 @@ export class SaveLoadService {
     return Object.keys(modelsJson).map(filename => SavedModel.fromJson(modelsJson[filename]));
   });
 
-  save(filename: string | undefined, canvas: Map<number, Pixel>): void {
+  save(filename: string | undefined, canvas: Map<number, Pixel>, frames: Map<number, Pixel>[]): void {
     if (!filename) {
       throw new Error(`SaveLoadService::save(): Filename is not set, cannot save`);
     }
@@ -36,6 +36,7 @@ export class SaveLoadService {
       savedModels[filename] = {
         filename,
         canvas: Array.from(canvas.entries()),
+        frames: frames.map(frame => Array.from(frame.entries())),
         width: savedModels[filename].width,
         height: savedModels[filename].height,
         timestamp: Date.now()
@@ -44,7 +45,7 @@ export class SaveLoadService {
     });
   }
 
-  saveAs(filename: string, canvas: Map<number, Pixel>, width: number, height: number): void {
+  saveAs(filename: string, canvas: Map<number, Pixel>, frames: Map<number, Pixel>[], width: number, height: number): void {
     this.localStorageService.updateItem<{[key: string]: SavedModelJson}>(this.savedModelsKey, (currSavedModels) => {
       if (currSavedModels?.[filename]) {
         throw new Error(`SaveLoadService::saveAs(): File with name ${filename} already exists`);
@@ -54,6 +55,7 @@ export class SaveLoadService {
       savedModels[filename] = {
         filename,
         canvas: Array.from(canvas.entries()),
+        frames: frames.map(frame => Array.from(frame.entries())),
         width,
         height,
         timestamp: Date.now()

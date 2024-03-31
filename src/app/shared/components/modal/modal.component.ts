@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Directive, contentChildren, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, Renderer2, contentChildren, effect, input, model, output } from '@angular/core';
 import { IconComponent } from '../icon/icon.component';
 
 @Directive({
@@ -52,12 +52,27 @@ export class ModalComponent {
   buttons = contentChildren<ModalButtonDirective>(ModalButtonDirective);
 
   modalTitle = input.required<string>();
-
   height = input<string>('auto');
   width = input<string>('auto');
-
   visible = model.required<boolean>();
 
   closed = output<void>();
+
+  private escListener: () => void;
+
+  constructor(private renderer: Renderer2) {
+    effect(() => {
+      if (this.visible()) {
+        this.escListener = this.renderer.listen(window, 'keydown.escape', () => this.onEsc());
+      } else {
+        this.escListener?.();
+      }
+    });
+  }
+
+  private onEsc(): void {
+    this.visible.set(false);
+    console.log('onEsc');
+  }
   
 }
