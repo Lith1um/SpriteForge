@@ -1,4 +1,4 @@
-import { ApplicationRef, ChangeDetectorRef, ComponentRef, Directive, ElementRef, HostListener, ViewContainerRef, input } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, HostListener, ViewContainerRef, input } from '@angular/core';
 import { TooltipPosition } from '../models/tooltip-position.type';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 import { arrow, computePosition, flip, offset, shift } from '@floating-ui/dom';
@@ -11,8 +11,8 @@ export class TooltipDirective {
 
   tooltipText = input.required<string>();
   tooltipPosition = input<TooltipPosition>('top');
-  tooltipShowMs = input<number>(100);
-  tooltipHideMs = input<number>(250);
+  tooltipShowMs = input<number>(150);
+  tooltipHideMs = input<number>(150);
 
   private tooltipRef: ComponentRef<TooltipComponent> | undefined;
   private showTimeout?: number;
@@ -24,6 +24,7 @@ export class TooltipDirective {
   }
 
   @HostListener('mouseleave')
+  @HostListener('touchend')
   onMouseleave(): void {
     this.setTooltipHideTimeout();
   }

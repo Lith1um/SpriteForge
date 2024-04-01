@@ -30,7 +30,7 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
 
         @for (savedModel of saveLoadService.savedModelsSignal() | numSort : 'timestamp'; track savedModel.filename) {
           <div class="pointer bg-light card w-100 flex gap-2 p-2 mb-2" (click)="loadModel(savedModel)">
-            @if (savedModel.frames) {
+            @if (savedModel.frames.length) {
               <sf-animation
                 style="width: 100px"
                 [frames]="savedModel.frames"
