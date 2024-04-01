@@ -99,6 +99,7 @@ import { ShortcutService } from './services/shortcut.service';
     <sf-save-modal
       [(visible)]="saveModelVisible"
       [canvas]="canvasService.state.canvas()"
+      [frames]="canvasService.state.animationFrames()"
       [width]="canvasService.state.width()"
       [height]="canvasService.state.height()"
       (save)="saveModel($event)">

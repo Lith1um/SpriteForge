@@ -97,9 +97,11 @@ export class PaletteBarComponent {
 
   usedColours = computed(() => {
     const canvas = this.canvasService.state.canvas();
+    const frames = this.canvasService.state.animationFrames();
     const usedColours = new Set<string>();
 
     canvas.forEach(pixel => pixel.colour && usedColours.add(pixel.colour));
+    frames.forEach(frame => frame.forEach(pixel => pixel.colour && usedColours.add(pixel.colour)));
     return Array.from(usedColours);
   });
 

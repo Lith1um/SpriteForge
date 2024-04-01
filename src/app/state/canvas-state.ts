@@ -56,6 +56,7 @@ export const canvasState = (): CanvasStateSignal => {
         }]))),
       filename: undefined,
       started: true,
+      animationFrames: [],
       undoBuffer: [],
       redoBuffer: [],
     })),

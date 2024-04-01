@@ -33,7 +33,7 @@ export class AnimationComponent {
   images = computed(() => this.frames().map(frame =>
     pixelsToPng(this.canvas().nativeElement, frame)));
 
-  currentIndex = signal<number>(-1);
+  currentIndex = signal<number>(0);
   currentImage = computed(() => this.images()[this.currentIndex()]);
 
   constructor() {
