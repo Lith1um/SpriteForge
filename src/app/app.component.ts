@@ -15,6 +15,7 @@ import { PaletteBarComponent } from './components/palette-bar/palette-bar.compon
 import { ExportModalComponent } from './components/modals/export-modal.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ShortcutService } from './services/shortcut.service';
+import { ShortcutsModalComponent } from './components/modals/shortcuts-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ import { ShortcutService } from './services/shortcut.service';
     CanvasComponent,
     IconComponent,
     ToolbarComponent,
+    ShortcutsModalComponent,
     LoadModalComponent,
     SaveModalComponent,
     ExportModalComponent,
@@ -41,7 +43,8 @@ import { ShortcutService } from './services/shortcut.service';
         (newFile)="newModelVisible.set(true)"
         (openFile)="openModelVisible.set(true)"
         (saveFile)="triggerSave()"
-        (exportFile)="exportModelVisible.set(true)">
+        (exportFile)="exportModelVisible.set(true)"
+        (showShortcuts)="shortcutsVisible.set(true)">
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative flex px-3 overflow-hidden">
@@ -83,6 +86,8 @@ import { ShortcutService } from './services/shortcut.service';
       }
     </div>
 
+    <sf-shortcuts-modal [(visible)]="shortcutsVisible"></sf-shortcuts-modal>
+
     <sf-new-modal
       [(visible)]="newModelVisible"
       [(width)]="width"
@@ -120,10 +125,12 @@ export class AppComponent {
   
   menuOpen = signal<boolean>(true);
   paletteOpen = signal<boolean>(true);
+
   newModelVisible = signal<boolean>(false);
   openModelVisible = signal<boolean>(false);
   saveModelVisible = signal<boolean>(false);
   exportModelVisible = signal<boolean>(false);
+  shortcutsVisible = signal<boolean>(false);
 
   width = signal<number>(16);
   height = signal<number>(16);

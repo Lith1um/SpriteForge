@@ -56,6 +56,10 @@ import { TooltipDirective } from '../../shared/directives/tooltip.directive';
       <button sfTooltip tooltipText="Export .png" class="icon-button" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
         <sf-icon>upload</sf-icon>
       </button>
+
+      <button sfTooltip tooltipText="Shortcuts" class="icon-button" (click)="showShortcuts.emit()">
+        <sf-icon>keyboard_command_key</sf-icon>
+      </button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +75,7 @@ export class NavbarComponent {
   saveFile = output<void>();
   importFile = output<void>();
   exportFile = output<void>();
+  showShortcuts = output<void>();
 
   constructor() {
     effect(() => {
