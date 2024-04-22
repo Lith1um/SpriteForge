@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { IconComponent } from './shared/components/icon/icon.component';
@@ -19,6 +19,7 @@ import { ShortcutsModalComponent } from './components/modals/shortcuts-modal.com
 
 @Component({
   selector: 'app-root',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CanvasComponent,
     IconComponent,
@@ -38,17 +39,17 @@ import { ShortcutsModalComponent } from './components/modals/shortcuts-modal.com
   standalone: true,
   template: `
     <div class="flex h-100 w-100 flex-col">
-      <sf-navbar
-        (toggleMenu)="toggleMenu()"
-        (newFile)="newModelVisible.set(true)"
-        (openFile)="openModelVisible.set(true)"
-        (saveFile)="triggerSave()"
-        (exportFile)="exportModelVisible.set(true)"
-        (showShortcuts)="shortcutsVisible.set(true)">
+      <sf-navbar (toggleMenu)="toggleMenu()" (showShortcuts)="shortcutsVisible.set(true)">
       </sf-navbar>
 
       <div class="flex-1 min-h-0 relative flex px-3 overflow-hidden">
-        <sf-sidebar [(show)]="menuOpen"></sf-sidebar>
+        <sf-sidebar
+          [(show)]="menuOpen"
+          (newFile)="newModelVisible.set(true)"
+          (openFile)="openModelVisible.set(true)"
+          (saveFile)="triggerSave()"
+          (exportFile)="exportModelVisible.set(true)">
+        </sf-sidebar>
 
         @if (canvasService.state.started()) {
           <sf-canvas

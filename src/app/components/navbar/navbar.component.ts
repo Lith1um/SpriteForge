@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasService } from '../../services/canvas.service';
 import { DarkModeService } from '../../services/dark-mode.service';
@@ -6,60 +6,44 @@ import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'sf-navbar',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
   imports: [IconComponent, TooltipDirective],
   template: `
-    <div class="bg-light p-3 m-3 flex flex-wrap gap-2">
-      <button sfTooltip tooltipText="Menu" class="icon-button" (click)="toggleMenu.emit()">
-        <sf-icon>menu</sf-icon>
-      </button>
+    <div class="bg-light p-2 m-3 flex flex-wrap gap-2 items-center rounded-xl">
+      <sl-button variant="default" circle (click)="toggleMenu.emit()">
+        <sl-icon name="list"></sl-icon>
+      </sl-button>
 
-      <div class="text-lg font-weight-bold">SpriteForge</div>
+      <div class="text-lg font-weight-bold">
+        SpriteForge
+      </div>
 
-      <button
-        sfTooltip
-        class="icon-button"
-        [tooltipText]="'Toggle light mode'"
-        (click)="darkModeService.toggleDarkMode(!darkModeService.darkModeSignal())">
-        <sf-icon>{{ darkModeService.darkModeSignal() ? 'dark_mode' : 'light_mode' }}</sf-icon>
-      </button>
+      <sl-tooltip content="Undo">
+        <sl-button variant="default" circle (click)="canvasService.state.undo()" [disabled]="canvasService.state.undoBuffer().length === 0">
+          <sl-icon name="arrow-counterclockwise"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
+      <sl-tooltip content="Redo">
+        <sl-button variant="default" circle (click)="canvasService.state.redo()" [disabled]="canvasService.state.redoBuffer().length === 0">
+          <sl-icon name="arrow-clockwise"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <div class="border-dark border-r"></div>
-    
-      <button sfTooltip tooltipText="New file" class="icon-button" (click)="newFile.emit()">
-        <sf-icon>note_add</sf-icon>
-      </button>
-      <button sfTooltip tooltipText="Save work" class="icon-button" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
-        <sf-icon>save</sf-icon>
-      </button>
-      <button sfTooltip tooltipText="Open file" class="icon-button" (click)="openFile.emit()">
-        <sf-icon>folder_open</sf-icon>
-      </button>
+      <sl-tooltip content="Shortcuts">
+        <sl-button variant="default" circle (click)="showShortcuts.emit()">
+          <sl-icon name="command"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button
-        sfTooltip
-        tooltipText="Undo" 
-        class="icon-button"
-        (click)="canvasService.state.undo()"
-        [disabled]="canvasService.state.undoBuffer().length === 0">
-        <sf-icon>undo</sf-icon>
-      </button>
-      <button
-        sfTooltip
-        tooltipText="Redo" 
-        class="icon-button"
-        (click)="canvasService.state.redo()"
-        [disabled]="canvasService.state.redoBuffer().length === 0">
-        <sf-icon>redo</sf-icon>
-      </button>
+      <div class="flex-1">
+      </div>
 
-      <button sfTooltip tooltipText="Export .png" class="icon-button" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
-        <sf-icon>upload</sf-icon>
-      </button>
-
-      <button sfTooltip tooltipText="Shortcuts" class="icon-button" (click)="showShortcuts.emit()">
-        <sf-icon>keyboard_command_key</sf-icon>
-      </button>
+      <sl-tooltip content="Toggle light mode">
+        <sl-button variant="default" circle (click)="darkModeService.toggleDarkMode(!darkModeService.darkModeSignal())">
+          <sl-icon name="{{ darkModeService.darkModeSignal() ? 'moon' : 'sun' }}"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,11 +54,6 @@ export class NavbarComponent {
   canvasService = inject(CanvasService);
 
   toggleMenu = output<void>();
-  newFile = output<void>();
-  openFile = output<void>();
-  saveFile = output<void>();
-  importFile = output<void>();
-  exportFile = output<void>();
   showShortcuts = output<void>();
 
   constructor() {
@@ -82,9 +61,9 @@ export class NavbarComponent {
       const darkMode = this.darkModeService.darkModeSignal();
 
       if (darkMode) {
-        document.body.classList.add('dark');
+        document.body.classList.add('sl-theme-dark');
       } else {
-        document.body.classList.remove('dark');
+        document.body.classList.remove('sl-theme-dark');
       }
     })
   }

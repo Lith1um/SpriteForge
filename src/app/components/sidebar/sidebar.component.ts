@@ -1,35 +1,55 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, model } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, computed, effect, inject, model, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
-import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { AnimationComponent } from '../../shared/components/animation/animation.component';
 
 @Component({
   selector: 'sf-sidebar',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
   imports: [AnimationComponent],
   template: `
     <div
-      class="sidebar transition-all h-100 mr-3"
+      class="sidebar transition-all h-100 mr-3 rounded-xl"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
-      <div class="bg-light p-3 h-100 overflow-y-auto">
+      <div class="bg-light p-3 h-100 overflow-y-auto rounded-xl">
 
-        <h6>Menu</h6>
-
-        <button (click)="canvasService.addFrame()">
-          Add frame
-        </button>
-
-        @if (canvasService.state.animationFrames()) {
-          <sf-animation
-            [frames]="canvasService.state.animationFrames()"
-            [width]="canvasService.state.width()"
-            [height]="canvasService.state.height()">
-          </sf-animation>
-        }
-
+        <div class="flex flex-col gap-2">
+          <sl-button style="width: 100%;" (click)="newFile.emit()">
+            <sl-icon slot="prefix" name="file-earmark-plus"></sl-icon>
+            New File
+          </sl-button>
+  
+          <sl-button style="width: 100%;" (click)="saveFile.emit()" [disabled]="!canvasService.state.started()">
+            <sl-icon slot="prefix" name="floppy"></sl-icon>
+            Save File
+          </sl-button>
+  
+          <sl-button style="width: 100%;" (click)="openFile.emit()">
+            <sl-icon slot="prefix" name="folder2-open"></sl-icon>
+            Open File
+          </sl-button>
+  
+          <sl-button style="width: 100%;" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
+            <sl-icon slot="prefix" name="file-earmark-arrow-down"></sl-icon>
+            Export .png
+          </sl-button>
+          
+          <sl-button style="width: 100%;" (click)="canvasService.addFrame()">
+            <sl-icon slot="prefix" name="layers-half"></sl-icon>
+            Add frame
+          </sl-button>
+  
+          @if (canvasService.state.animationFrames()) {
+            <sf-animation
+              [frames]="canvasService.state.animationFrames()"
+              [width]="canvasService.state.width()"
+              [height]="canvasService.state.height()">
+            </sf-animation>
+          }
+        </div>
       </div>
     </div>
   `,
@@ -60,6 +80,11 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
 })
 export class SidebarComponent {
   canvasService = inject(CanvasService);
+
+  newFile = output<void>();
+  openFile = output<void>();
+  saveFile = output<void>();
+  exportFile = output<void>();
 
   resize = toSignal(fromEvent(window, 'resize').pipe(startWith(false), debounceTime(10)));
   isMobile = computed(() => {

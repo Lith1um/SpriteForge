@@ -72,3 +72,43 @@ input {
 input:focus {
   box-shadow: 0px 0px 0px 2px var(--sf-primary);
 }
+
+:root,
+:host,
+.sl-theme-light {
+  /* your custom styles here */
+  --sl-color-primary-50: hsl(166.2 76.5% 96.7%);
+  --sl-color-primary-100: hsl(167.2 85.5% 89.2%);
+  --sl-color-primary-200: hsl(168.4 83.8% 78.2%);
+  --sl-color-primary-300: hsl(170.6 76.9% 64.3%);
+  --sl-color-primary-400: hsl(172.5 66% 50.4%);
+  --sl-color-primary-500: hsl(173.4 80.4% 40%);
+  --sl-color-primary-600: hsl(174.7 83.9% 31.6%);
+  --sl-color-primary-700: hsl(175.3 77.4% 26.1%);
+  --sl-color-primary-800: hsl(176.1 69.4% 21.8%);
+  --sl-color-primary-900: hsl(175.9 60.8% 19%);
+  --sl-color-primary-950: hsl(176.5 58.6% 11.4%);
+}
+
+:host,
+.sl-theme-dark {
+  /* your custom styles here */
+  /* your custom styles here */
+  --sl-color-primary-50: hsl(176.5 51.5% 15.4%);
+  --sl-color-primary-100: hsl(175.9 54.7% 22.3%);
+  --sl-color-primary-200: hsl(175.9 60.7% 23.9%);
+  --sl-color-primary-300: hsl(174.5 67.3% 28.8%);
+  --sl-color-primary-400: hsl(174.4 71.9% 34.9%);
+  --sl-color-primary-500: hsl(173.1 71% 38.3%);
+  --sl-color-primary-600: hsl(172.3 68.2% 48.1%);
+  --sl-color-primary-700: hsl(170.5 81.3% 61.5%);
+  --sl-color-primary-800: hsl(168.4 92.1% 75.2%);
+  --sl-color-primary-900: hsl(168.3 100% 86%);
+  --sl-color-primary-950: hsl(180 100% 95.5%);
+}
+
+@supports (scrollbar-gutter: stable) {
+  .sl-scroll-lock {
+    scrollbar-gutter: auto !important;
+  }
+}
