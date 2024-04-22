@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'sf-snippet',
+  imports: [CommonModule],
   standalone: true,
   template: `
-    <div class="snippet inline-flex items-center text-sm rounded-sm bg-light border-dark border-1">
+    <div 
+      class="snippet inline-flex items-center text-sm rounded-sm border-1"
+      [ngClass]="invert() ? 'bg-dark border-light' : 'bg-light border-dark'">
       <ng-content></ng-content>
     </div>
   `,
@@ -20,4 +24,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SnippetComponent {}
+export class SnippetComponent {
+  invert = input<boolean>(false);
+}

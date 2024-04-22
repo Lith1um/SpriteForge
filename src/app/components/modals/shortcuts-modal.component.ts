@@ -115,6 +115,30 @@ import { SnippetComponent } from '../../shared/components/snippet/snippet.compon
   
         <div class="flex w-100">
           <div class="flex-1">
+            Toggle grid
+          </div>
+  
+          <sf-snippet>g</sf-snippet>
+        </div>
+  
+        <div class="flex w-100">
+          <div class="flex-1">
+            Toggle vertical mirror
+          </div>
+  
+          <sf-snippet>v</sf-snippet>
+        </div>
+  
+        <div class="flex w-100">
+          <div class="flex-1">
+            Toggle horizontal mirror
+          </div>
+  
+          <sf-snippet>h</sf-snippet>
+        </div>
+  
+        <div class="flex w-100">
+          <div class="flex-1">
             Draw tool
           </div>
   

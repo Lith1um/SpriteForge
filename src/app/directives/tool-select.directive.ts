@@ -60,4 +60,28 @@ export class ToolSelectDirective {
     this.canvasService.state.tool.set(CanvasTool.Fill);
   }
 
+  @HostListener('window:keydown.g')
+  onGKeydown(): void {
+    if (!this.shortcutService.enabled()) {
+      return;
+    }
+    this.canvasService.state.showGrid.update(show => !show);
+  }
+
+  @HostListener('window:keydown.v')
+  onVKeydown(): void {
+    if (!this.shortcutService.enabled()) {
+      return;
+    }
+    this.canvasService.state.mirrorVertical.update(mirror => !mirror);
+  }
+
+  @HostListener('window:keydown.h')
+  onHKeydown(): void {
+    if (!this.shortcutService.enabled()) {
+      return;
+    }
+    this.canvasService.state.mirrorHorizontal.update(mirror => !mirror);
+  }
+
 }
