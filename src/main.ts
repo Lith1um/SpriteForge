@@ -9,6 +9,6 @@ import '@shoelace-style/shoelace/dist/shoelace.js'
 
 bootstrapApplication(AppComponent, {
   providers: [
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler }
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ]
 }).catch((err) => console.error(err));
