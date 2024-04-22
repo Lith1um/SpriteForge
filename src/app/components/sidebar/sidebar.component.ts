@@ -37,7 +37,7 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
             Export .png
           </sl-button>
           
-          <sl-button style="width: 100%;" (click)="canvasService.addFrame()">
+          <!-- <sl-button style="width: 100%;" (click)="canvasService.addFrame()">
             <sl-icon slot="prefix" name="layers-half"></sl-icon>
             Add frame
           </sl-button>
@@ -48,7 +48,7 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
               [width]="canvasService.state.width()"
               [height]="canvasService.state.height()">
             </sf-animation>
-          }
+          } -->
         </div>
       </div>
     </div>

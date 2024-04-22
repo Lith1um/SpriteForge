@@ -4,14 +4,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'sf-snippet',
   standalone: true,
   template: `
-    <div class="snippet inline-flex text-sm rounded-sm bg-light border-dark border-1">
+    <div class="snippet inline-flex items-center text-sm rounded-sm bg-light border-dark border-1">
       <ng-content></ng-content>
     </div>
   `,
   styles: [`
     :host {
-      display: inline-block;
-      vertical-align: text-bottom;
+      display: inline-flex;
+      vertical-align: top;
       font-family: courier;
     }
     .snippet {

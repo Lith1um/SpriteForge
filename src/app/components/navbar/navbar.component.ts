@@ -1,14 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, effect, inject, output } from '@angular/core';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasService } from '../../services/canvas.service';
 import { DarkModeService } from '../../services/dark-mode.service';
-import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'sf-navbar',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [IconComponent, TooltipDirective],
   template: `
     <div class="bg-light p-2 m-3 flex flex-wrap gap-2 items-center rounded-xl">
       <sl-button variant="default" circle (click)="toggleMenu.emit()">
@@ -19,6 +16,12 @@ import { TooltipDirective } from '../../shared/directives/tooltip.directive';
         SpriteForge
       </div>
 
+      <sl-tooltip content="Shortcuts">
+        <sl-button variant="default" circle (click)="showShortcuts.emit()">
+          <sl-icon name="command"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
+
       <sl-tooltip content="Undo">
         <sl-button variant="default" circle (click)="canvasService.state.undo()" [disabled]="canvasService.state.undoBuffer().length === 0">
           <sl-icon name="arrow-counterclockwise"></sl-icon>
@@ -27,12 +30,6 @@ import { TooltipDirective } from '../../shared/directives/tooltip.directive';
       <sl-tooltip content="Redo">
         <sl-button variant="default" circle (click)="canvasService.state.redo()" [disabled]="canvasService.state.redoBuffer().length === 0">
           <sl-icon name="arrow-clockwise"></sl-icon>
-        </sl-button>
-      </sl-tooltip>
-
-      <sl-tooltip content="Shortcuts">
-        <sl-button variant="default" circle (click)="showShortcuts.emit()">
-          <sl-icon name="command"></sl-icon>
         </sl-button>
       </sl-tooltip>
 

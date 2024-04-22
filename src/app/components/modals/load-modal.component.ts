@@ -2,7 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject, mod
 import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { SaveLoadService } from '../../services/save-load.service';
 import { SavedModel } from '../../interfaces/saved-model.model';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { TimeAgoPipe } from '../../shared/pipes/time-ago.pipe';
 import { NumberSortPipe } from '../../shared/pipes/number-sort.pipe';
 import { AnimationComponent } from '../../shared/components/animation/animation.component';
@@ -14,7 +13,6 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
   imports: [
     PreviewComponent,
     AnimationComponent,
-    IconComponent,
     TimeAgoPipe,
     NumberSortPipe
   ],
@@ -41,9 +39,11 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
           <div class="flex-1">
             <h6 class="m-0">{{ savedModel.filename }}</h6>
             Last saved: {{ savedModel.timestamp | timeAgo }}
-            <button class="icon-button" (click)="deleteModel.emit(savedModel.filename)">
-              <sf-icon>delete</sf-icon>
-            </button>
+            <div>
+              <sl-button circle (click)="deleteModel.emit(savedModel.filename)">
+                <sl-icon name="trash"></sl-icon>
+              </sl-button>
+            </div>
           </div>
         </div>
       } @empty {

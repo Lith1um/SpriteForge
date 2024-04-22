@@ -1,12 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { SnippetComponent } from '../../shared/components/snippet/snippet.component';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
   selector: 'sf-shortcuts-modal',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [SnippetComponent, IconComponent],
+  imports: [SnippetComponent],
   template: `
     <sl-dialog label="Shortcuts" [open]="visible()" (sl-hide)="visible.set(false)">
       <div class="flex flex-col gap-2">
@@ -17,7 +16,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command">keyboard_command_key</sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>n</sf-snippet>
@@ -31,7 +30,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>s</sf-snippet>
@@ -45,7 +44,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>shift</sf-snippet>
@@ -61,7 +60,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>o</sf-snippet>
@@ -75,7 +74,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>z</sf-snippet>
@@ -89,7 +88,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>shift</sf-snippet>
@@ -105,7 +104,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   
           <div>
             <sf-snippet>
-              <sf-icon>keyboard_command_key</sf-icon>&nbsp;/ ctrl
+              <sl-icon name="command"></sl-icon>&nbsp;/ ctrl
             </sf-snippet>
             +
             <sf-snippet>e</sf-snippet>

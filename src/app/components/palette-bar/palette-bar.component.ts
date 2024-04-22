@@ -5,7 +5,6 @@ import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
 import { PaletteComponent } from '../../shared/components/palette/palette.component';
 import { palettes } from '../../data/palettes';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { debounce } from '../../shared/helpers/debounce';
 import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
 
@@ -13,7 +12,7 @@ import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
   selector: 'sf-palette-bar',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [PaletteComponent, IconComponent, StringSortPipe],
+  imports: [PaletteComponent, StringSortPipe],
   template: `
     <div
       class="sidebar transition-all h-100 ml-3 rounded-xl"

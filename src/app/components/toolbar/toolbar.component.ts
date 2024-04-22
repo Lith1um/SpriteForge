@@ -1,13 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
-import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'sf-toolbar',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [IconComponent, TooltipDirective],
   template: `
     <div class="bg-light p-2 flex flex-wrap gap-2 rounded-xl">
       <sl-tooltip content="Colour Palette">

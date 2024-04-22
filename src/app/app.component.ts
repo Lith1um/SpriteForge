@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { CanvasService } from './services/canvas.service';
 import { CanvasComponent } from './components/canvas/canvas.component';
-import { IconComponent } from './shared/components/icon/icon.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { SaveModalComponent } from './components/modals/save-modal.component';
 import { LoadModalComponent } from './components/modals/load-modal.component';
@@ -22,7 +21,6 @@ import { ShortcutsModalComponent } from './components/modals/shortcuts-modal.com
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CanvasComponent,
-    IconComponent,
     ToolbarComponent,
     ShortcutsModalComponent,
     LoadModalComponent,
