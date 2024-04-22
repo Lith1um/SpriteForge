@@ -12,10 +12,6 @@ import { DarkModeService } from '../../services/dark-mode.service';
         <sl-icon name="list"></sl-icon>
       </sl-button>
 
-      <div class="text-lg font-weight-bold">
-        SpriteForge
-      </div>
-
       <sl-tooltip content="Shortcuts">
         <sl-button variant="default" circle (click)="showShortcuts.emit()">
           <sl-icon name="command"></sl-icon>
@@ -33,7 +29,8 @@ import { DarkModeService } from '../../services/dark-mode.service';
         </sl-button>
       </sl-tooltip>
 
-      <div class="flex-1">
+      <div class="flex-1 text-lg font-weight-bold">
+        SpriteForge
       </div>
 
       <sl-tooltip content="Toggle light mode">

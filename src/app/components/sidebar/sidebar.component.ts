@@ -34,7 +34,7 @@ import { AnimationComponent } from '../../shared/components/animation/animation.
   
           <sl-button style="width: 100%;" (click)="exportFile.emit()" [disabled]="!canvasService.state.started()">
             <sl-icon slot="prefix" name="file-earmark-arrow-down"></sl-icon>
-            Export .png
+            Export (.png)
           </sl-button>
           
           <!-- <sl-button style="width: 100%;" (click)="canvasService.addFrame()">
