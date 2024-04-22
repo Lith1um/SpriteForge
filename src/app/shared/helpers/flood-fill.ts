@@ -21,16 +21,16 @@ export const floodFill = (
     if (indexes.has(index)) {
       return false;
     }
+    indexes.add(index);
+
     return point.x >= 0 && point.x < width && point.y >= 0 && point.y < height
       && canvas.get(index)?.colour === clickedColour;
   }
 
   while (stack.length) {
-    let index = stack.pop()!;
-    let point = pixelIndexToPoint2D(index, width)
+    let index = stack.shift()!;
 
-    points.push(point);
-    indexes.add(index);
+    points.push(pixelIndexToPoint2D(index, width));
 
     isValidSquare(index + 1) && stack.push(index + 1);
     isValidSquare(index - 1) && stack.push(index - 1);
