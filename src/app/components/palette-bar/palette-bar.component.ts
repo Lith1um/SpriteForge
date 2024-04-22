@@ -1,31 +1,31 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, computed, effect, inject, input, model, output, signal } from '@angular/core';
 import { PalettesService } from '../../services/palettes.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { debounceTime, fromEvent, startWith } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
 import { PaletteComponent } from '../../shared/components/palette/palette.component';
 import { palettes } from '../../data/palettes';
-import { IconComponent } from '../../shared/components/icon/icon.component';
 import { debounce } from '../../shared/helpers/debounce';
 import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
 
 @Component({
   selector: 'sf-palette-bar',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [PaletteComponent, IconComponent, StringSortPipe],
+  imports: [PaletteComponent, StringSortPipe],
   template: `
     <div
-      class="sidebar transition-all h-100 ml-3"
+      class="sidebar transition-all h-100 ml-3 rounded-xl"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
-      <div class="bg-light p-3 h-100 overflow-y-auto">
+      <div class="bg-light p-3 h-100 overflow-y-auto rounded-xl">
 
         <h6>New colour</h6>
         <div class="flex mb-4">
           <input #colorInput type="color" class="w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
-          <button class="icon-button text-center" [style.width]="'50px'" (click)="colorInput.click()">
-            <sf-icon>add</sf-icon>
-          </button>
+          <sl-button circle size="large" class="icon-button text-center"(click)="colorInput.click()">
+            <sl-icon name="plus-lg"></sl-icon>
+          </sl-button>
         </div>
 
         <sf-palette

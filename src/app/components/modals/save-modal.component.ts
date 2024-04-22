@@ -1,47 +1,47 @@
-import { ChangeDetectionStrategy, Component, input, model, output, signal } from '@angular/core';
-import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, input, model, output, signal } from '@angular/core';
 import { PreviewComponent } from '../../shared/components/preview/preview.component';
 import { Pixel } from '../../interfaces/pixel.interface';
-import { FormsModule } from '@angular/forms';
 import { AnimationComponent } from '../../shared/components/animation/animation.component';
 
 @Component({
   selector: 'sf-save-modal',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, AnimationComponent, PreviewComponent, FormsModule],
+  imports: [AnimationComponent, PreviewComponent],
   template: `
-    @if (visible()) {
-      <sf-modal
-        [(visible)]="visible"
-        modalTitle="Save your art!">
-        <label>
-          <div>Give it a name</div>
-          <input type="text" [(ngModel)]="filename"/>
-        </label>
+    <sl-dialog label="Save your art!" [open]="visible()" (sl-hide)="visible.set(false)">
+      <div class="flex flex-col gap-2">
+        <sl-input
+          #input
+          label="Give it a name"
+          type="text"
+          [value]="filename()"
+          (sl-input)="filename.set(input.value)">
+        </sl-input>
+  
         <div>Preview of current art:</div>
         @if (frames().length) {
           <sf-animation
-            style="width: 300px"
             [frames]="frames()"
             [width]="width()"
             [height]="height()">
           </sf-animation>
         } @else {
           <sf-preview
-            style="width: 300px"
             [pixels]="canvas()"
             [width]="width()"
             [height]="height()">
           </sf-preview>
         }
-        <button sfModalButton (click)="visible.set(false)">
-          Cancel
-        </button>
-        <button sfModalButton [disabled]="!filename()" (click)="saveModel()">
-          Save
-        </button>
-      </sf-modal>
-    }
+      </div>
+
+      <sl-button slot="footer" (click)="visible.set(false)">
+        Cancel
+      </sl-button>
+      <sl-button slot="footer" variant="primary" [disabled]="!filename()" (click)="saveModel()">
+        Save
+      </sl-button>
+    </sl-dialog>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

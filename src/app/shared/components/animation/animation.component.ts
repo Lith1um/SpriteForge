@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, effect, input, output, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, input, signal, viewChild } from '@angular/core';
 import { Pixel } from '../../../interfaces/pixel.interface';
 import { pixelsToPng } from '../../helpers/canvas';
 

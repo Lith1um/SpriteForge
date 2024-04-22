@@ -1,65 +1,62 @@
-import { ChangeDetectionStrategy, Component, computed, model, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ModalButtonDirective, ModalComponent } from '../../shared/components/modal/modal.component';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, computed, model, output } from '@angular/core';
 import { Point2D } from '../../shared/models/point.interface';
 
 @Component({
   selector: 'sf-new-modal',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [ModalComponent, ModalButtonDirective, FormsModule],
   template: `
-    @if (visible()) {
-      <sf-modal
-        [(visible)]="visible"
-        modalTitle="Create some art!">
-
-        <div class="flex flex-col gap-2">
-          <div class="flex gap-2 flex-wrap">
-            @for (preset of presets; track $index) {
-              <button (click)="presetCanvas(preset.x, preset.y)">
-                {{preset.x}}x{{preset.y}}
-              </button>
-            }
-          </div>
-          <label>
-            <div>Width</div>
-            <input
-              class="w-100"
-              type="number"
-              [min]="minDimension"
-              [max]="maxDimension"
-              [(ngModel)]="width"/>
-            @if (!isWidthValid()) {
-              <div class="text-sm text-error font-weight-semi-bold">
-                You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
-              </div>
-            }
-            <div></div>
-          </label>
-          <label>
-            <div>Height</div>
-            <input
-              class="w-100"
-              type="number"
-              [min]="minDimension"
-              [max]="maxDimension"
-              [(ngModel)]="height"/>
-            @if (!isHeightValid()) {
-              <div class="text-sm text-error font-weight-semi-bold">
-                You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
-              </div>
-            }
-          </label>
+    <sl-dialog label="Create some art!" [open]="visible()" (sl-hide)="visible.set(false)">
+      <div class="flex flex-col gap-2">
+        <div class="flex gap-2 flex-wrap">
+          @for (preset of presets; track $index) {
+            <sl-button autofocus (click)="presetCanvas(preset.x, preset.y)">
+              {{preset.x}}x{{preset.y}}
+            </sl-button>
+          }
+        </div>
+        <div>
+          <sl-input
+            #widthInput
+            label="Width"
+            type="number"
+            [valueAsNumber]="width()" 
+            [min]="minDimension"
+            [max]="maxDimension"
+            (sl-input)="width.set(widthInput.valueAsNumber)">
+          </sl-input>
+          @if (!isWidthValid()) {
+            <div class="text-sm text-error font-weight-semi-bold">
+              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
+            </div>
+          }
         </div>
 
-        <button sfModalButton (click)="visible.set(false)">
-          Cancel
-        </button>
-        <button sfModalButton [disabled]="!isValid()" (click)="createCanvas()">
-          Create
-        </button>
-      </sf-modal>
-    }
+        <div>
+          <sl-input
+            #heightInput
+            label="Height"
+            type="number"
+            [valueAsNumber]="height()" 
+            [min]="minDimension"
+            [max]="maxDimension"
+            (sl-input)="height.set(heightInput.valueAsNumber)">
+          </sl-input>
+          @if (!isHeightValid()) {
+            <div class="text-sm text-error font-weight-semi-bold">
+              You must enter a number between {{ this.minDimension }} and {{ this.maxDimension }}.
+            </div>
+          }
+        </div>
+      </div>
+
+      <sl-button slot="footer" (click)="visible.set(false)">
+        Cancel
+      </sl-button>
+      <sl-button slot="footer" variant="primary" [disabled]="!isValid()" (click)="createCanvas()">
+        Create
+      </sl-button>
+    </sl-dialog>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

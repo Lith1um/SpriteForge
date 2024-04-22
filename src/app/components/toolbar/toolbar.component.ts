@@ -1,66 +1,87 @@
-import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
-import { IconComponent } from '../../shared/components/icon/icon.component';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
-import { debounce } from '../../shared/helpers/debounce';
-import { TooltipDirective } from '../../shared/directives/tooltip.directive';
 
 @Component({
   selector: 'sf-toolbar',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
-  imports: [IconComponent, TooltipDirective],
   template: `
-    <div class="bg-light p-3 flex flex-wrap gap-2">
-      <label sfTooltip tooltipText="Colour Palette" class="flex">
-        <button class="icon-button" [style.backgroundColor]="colour()" (click)="togglePalette()">
-          <sf-icon style="color: transparent;">palette</sf-icon>
-        </button>
-      </label>
+    <div class="bg-light p-2 flex flex-wrap gap-2 rounded-xl">
+      <sl-tooltip content="Colour Palette">
+        <sl-button class="palette-button" variant="default" circle [style]="'--palette-color: ' + colour()" (click)="togglePalette()">
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Toggle grid" class="icon-button" [style.filter]="showGrid() ? 'invert(1)': ''" (click)="toggleGrid.emit()">
-        <sf-icon>grid_on</sf-icon>
-      </button>
+      <sl-tooltip content="Toggle grid">
+        <sl-button variant="default" circle (click)="toggleGrid.emit()" [variant]="showGrid() ? 'primary': 'default'">
+          <sl-icon name="grid-3x3"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Horizontal mirror" class="icon-button" [style.filter]="mirrorY() ? 'invert(1)': ''" (click)="mirrorVertical.emit()">
-        <sf-icon>flip</sf-icon>
-      </button>
+      <sl-tooltip content="Vertical mirror">
+        <sl-button variant="default" circle (click)="mirrorVertical.emit()" [variant]="mirrorY() ? 'primary': 'default'">
+          <sl-icon name="symmetry-vertical"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Vertical mirror" class="icon-button" [style.filter]="mirrorX() ? 'invert(1)': ''" (click)="mirrorHorizontal.emit()">
-        <sf-icon class="rotate-90 block">flip</sf-icon>
-      </button>
+      <sl-tooltip content="Horizontal mirror">
+        <sl-button variant="default" circle (click)="mirrorHorizontal.emit()" [variant]="mirrorX() ? 'primary': 'default'">
+          <sl-icon name="symmetry-horizontal"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <div class="border-dark border-r"></div>
+      <div class="border border-r mx-1"></div>
 
-      <button sfTooltip tooltipText="Draw tool" class="icon-button" [style.filter]="tool() === ToolEnum.Draw ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Draw)">
-        <sf-icon>brush</sf-icon>
-      </button>
+      <sl-tooltip content="Draw tool">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Draw)" [variant]="tool() === ToolEnum.Draw ? 'primary': 'default'">
+          <sl-icon name="brush"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Line tool" class="icon-button" [style.filter]="tool() === ToolEnum.Line ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Line)">
-        <sf-icon>drive_file_rename_outline</sf-icon>
-      </button>
+      <sl-tooltip content="Line tool">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Line)" [variant]="tool() === ToolEnum.Line ? 'primary': 'default'">
+          <sl-icon name="pencil"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Eraser" class="icon-button" [style.filter]="tool() === ToolEnum.Erase ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Erase)">
-        <sf-icon>ink_eraser</sf-icon>
-      </button>
+      <sl-tooltip content="Eraser">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Erase)" [variant]="tool() === ToolEnum.Erase ? 'primary': 'default'">
+          <sl-icon name="eraser"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Rectangle tool" class="icon-button" [style.filter]="tool() === ToolEnum.Rectangle ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Rectangle)">
-        <sf-icon>rectangle</sf-icon>
-      </button>
+      <sl-tooltip content="Rectangle tool">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Rectangle)" [variant]="tool() === ToolEnum.Rectangle ? 'primary': 'default'">
+          <sl-icon name="bounding-box-circles"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Ellipse tool" class="icon-button" [style.filter]="tool() === ToolEnum.Circle ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Circle)">
-        <sf-icon>brightness_1</sf-icon>
-      </button>
+      <sl-tooltip content="Ellipse tool">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Circle)" [variant]="tool() === ToolEnum.Circle ? 'primary': 'default'">
+          <sl-icon name="circle"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
 
-      <button sfTooltip tooltipText="Fill tool" class="icon-button" [style.filter]="tool() === ToolEnum.Fill ? 'invert(1)': ''" (click)="updateTool.emit(ToolEnum.Fill)">
-        <sf-icon>colors</sf-icon>
-      </button>
+      <sl-tooltip content="Fill tool">
+        <sl-button variant="default" circle (click)="updateTool.emit(ToolEnum.Fill)" [variant]="tool() === ToolEnum.Fill ? 'primary': 'default'">
+          <sl-icon name="paint-bucket"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
+      
+      <div class="border border-r mx-1"></div>
 
-      <div class="border-dark border-r"></div>
-
-      <button sfTooltip tooltipText="Clear canvas" class="icon-button" (click)="clearCanvas.emit()">
-        <sf-icon>delete</sf-icon>
-      </button>
+      <sl-tooltip content="Clear canvas">
+        <sl-button variant="default" circle (click)="clearCanvas.emit()">
+          <sl-icon name="trash"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
     </div>
   `,
+  styles: [`
+    sl-button.palette-button::part(base) {
+      background-color: var(--palette-color);
+    }
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {

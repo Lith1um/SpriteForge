@@ -27,9 +27,16 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@shoelace-style/shoelace/dist/assets",
+                "output": "/shoelace/assets/"
+              }
             ],
             "styles": [
+              "@shoelace-style/shoelace/dist/themes/light.css",
+              "@shoelace-style/shoelace/dist/themes/dark.css",
               "src/styles.scss"
             ],
             "scripts": []
