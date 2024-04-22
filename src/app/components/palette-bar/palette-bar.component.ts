@@ -20,20 +20,21 @@ import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
       [class.show]="show()">
       <div class="bg-light p-3 h-100 overflow-y-auto rounded-xl">
 
-        <h6>New colour</h6>
-        <div class="flex mb-4">
-          <input #colorInput type="color" class="w-0 border-none m-0 p-0 invisible" [value]="colour()" (input)="onInput($event)"/>
-          <sl-button circle size="large" class="icon-button text-center"(click)="colorInput.click()">
-            <sl-icon name="plus-lg"></sl-icon>
-          </sl-button>
-        </div>
-
         <sf-palette
           name="Colours in model"
           [colours]="usedColours() | stringSort"
           [selectedColour]="selectedColour()"
           (updateColour)="clickedColour($event)">
         </sf-palette>
+
+        <h6>New colour</h6>
+        <sl-color-picker
+          inline
+          [noFormatToggle]="true"
+          class="mb-4 w-100"
+          style="--grid-width: 100%;"
+          (sl-input)="onInput($event)">
+        </sl-color-picker>
 
         <sf-palette
           name="Recent colours"
@@ -111,8 +112,7 @@ export class PaletteBarComponent {
 
   customPalettes = palettes;
 
-  colour = signal<string>('#ffffff');
-  debounceColor = debounce((colour: string) => this.updateColour.emit(colour));
+  debounceColor = debounce((colour: string) => this.updateColour.emit(colour), 50);
 
   constructor() {
     effect(() => {

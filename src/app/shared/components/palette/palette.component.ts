@@ -15,8 +15,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
             (click)="updateColour.emit(colour)">
           </div>
         } @empty {
-          <div class="text-center p-2 empty" [style.gridColumn]="'1 / span 5'">
-            None
+          <div class="w-100 colour">
           </div>
         }
       </div>
@@ -39,10 +38,6 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
       &.selected {
         box-shadow: inset 0px 0px 0px 0.25rem white;
       }
-    }
-
-    .empty {
-      line-height: 2.25rem;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
