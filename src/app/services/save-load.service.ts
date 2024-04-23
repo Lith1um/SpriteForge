@@ -2,6 +2,7 @@ import { Injectable, computed, inject } from '@angular/core';
 import { LocalStorageService } from '../shared/services/local-storage.service';
 import { Pixel } from '../interfaces/pixel.interface';
 import { SavedModel, SavedModelJson } from '../interfaces/saved-model.model';
+import { ToastService } from '../shared/services/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class SaveLoadService {
   private readonly savedModelsKey = 'SpriteForgeSaves';
 
   localStorageService = inject(LocalStorageService);
+  toastService = inject(ToastService);
 
   savedModelsJsonSignal = this.localStorageService.listen<{[key: string]: SavedModelJson}>(this.savedModelsKey);
   savedModelsSignal = computed(() => {
@@ -43,6 +45,8 @@ export class SaveLoadService {
       };
       return savedModels;
     });
+
+    this.fileSavedToast(filename);
   }
 
   saveAs(filename: string, canvas: Map<number, Pixel>, frames: Map<number, Pixel>[], width: number, height: number): void {
@@ -62,6 +66,8 @@ export class SaveLoadService {
       };
       return savedModels;
     });
+
+    this.fileSavedToast(filename);
   }
 
   load(filename: string): SavedModel {
@@ -84,6 +90,10 @@ export class SaveLoadService {
 
       return savedModels;
     });
+  }
+
+  fileSavedToast(filename: string): void {
+    this.toastService.notifySuccess(`File "${filename}" has been saved!`, 'floppy');
   }
 
 }
