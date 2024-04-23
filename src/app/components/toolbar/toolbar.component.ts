@@ -1,5 +1,6 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ChangeDetectionStrategy, Component, inject, input, model, output } from '@angular/core';
 import { CanvasTool } from '../../interfaces/canvas-state.interface';
+import { CanvasService } from '../../services/canvas.service';
 import { SnippetComponent } from '../../shared/components/snippet/snippet.component';
 
 @Component({
@@ -8,7 +9,7 @@ import { SnippetComponent } from '../../shared/components/snippet/snippet.compon
   imports: [SnippetComponent],
   standalone: true,
   template: `
-    <div class="bg-light p-2 flex flex-wrap gap-2 rounded-xl">
+    <div class="bg-light p-2 flex flex-wrap gap-2 rounded-2xl">
       <sl-tooltip content="Colour Palette">
         <sl-button class="palette-button" variant="default" circle [style]="'--palette-color: ' + colour()" (click)="togglePalette()">
         </sl-button>
@@ -44,8 +45,41 @@ import { SnippetComponent } from '../../shared/components/snippet/snippet.compon
         </sl-button>
       </sl-tooltip>
 
-      <div class="border border-r mx-1"></div>
+      <div class="border border-r"></div>
 
+      <sl-tooltip>
+        <div slot="content" class="flex flex-col gap-1 items-center">
+          Undo
+          <div class="flex gap-1">
+            <sf-snippet [invert]="true">
+              <sl-icon name="command"></sl-icon>/ctrl
+            </sf-snippet>
+            <sf-snippet [invert]="true">z</sf-snippet>
+          </div>
+        </div>
+        <sl-button variant="default" circle (click)="canvasService.state.undo()" [disabled]="canvasService.state.undoBuffer().length === 0">
+          <sl-icon name="arrow-counterclockwise"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
+
+      <sl-tooltip>
+        <div slot="content" class="flex flex-col gap-1 items-center">
+          Redo
+          <div class="flex gap-1">
+            <sf-snippet [invert]="true">
+              <sl-icon name="command"></sl-icon>/ctrl
+            </sf-snippet>
+            <sf-snippet [invert]="true">shift</sf-snippet>
+            <sf-snippet [invert]="true">z</sf-snippet>
+          </div>
+        </div>
+        <sl-button variant="default" circle (click)="canvasService.state.redo()" [disabled]="canvasService.state.redoBuffer().length === 0">
+          <sl-icon name="arrow-clockwise"></sl-icon>
+        </sl-button>
+      </sl-tooltip>
+
+      <div class="border border-r"></div>
+      
       <sl-tooltip>
         <div slot="content" class="flex gap-2">
           Draw tool
@@ -106,7 +140,7 @@ import { SnippetComponent } from '../../shared/components/snippet/snippet.compon
         </sl-button>
       </sl-tooltip>
       
-      <div class="border border-r mx-1"></div>
+      <div class="border border-r"></div>
 
       <sl-tooltip content="Clear canvas">
         <sl-button variant="default" circle (click)="clearCanvas.emit()">
@@ -123,6 +157,8 @@ import { SnippetComponent } from '../../shared/components/snippet/snippet.compon
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent {
+
+  canvasService = inject(CanvasService);
 
   colour = input.required<string>();
   tool = input.required<CanvasTool>();

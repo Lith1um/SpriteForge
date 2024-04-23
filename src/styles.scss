@@ -88,6 +88,10 @@ input:focus {
   --sl-color-primary-800: hsl(176.1 69.4% 21.8%);
   --sl-color-primary-900: hsl(175.9 60.8% 19%);
   --sl-color-primary-950: hsl(176.5 58.6% 11.4%);
+  
+  sl-button[circle]::part(base) {
+    border-radius: 0.75rem;
+  }
 }
 
 :host,

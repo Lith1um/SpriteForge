@@ -15,10 +15,10 @@ import { StringSortPipe } from '../../shared/pipes/string-sort.pipe';
   imports: [PaletteComponent, StringSortPipe],
   template: `
     <div
-      class="sidebar transition-all h-100 ml-3 rounded-xl"
+      class="sidebar transition-all h-100 ml-3 rounded-2xl"
       [class.sidebar-mobile]="isMobile()"
       [class.show]="show()">
-      <div class="bg-light p-3 h-100 overflow-y-auto rounded-xl">
+      <div class="bg-light p-3 h-100 overflow-y-auto rounded-2xl">
 
         <sf-palette
           name="Colours in model"
