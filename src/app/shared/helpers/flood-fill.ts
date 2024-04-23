@@ -15,27 +15,27 @@ export const floodFill = (
   const stack = [point2DToPixelIndex({x, y}, width)];
   const indexes: Set<number> = new Set();
 
-  const isValidSquare = (index: number): boolean => {
-    let point = pixelIndexToPoint2D(index, width);
+  const inBounds = (point: Point2D) => point.x >= 0 && point.x < width && point.y >= 0 && point.y < height;
 
-    if (indexes.has(index)) {
+  const isValidSquare = (index: number): boolean => {
+    if (indexes.has(index) || index < 0) {
       return false;
     }
     indexes.add(index);
 
-    return point.x >= 0 && point.x < width && point.y >= 0 && point.y < height
-      && canvas.get(index)?.colour === clickedColour;
+    return canvas.get(index)?.colour === clickedColour;
   }
 
   while (stack.length) {
     let index = stack.shift()!;
 
-    points.push(pixelIndexToPoint2D(index, width));
+    const point = pixelIndexToPoint2D(index, width);
+    points.push(point);
 
-    isValidSquare(index + 1) && stack.push(index + 1);
-    isValidSquare(index - 1) && stack.push(index - 1);
-    isValidSquare(index + width) && stack.push(index + width);
-    isValidSquare(index - width) && stack.push(index - width);
+    inBounds({x: point.x + 1, y: point.y}) && isValidSquare(index + 1) && stack.push(index + 1);
+    inBounds({x: point.x - 1, y: point.y}) && isValidSquare(index - 1) && stack.push(index - 1);
+    inBounds({x: point.x, y: point.y + 1}) && isValidSquare(index + width) && stack.push(index + width);
+    inBounds({x: point.x, y: point.y - 1}) && isValidSquare(index - width) && stack.push(index - width);
   }
 
   return points;
